@@ -7,38 +7,38 @@ coverY: 0
 
 ### 소프트웨어 설치&#x20;
 
-{% content-ref url="install/undefined/" %}
-[undefined](install/undefined/)
+{% content-ref url="install/nurion/" %}
+[nurion](install/nurion/)
 {% endcontent-ref %}
 
-{% content-ref url="install/undefined-1/" %}
-[undefined-1](install/undefined-1/)
+{% content-ref url="install/neuron/" %}
+[neuron](install/neuron/)
 {% endcontent-ref %}
 
 ### 활용&팁&#x20;
 
-{% content-ref url="tips/undefined/" %}
-[undefined](tips/undefined/)
+{% content-ref url="tips/common/" %}
+[common](tips/common/)
 {% endcontent-ref %}
 
-{% content-ref url="tips/undefined-1/" %}
-[undefined-1](tips/undefined-1/)
+{% content-ref url="tips/nurion/" %}
+[nurion](tips/nurion/)
 {% endcontent-ref %}
 
-{% content-ref url="tips/undefined-2/" %}
-[undefined-2](tips/undefined-2/)
+{% content-ref url="tips/neuron/" %}
+[neuron](tips/neuron/)
 {% endcontent-ref %}
 
 ### 동영상 지침서&#x20;
 
-{% content-ref url="video/undefined/" %}
-[undefined](video/undefined/)
+{% content-ref url="video/common/" %}
+[common](video/common/)
 {% endcontent-ref %}
 
-{% content-ref url="video/undefined-1/" %}
-[undefined-1](video/undefined-1/)
+{% content-ref url="video/nurion/" %}
+[nurion](video/nurion/)
 {% endcontent-ref %}
 
-{% content-ref url="video/undefined-2/" %}
-[undefined-2](video/undefined-2/)
+{% content-ref url="video/neuron/" %}
+[neuron](video/neuron/)
 {% endcontent-ref %}
