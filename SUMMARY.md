@@ -147,5 +147,5 @@
     * [딥러닝 프레임워크 병렬화 사용법-중복](blog/userguide/neuron/neuron-how-to-use-deep-learning-framework-parallelization.md)
     * [Keras 기반 Multi GPU 사용 방법 (2020.10)-중복](blog/userguide/neuron/neuron-how-to-use-keras-based-multi-gpu-2020-10.md)
     * [가우시안16(Gaussian16) GPU S/W 사용 안내 (2019.08)-중복](blog/userguide/neuron/neuron-gaussian16-gpu-sw-userguide-2019-08.md)
-    * [뉴론 slurm 스케쥴러 기본 사용법 (2021.04)](blog/userguide/neuron/neuron-slurm-scheduler-basic-usage-2021-04.md)
+    * [slurm 스케쥴러 기본 사용법 (2021.04)](blog/userguide/neuron/neuron-slurm-scheduler-basic-usage-2021-04.md)
     * [뉴론 시스템 개요(2021.04)](blog/userguide/neuron/neuron-system-overview-2021-04.md)
