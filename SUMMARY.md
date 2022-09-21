@@ -129,7 +129,7 @@
     * [TSMSF 사용자 지침서-중복](blog/userguide/nurion/tsmsf-userguide.md)
     * [i-PI 사용법 (LAMMPS)](blog/userguide/nurion/nurion-i-pi-userguide-lammps.md)
     * [딥러닝 프레임워크 병렬화 사용법-중복](blog/userguide/nurion/nurion-how-to-use-deep-learning-framework-parallelization.md)
-    * [누리온 가우시안16(Gaussian16) LINDA S/W 사용 안내 (2019.08)](blog/userguide/nurion/nurion-gaussian16-linda-sw-guide-2019-08.md)
+    * [누리온 가우시안16(Gaussian16) LINDA S/W 사용 안내 (2019.08)-중복](blog/userguide/nurion/nurion-gaussian16-linda-sw-guide-2019-08.md)
     * [누리온 Q-CHEM v5.2 사용자 지침서](blog/userguide/nurion/nurion-q-chem-v5-2-userguide.md)
     * [누리온 ABAQUS 사용자 지침서(2020.12)](blog/userguide/nurion/nurion-abaqus-userguide-2020-12.md)
     * [누리온 OpenFOAM 사용자 지침서](blog/userguide/nurion/nurion-openfoam-userguide.md)
