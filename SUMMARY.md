@@ -124,7 +124,7 @@
 * [누리온](userguide/nurion/README.md)
   * [FAQ (2021.05)](userguide/nurion/nurion-faq-2021-05.md)
   * [사용자 지침서 (2021.05)](userguide/nurion/nurion-userguide-2021-05.md)
-  * [데스크톱 가상화(VDI)-중복](userguide/nurion/desktop-virtualization-vdi.md)
+  * [데스크톱 가상화(VDI)](userguide/nurion/desktop-virtualization-vdi.md)
   * [TSMSF 사용자 지침서](userguide/nurion/tsmsf-userguide.md)
   * [i-PI 사용법 (LAMMPS)](userguide/nurion/nurion-i-pi-userguide-lammps.md)
   * [딥러닝 프레임워크 병렬화 사용법](userguide/nurion/nurion-how-to-use-deep-learning-framework-parallelization.md)
