@@ -42,3 +42,13 @@ coverY: 0
 {% content-ref url="video/neuron/" %}
 [neuron](video/neuron/)
 {% endcontent-ref %}
+
+### 사용자 지침서
+
+{% content-ref url="video/nurion/" %}
+[nurion](video/nurion/)
+{% endcontent-ref %}
+
+{% content-ref url="install/neuron/" %}
+[neuron](install/neuron/)
+{% endcontent-ref %}
