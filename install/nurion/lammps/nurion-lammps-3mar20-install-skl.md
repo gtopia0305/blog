@@ -218,11 +218,27 @@ CC =        mpiicpc
 
 &#x20;(3-4) atc 설치
 
-| 설치과정                                                                                                                                                                             |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ cd lib/atc<br>$ vi Makefile.lammps.linalg<br>----- 수정 사항은 아래의 내용 참고 -----<br>$ vi Makefile.mpi<br>----- 수정 사항은 아래의 내용 참고 -----<br>$ make -f Makefile.mpi<br>$ cd ../../</p> |
+{% code title="설치과정" %}
+```
+$ cd lib/atc
+$ vi Makefile.lammps.linalg
+----- 수정 사항은 아래의 내용 참고 -----
+$ vi Makefile.mpi
+----- 수정 사항은 아래의 내용 참고 -----
+$ make -f Makefile.mpi
+$ cd ../../
+```
+{% endcode %}
 
 &#x20;
+
+{% code title="[Makefile.lammps.linalg 수정 사항]" %}
+```
+user-atc_SYSINC =
+user-atc_SYSLIB = -llinalg
+user-atc_SYSPATH = -L../../lib/linalg$(LIBOBJDIR)
+```
+{% endcode %}
 
 \[Makefile.lammps.linalg 수정 사항]
 
