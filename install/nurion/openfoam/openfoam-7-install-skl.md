@@ -6,6 +6,8 @@ description: 슈퍼컴퓨팅인프라센터 2019. 10. 25. 15:12
 
 KISTI 슈퍼컴퓨팅센터의 누리온 시스템에 OpenFOAM-v7 Source 버전으로 설치하는 과정을 정리하여 사용자들이 설치하는 방법에 대하여 참고할 수 있도록 내용을 소개한다.
 
+
+
 ## **1. 설치 환경**
 
 |   **구분**    | **내용**                                                                                                 |
@@ -17,61 +19,27 @@ KISTI 슈퍼컴퓨팅센터의 누리온 시스템에 OpenFOAM-v7 Source 버전�
 |  MPI        | IntelMPI 2018.3                                                                                        |
 |  기타         |                                                                                                        |
 
+****
+
 ## **2. 설치 전 환경 설정**
 
 OpenFOAM-v7 버전 설치에 필요한 gmp, mpfr, mpc, boost, CGAL은 누리온 시스템에 미리 설치된 /apps/commons 라이브러리들을 사용한다.\
 ****만약 다른 버전의 gmp, mpfr, mpc, boost, CGAL이 필요한 경우는 사용자의 홈 디렉터리(/home01/$USER)에 설치 후 환경 설정을 해서 사용하면 된다.
 
+&#x20;
 
+**\[ 환경 설정 ]**
 
-{% code title="[ 환경 설정 ]" %}
-```
-$ module load cmake/3.12.3
-$ module load intel/18.0.3 impi/18.0.3
-```
-{% endcode %}
+> $ module load cmake/3.12.3\
+> $ module load intel/18.0.3 impi/18.0.3
 
 ## **3. OpenFOAM-v7 버전 설치 과정**
 
 &#x20;설치 과정 소개는 tar 를 이용한 압축 해제 방법과 설정 방법등 진행 절차를 위주로 설명하고, 소스 파일 다운로드 등은 생략한다.   설치 소개 시 사용된 경로 <mark style="color:blue;">/Install\_Path/SKL</mark>는 설치 안내를 위한 경로이므로, 사용자는 실제 사용할 경로를 지정하여 설치하면 된다. &#x20;
 
-{% code title="  설치과정" %}
-```
-$ cd /Install_Path/SKL
-$ tar xzvf OpenFOAM-7-20190902.tar.gz
-$ tar xzvf ThirdParty-7-version-7.tar.gz
-$ mv OpenFOAM-7-20190902 OpenFOAM-7
-$ mv ThirdParty-7-version-7 ThirdParty-7
-$ vi OpenFOAM-7/etc/config.sh/settings 
-- - - [settings 수정 사항] 참고 - - -
-$ vi OpenFOAM-7/etc/bashrc 
-- - - [bashrc 수정 사항] 참고 - - -
-$ vi ThirdParty-7/makeCGAL
- - - - [makeCGAL 수정 사항] 참고 - - -
-$ vi OpenFOAM-7/etc/config.sh/mpi 
-- - - [mpi 수정 사항] 참고 - - -
-$ vi OpenFOAM-7/wmake/rules/linux64Icc/c++ 
-- - - [c++ 수정 사항] 참고 - - -
-$ vi ThirdParty-7/scotch_6.0.6/src/Makefile.inc
-  - - - [Makefile.inc 수정 사항] 참고 - - -
-$ sed -i -e 's/\(boost_version=\)boost-system/\1boost_1_68_0/' OpenFOAM-7/etc/config.sh/CGAL
-$ sed -i -e 's/\(cgal_version=\)cgal-system/\1CGAL-4.9.1/' OpenFOAM-7/etc/config.sh/CGAL
-$ source OpenFOAM-7/etc/bashrc
-$ mkdir -p $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER
-$ ln -s /apps/common/gmp/6.1.2 $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/gmp-system
-$ ln -s /apps/common/mpfr/4.0.1 $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/mpfr-system
-$ ln -s /apps/common/mpc/1.1.0 $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/mpc-system
-$ ln -s /apps/common/boost/1.68.0 $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/boost_1_68_0
-$ ln -s /apps/common/CGAL/4.9.1 $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/CGAL-4.9.1
-$ ln -s /apps/applications/cmake/3.12.3 $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/cmake-system
- 
-$ cd ThirdParty-7
-$ ./Allwmake
- 
-$ cd $WM_PROJECT_DIR
-$ ./Allwmake 
-```
-{% endcode %}
+|   **설치과정**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <p>$ cd <mark style="color:blue;">/Install_Path/SKL</mark><br>$ tar xzvf OpenFOAM-7-20190902.tar.gz<br>$ tar xzvf ThirdParty-7-version-7.tar.gz<br>$ mv OpenFOAM-7-20190902 OpenFOAM-7<br>$ mv ThirdParty-7-version-7 ThirdParty-7<br>$ vi OpenFOAM-7/etc/config.sh/settings <br><em><mark style="color:orange;"><strong>- - - [settings 수정 사항] 참고 - - -</strong></mark></em><br>$ vi OpenFOAM-7/etc/bashrc <br><em><mark style="color:orange;"><strong>- - - [bashrc 수정 사항] 참고 - - -</strong></mark></em><br>$ vi ThirdParty-7/makeCGAL<br> <em><mark style="color:orange;"><strong>- - - [makeCGAL 수정 사항] 참고 - - -</strong></mark></em><br>$ vi OpenFOAM-7/etc/config.sh/mpi <br><em><mark style="color:orange;"><strong>- - - [mpi 수정 사항] 참고 - - -</strong></mark></em><br>$ vi OpenFOAM-7/wmake/rules/linux64Icc/c++ <br><em><mark style="color:orange;"><strong>- - - [c++ 수정 사항] 참고 - - -</strong></mark></em><br>$ vi ThirdParty-7/scotch_6.0.6/src/Makefile.inc<br> <mark style="color:orange;">  </mark><em><mark style="color:orange;"> <strong>- - - [Makefile.inc 수정 사항] 참고 - - -</strong></mark></em><br>$ sed -i -e 's/\(boost_version=\)boost-system/\1boost_1_68_0/' OpenFOAM-7/etc/config.sh/CGAL<br>$ sed -i -e 's/\(cgal_version=\)cgal-system/\1CGAL-4.9.1/' OpenFOAM-7/etc/config.sh/CGAL<br>$ source OpenFOAM-7/etc/bashrc<br>$ mkdir -p $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER<br>$ ln -s /apps/common/gmp/6.1.2 $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/gmp-system<br>$ ln -s /apps/common/mpfr/4.0.1 $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/mpfr-system<br>$ ln -s /apps/common/mpc/1.1.0 $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/mpc-system<br>$ ln -s /apps/common/boost/1.68.0 $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/boost_1_68_0<br>$ ln -s /apps/common/CGAL/4.9.1 $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/CGAL-4.9.1<br>$ ln -s /apps/applications/cmake/3.12.3 $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/cmake-system<br> <br>$ cd ThirdParty-7<br>$ ./Allwmake<br> <br>$ cd $WM_PROJECT_DIR<br>$ ./Allwmake </p> |
 
 
 
@@ -131,15 +99,15 @@ $ ./Allwmake
 
 ## **4. 테스트**
 
-```
-$ module load intel/18.0.3 impi/18.0.3
-$ source /Install_Path/SKL/OpenFOAM-7/etc/bashrc
-$ mkdir -p $FOAM_RUN 
-$ run 
-$ cp -r $FOAM_TUTORIALS/incompressible/simpleFoam/pitzDaily .
-$ cd pitzDaily 
-$ blockMesh 
-$ simpleFoam  
-```
+> $ module load intel/18.0.3 impi/18.0.3\
+> $ source <mark style="color:blue;">/Install\_Path/SKL</mark>/OpenFOAM-7/etc/bashrc\
+> $ mkdir -p $FOAM\_RUN \
+> $ run \
+> $ cp -r $FOAM\_TUTORIALS/incompressible/simpleFoam/pitzDaily .\
+> $ cd pitzDaily \
+> $ blockMesh \
+> $ simpleFoam&#x20;
+
+&#x20;
 
 &#x20;
