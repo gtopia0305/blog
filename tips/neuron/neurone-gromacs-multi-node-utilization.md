@@ -20,57 +20,39 @@ Gromacs (2018.6 버전)의 실행 테스트를 위하여, 프로틴을 모델 �
 
 **\[Gromacs 실행 명령 부분]**
 
-> $gmxBin grompp -f opls.mdp -c em20.gro -p topol.top -o md00.tpr
->
-> mpirun $gmxBin mdrun -notunepme -ntomp 1 -dlb yes -v -nsteps 40000 -resethway -noconfout -s ${WorkloadPath}/md00.tpr
+```
+$gmxBin grompp -f opls.mdp -c em20.gro -p topol.top -o md00.tpr
+mpirun $gmxBin mdrun -notunepme -ntomp 1 -dlb yes -v -nsteps 40000 -resethway -noconfout -s ${WorkloadPath}/md00.tpr
+```
 
 
 
 ### **1) 작업 스크립트 예제**
 
-> \#!/bin/sh
->
-> \#SBATCH –J gromacs                          <mark style="color:blue;">#job의 이름을 지정</mark>
->
-> \#SBATCH –p ivy\_v100\_2                        <mark style="color:blue;"># 사용하고자 하는 파티션을 지정(누리온의 큐와 동일한 개념)</mark>
->
-> \#SBATCH –N 1                                   <mark style="color:blue;"># 작업을 할당할 노드의 수</mark>
->
-> \#SBATCH –n 18                                  <mark style="color:blue;"># 작업을 위해 할당할 전체 프로세스의 수</mark>
->
-> \#SBATCH –o %x.o%j                            <mark style="color:blue;"># 표준 출력을 지정</mark>
->
-> \#SBATCH –e %x.e%j                            <mark style="color:blue;"># 표준 오류를 지정</mark>
->
-> \#SBATCH --time 10:00:00                    <mark style="color:blue;"># wall time limit을 지정</mark>
->
-> \#SBATCH --gres=gpu:2                        <mark style="color:blue;"># 사용할 GPU개수를 지정(현재는 2개 사용하도록 설정됨)</mark>
->
-> \#SBATCH --comment gromacs              <mark style="color:blue;"># 사용하는 Application 지정(의무사항)</mark>
->
-> &#x20;
->
-> module purge
->
-> module load intel/18.0.2 cuda/10.0 cudampi/mvapich2-2.3 cmake/3.12.3
->
-> &#x20;
->
-> ulimit -s unlimited
->
-> WorkloadPath=<mark style="color:red;">{작업 경로}</mark>
->
-> InstallDir=<mark style="color:red;">{설치 경로}</mark>/bin
->
-> gmxBin="${InstallDir}/gmx\_mpi"
->
-> &#x20;
->
-> \#$gmxBin grompp -f opls.mdp -c em10.gro -p topol.top -o md0.tpr
->
-> &#x20;
->
-> time -p srun $gmxBin mdrun -notunepme -ntomp 1 -dlb yes -v -nsteps 40000 -resethway -noconfout -s ${WorkloadPath}/md0.tpr
+```
+#!/bin/sh
+#SBATCH –J gromacs                           #job의 이름을 지정
+#SBATCH –p ivy_v100_2                        # 사용하고자 하는 파티션을 지정(누리온의 큐와 동일한 개념)
+#SBATCH –N 1                                   # 작업을 할당할 노드의 수
+#SBATCH –n 18                                  # 작업을 위해 할당할 전체 프로세스의 수
+#SBATCH –o %x.o%j                            # 표준 출력을 지정
+#SBATCH –e %x.e%j                            # 표준 오류를 지정
+#SBATCH --time 10:00:00                     # wall time limit을 지정
+#SBATCH --gres=gpu:2                        # 사용할 GPU개수를 지정(현재는 2개 사용하도록 설정됨)
+#SBATCH --comment gromacs              # 사용하는 Application 지정(의무사항)
+ 
+module purge
+module load intel/18.0.2 cuda/10.0 cudampi/mvapich2-2.3 cmake/3.12.3
+ 
+ulimit -s unlimited
+WorkloadPath={작업 경로}
+InstallDir={설치 경로}/bin
+gmxBin="${InstallDir}/gmx_mpi"
+ 
+#$gmxBin grompp -f opls.mdp -c em10.gro -p topol.top -o md0.tpr
+ 
+time -p srun $gmxBin mdrun -notunepme -ntomp 1 -dlb yes -v -nsteps 40000 -resethway -noconfout -s ${WorkloadPath}/md0.tpr
+```
 
 뉴론 시스템은 SLURM을 사용한다. 사용상에서 PBS와 약간의 차이는 있지만, 전체적으로는 유사한 방식으로 작성을 한다. GPU를 이용하기 위해서는 다음과 같은 라인을 추가해야 한다.
 
