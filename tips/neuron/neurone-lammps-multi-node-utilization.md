@@ -20,34 +20,47 @@ Rhodopsin 프로틴을 모델 시스템으로 사용하여 성능을 테스트�
 
 ### **1) 작업 스크립트 예제**
 
-```
-#!/bin/sh
-#SBATCH -J LAMMPS_small                      #job의 이름을 지정 
-#SBATCH -p ivy_v100_2                         # 사용하고자 하는 파티션을 지정(누리온의 큐와 동일한 개념)
-#SBATCH -N 1                                       # 작업을 할당할 노드의 수
-#SBATCH -n 20                                      # 작업을 위해 할당할 전체 프로세스의 수
-#SBATCH -o %x.o%j                                # 표준 출력을 지정
-#SBATCH -e %x.e%j                                # 표준 오류를 지정
-#SBATCH --time 10:00:00                         # wall time limit을 지정
-#SBATCH --gres=gpu:2                           # 사용할 GPU개수를 지정(현재는 2개 사용하도록 설정됨)
-#SBATCH --comment LAMMPS                 # 사용하는 Application 지정(의무사항)
-module purge
-module load intel/18.0.2 cuda/10.0 cudampi/mvapich2-2.3 LAMMPS/16Mar18
-ulimit -s unlimited
-SCALE="-var x 4 -var y 4 -var z 4"
-ARGS="-sf gpu -pk gpu 1"
-EXEC="{설치 위치}/bin/lmp_mpi_V100"
-APP="$EXEC -in in.rhodo.scaled $SCALE -log LAMMPS.log $ARGS"
-time srun $APP
-```
+> \#!/bin/sh
+>
+> \#SBATCH -J LAMMPS\_small                      <mark style="color:blue;">#job의 이름을 지정</mark>&#x20;
+>
+> \#SBATCH -p ivy\_v100\_2                         <mark style="color:blue;"># 사용하고자 하는 파티션을 지정(누리온의 큐와 동일한 개념)</mark>
+>
+> \#SBATCH -N 1                                       <mark style="color:blue;"># 작업을 할당할 노드의 수</mark>
+>
+> \#SBATCH -n 20                                      <mark style="color:blue;"># 작업을 위해 할당할 전체 프로세스의 수</mark>
+>
+> \#SBATCH -o %x.o%j                                <mark style="color:blue;"># 표준 출력을 지정</mark>
+>
+> \#SBATCH -e %x.e%j                                <mark style="color:blue;"># 표준 오류를 지정</mark>
+>
+> \#SBATCH --time 10:00:00                         <mark style="color:blue;"># wall time limit을 지정</mark>
+>
+> \#SBATCH --gres=gpu:2                           <mark style="color:blue;"># 사용할 GPU개수를 지정(현재는 2개 사용하도록 설정됨)</mark>
+>
+> \#SBATCH --comment LAMMPS                 <mark style="color:blue;"># 사용하는 Application 지정(의무사항)</mark>
+>
+> module purge
+>
+> module load intel/18.0.2 cuda/10.0 cudampi/mvapich2-2.3 LAMMPS/16Mar18
+>
+> ulimit -s unlimited
+>
+> SCALE="-var x 4 -var y 4 -var z 4"
+>
+> ARGS="-sf gpu -pk gpu 1"
+>
+> EXEC="<mark style="color:red;">{설치 위치}</mark>/bin/lmp\_mpi\_V100"
+>
+> APP="$EXEC -in in.rhodo.scaled $SCALE -log LAMMPS.log $ARGS"
+>
+> time srun $APP
 
 
 
 뉴론 시스템은 SLURM을 사용한다. 사용상에서 PBS와 약간의 차이는 있지만, 전체적으로는 유사한 방식으로 작성을 한다. GPU를 이용하기 위해서는 다음과 같은 라인을 추가해야 한다.
 
-```
-#SBATCH —gres=gpu:2
-```
+> \#SBATCH —gres=gpu:2
 
 여기서 1은 GPU 카드를 1장을 사용하겠다는 의미이며, 2개를 사용하기 위해서는 2를 지정하면 된다.
 
