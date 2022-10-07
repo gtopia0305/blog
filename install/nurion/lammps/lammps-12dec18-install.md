@@ -122,8 +122,6 @@ LIB = -Wl,--no-as-needed -L${MKLROOT}/lib/intel64 \
 ```
 {% endcode %}
 
-&#x20;
-
 ### &#x20;**(3) 라이브러리 패키지 설치**
 
 LAMMPS 홈페이지(http://lammps.sandia.gov/index.html)로부터 다운로드 받은 파일을 적당한 위치($HOME/build)에 올린 후 다음과 같은 명령으로 압축 묶음 파일을 푼다.
@@ -400,8 +398,6 @@ include ../../lib/latte/Makefile.lammps.mpi
 include ../../lib/compress/Makefile.lammps
 ```
 {% endcode %}
-
-****
 
 ## **4. 실행 파일 복사**
 
