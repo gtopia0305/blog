@@ -333,21 +333,13 @@ $ cd ..
 ```
 {% endcode %}
 
-
-
 {% code title="[Install.py 수정 사항]" %}
 ```
 cmd = 'cd %s/plumed-%s; ./configure --prefix=%s --enable-static-patch CXX=mpiicpc ; make -j%d ; make install' % (homepath,version,homedir,n_cpus
 ```
 {% endcode %}
 
-\[Install.py 수정 사항]
-
-> cmd = 'cd %s/plumed-%s; ./configure --prefix=%s --enable-static-patch **CXX=mpiicpc** ; make -j%d ; make install' % (homepath,version,homedir,n\_cpus)
-
-&#x20;
-
-&#x20;
+&#x20;&#x20;
 
 ### &#x20;**(4) LAMMPS 설치**
 
@@ -365,41 +357,43 @@ lammps 설치 디렉토리(${HOME}/build/lammps-3Mar20) 아래 src 폴더로 이
 
 &#x20;
 
-\[MAKE/Makefile.mpi 수정 사항]
+{% code title="[MAKE/Makefile.mpi 수정 사항]" %}
+```
+CC = mpiicpc
+OPTFLAGS = -xCORE-AVX512 -O3 -fp-model fast=2 -no-prec-div -qoverride-limits
+CCFLAGS = -qopenmp -qno-offload -fno-alias -ansi-alias -restrict \
+-DLMP_INTEL_USELRT -DLMP_USE_MKL_RNG $(OPTFLAGS)
+CCFLAGS += -I/apps/compiler/intel/19.0.5/mkl/include -lmkl_rt
+SHFLAGS = -fPIC
+DEPFLAGS = -M
+ 
+LINK = mpiicpc
+LINKFLAGS = -qopenmp $(OPTFLAGS)
+LIB =
+SIZE = size
+ 
+ARCHIVE = ar
+ARFLAGS = -rc
+SHLIBFLAGS = -shared
+ 
+FFT_INC = -DFFT_MKL -DFFT_SINGLE
+FFT_PATH =
+FFT_LIB = -L${MKLROOT}/lib/intel64/ -lmkl_intel_ilp64 -lmkl_sequential -lmkl_core
+```
+{% endcode %}
 
-> **CC = mpiicpc**\
-> **OPTFLAGS = -xCORE-AVX512 -O3 -fp-model fast=2 -no-prec-div -qoverride-limits**\
-> **CCFLAGS = -qopenmp -qno-offload -fno-alias -ansi-alias -restrict \\**\
-> **-DLMP\_INTEL\_USELRT -DLMP\_USE\_MKL\_RNG $(OPTFLAGS)**\
-> **CCFLAGS += -I/apps/compiler/intel/19.0.5/mkl/include -lmkl\_rt**\
-> SHFLAGS = -fPIC\
-> DEPFLAGS = -M\
-> &#x20;\
-> **LINK = mpiicpc**\
-> **LINKFLAGS = -qopenmp $(OPTFLAGS)**\
-> LIB =\
-> SIZE = size\
-> &#x20;\
-> ARCHIVE = ar\
-> ARFLAGS = -rc\
-> SHLIBFLAGS = -shared\
-> &#x20;\
-> **FFT\_INC = -DFFT\_MKL -DFFT\_SINGLE**\
-> FFT\_PATH =\
-> **FFT\_LIB = -L${MKLROOT}/lib/intel64/ -lmkl\_intel\_ilp64 -lmkl\_sequential -lmkl\_core**
-
-
-
-\[Makefile.package.settings 수정 사항]
-
-> include ../../lib/plumed/Makefile.lammps\
-> include ../../lib/awpmd/Makefile.lammps\
-> include ../../lib/atc/Makefile.lammps\
-> **include ../../lib/message/Makefile.lammps.nozmq**\
-> include ../../lib/voronoi/Makefile.lammps\
-> include ../../lib/poems/Makefile.lammps\
-> **include ../../lib/latte/Makefile.lammps.mpi**\
-> include ../../lib/compress/Makefile.lammps
+{% code title="[Makefile.package.settings 수정 사항]" %}
+```
+include ../../lib/plumed/Makefile.lammps
+include ../../lib/awpmd/Makefile.lammps
+include ../../lib/atc/Makefile.lammps
+include ../../lib/message/Makefile.lammps.nozmq
+include ../../lib/voronoi/Makefile.lammps
+include ../../lib/poems/Makefile.lammps
+include ../../lib/latte/Makefile.lammps.mpi
+include ../../lib/compress/Makefile.lammps
+```
+{% endcode %}
 
 &#x20;
 
@@ -407,10 +401,12 @@ lammps 설치 디렉토리(${HOME}/build/lammps-3Mar20) 아래 src 폴더로 이
 
 &#x20;설치가 완료되면 사용에 편의를 위해 bin 경로를 만들어 실행 파일인 lmp\_mpi를 bin 경로에 복사한다.(선택사항)
 
-> $ ls -l lmp\_mpi\
-> $ cd ${HOME}/build/lammps-3Mar20/\
-> $ mkdir bin\
-> $ cp ${HOME}/build/lammps-3Mar20/src/lmp\_mpi .
+```
+$ ls -l lmp_mpi
+$ cd ${HOME}/build/lammps-3Mar20/
+$ mkdir bin
+$ cp ${HOME}/build/lammps-3Mar20/src/lmp_mpi .
+```
 
 &#x20;
 
@@ -427,9 +423,5 @@ lammps 설치 디렉토리(${HOME}/build/lammps-3Mar20) 아래 src 폴더로 이
 실행 예제로는 examples/meam 아래의 데이터를 이용하였다.
 
 &#x20;
-
-|   작업스크립트 예제(lammps\_test-run.sh)                                                                                                                                                                                                                                                                                                                                               |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| <p>#!/bin/sh<br>#PBS -V<br>#PBS -N lammps_job_test<br>#PBS -q norm_skl<br>#PBS -l select=1:ncpus=40:mpiprocs=40:ompthreads=1<br>#PBS -l walltime=00:30:00<br>#PBS -A lammps<br> <br>cd $PBS_O_WORKDIR<br> <br>module purge<br>module load intel/19.0.5 impi/19.0.5<br>export PATH=${HOME}/build/lammps-3Mar20/bin:$PATH<br> <br>mpirun lmp_mpi -in in.meamc<br> <br>exit 0</p> |
 
 &#x20;
