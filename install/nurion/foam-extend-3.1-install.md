@@ -29,43 +29,24 @@ KISTI 슈퍼컴퓨팅센터의 누리온 시스템에  foam-extend-3.1 Source �
 
 
 
-{% code title="[ 환경 설정 ]" %}
-```
- $ module load gcc/7.2.0 openmpi/3.1.0
- $ module load cmake/3.12.3 subversion/1.9.3 git/1.8.3.4
-```
-{% endcode %}
+\[ 환경 설정 ]
+
+> &#x20;$ module load gcc/7.2.0 openmpi/3.1.0
+>
+> &#x20;$ module load cmake/3.12.3 subversion/1.9.3 git/1.8.3.4
 
 ## **3. foam-extend-3.1 버전 설치 과정**
 
 &#x20;설치 과정 소개는 tar 를 이용한 압축 해제 방법과 설정 방법등 진행 절차를 위주로 설명하고,\
 &#x20;소스 파일 다운로드 등은 생략한다.  &#x20;
 
-{% code title=" 설치 과정" %}
-```
- $ mkdir -p ~/foam/foam-extend-3.1
- $ mv foam-extend-3.1_f77b480.tgz ~/foam/foam-extend-3.1
- $ cd ~/foam/foam-extend-3.1
- $ tar -xvzf foam-extend-3.1_f77b480.tgz
- 
- $ source ~/foam/foam-extend-3.1/etc/bashrc
- $ foam
- 
- $ sed -iold -e "s=\-liberty==" wmake/rules/*/general
- 
- $ vi ThirdParty/AllMake.stage5
-  - - - [AllMake.stage5 수정 사항] 참고 - - -
- 
- $ ./Allwmake.firstInstall 2>&1 | tee make.log
- 
- Proceed without compiling ParaView [Y/n] y 
- 
-```
-{% endcode %}
+|  **설치 과정**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <p> $ mkdir -p ~/foam/foam-extend-3.1</p><p> $ mv foam-extend-3.1_f77b480.tgz ~/foam/foam-extend-3.1</p><p> $ cd ~/foam/foam-extend-3.1</p><p> $ tar -xvzf foam-extend-3.1_f77b480.tgz</p><p> </p><p> $ source ~/foam/foam-extend-3.1/etc/bashrc</p><p> $ foam</p><p> </p><p> $ sed -iold -e "s=\-liberty==" wmake/rules/*/general</p><p> </p><p> $ vi ThirdParty/AllMake.stage5</p><p>  <strong>- - - [AllMake.stage5 수정 사항] 참고 - - -</strong></p><p> </p><p> $ ./Allwmake.firstInstall 2>&#x26;1 | tee make.log</p><p> </p><p> Proceed without compiling ParaView [Y/n] y </p><p> </p> |
 
-{% code title="[AllMake.stage5 수정 사항] " %}
-```
-90line : (cd ./rpmBuild/BUILD; svn checkout http://svn.code.sf.net/p/openfoam-extend/svn/trunk/Breeder_2.0/libraries/swak4Foam swak4Foam-$SWAK_RELEASE_VERSION)
-```
-{% endcode %}
+
+
+**\[AllMake.stage5 수정 사항]**&#x20;
+
+> &#x20;90line : (cd ./rpmBuild/BUILD; svn checkout <mark style="color:blue;">http</mark>://svn.code.sf.net/p/openfoam-extend/svn/trunk/Breeder\_2.0/libraries/swak4Foam swak4Foam-$SWAK\_RELEASE\_VERSION)
 

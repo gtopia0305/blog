@@ -33,47 +33,23 @@ KISTI 슈퍼컴퓨터센터의 장비에 v\_sim-3.7.2 source 버전으로 설치
 
 ### &#x20; **(1) intltool 설치**
 
-{% code title="  설치과정" %}
-```
-$ tar xzvf intltool-0.50.2.tar.gz
-$ cd intltool-0.50.2
-$ ./configure --prefix=${HOME}/apps/intltool
-$ make
-$ make install
-```
-{% endcode %}
+|   **설치과정**                                                                                                                                                                                                 |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <p>$ tar xzvf intltool-0.50.2.tar.gz</p><p>$ cd intltool-0.50.2</p><p>$ ./configure --prefix=<mark style="color:blue;"><strong>${HOME}/apps/intltool</strong></mark></p><p>$ make</p><p>$ make install</p> |
 
 
 
 ### &#x20; **(2) harfbuzz 설치**
 
-{% code title="  설치과정" %}
-```
-$ tar xvf harfbuzz-1.7.5.tar.bz2
-$ cd harfbuzz-1.7.5
-$ ./configure --prefix=${HOME}/apps/harfbuzz
-$ make
-$ make install
-```
-{% endcode %}
+|   **설치과정**                                                                                                                                                                                               |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <p>$ tar xvf harfbuzz-1.7.5.tar.bz2</p><p>$ cd harfbuzz-1.7.5</p><p>$ ./configure --prefix=<mark style="color:blue;"><strong>${HOME}/apps/harfbuzz</strong></mark></p><p>$ make</p><p>$ make install</p> |
 
 
 
 ### &#x20; **(3) v\_sim 설치**
 
-{% code title="  설치과정" %}
-```
-$ export PATH=${HOME}/apps/intltool/bin:$PATH
-$ tar -xvf v_sim-3.7.2.tar.bz2
-$ cd v_sim-3.7.2
-$ ./configure --prefix=${HOME}/apps/vsim \
-GTKS_CFLAGS='-I${HOME}/apps/harfbuzz/include/harfbuzz' \
-GTKS_LIBS='-L${HOME}/apps/harfbuzz/lib -lharfbuzz' \
-PKG_CONFIG_PATH='${HOME}/apps/harfbuzz/lib/pkgconfig' \
-LDFLAGS='-L/usr/lib64 -lgmodule-2.0 -lgobject-2.0 -lgthread-2.0 -lglib-2.0 -lgtk-x11-2.0' \
-CFLAGS='-I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/cairo -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/pango-1.0 -I/usr/include/gtk-2.0 -I/usr/lib64/gtk-2.0/include -I/usr/include/atk-1.0'
-$ make
-$ make install
-```
-{% endcode %}
+|   **설치과정**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <p>$ export PATH=<mark style="color:blue;"><strong>${HOME}/apps/intltool/bin:$PATH</strong></mark></p><p>$ tar -xvf v_sim-3.7.2.tar.bz2</p><p>$ cd v_sim-3.7.2</p><p>$ ./configure --prefix=<mark style="color:blue;"><strong>${HOME}/apps/vsim</strong></mark> \</p><p>GTKS_CFLAGS='-I<mark style="color:blue;"><strong>${HOME}/apps/harfbuzz/include/harfbuzz</strong>'</mark> \</p><p>GTKS_LIBS='-L<mark style="color:blue;"><strong>${HOME}/apps/harfbuzz/lib -lharfbuzz</strong>'</mark> \</p><p>PKG_CONFIG_PATH='<mark style="color:blue;"><strong>${HOME}/apps/harfbuzz/lib/pkgconfig</strong></mark>' \</p><p>LDFLAGS='-L/usr/lib64 -lgmodule-2.0 -lgobject-2.0 -lgthread-2.0 -lglib-2.0 -lgtk-x11-2.0' \</p><p>CFLAGS='-I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/cairo -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/pango-1.0 -I/usr/include/gtk-2.0 -I/usr/lib64/gtk-2.0/include -I/usr/include/atk-1.0'</p><p>$ make</p><p>$ make install</p> |
 
