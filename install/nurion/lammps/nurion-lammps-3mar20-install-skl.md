@@ -4,7 +4,7 @@ description: 슈퍼컴퓨팅인프라센터 2021. 5. 28. 10:37
 
 # lammps-3Mar20 설치 소개(SKL)
 
-KISTI 슈퍼컴퓨터센터의 장비에 lammps-3Mar20 source 버전으로 설치하는 방법에 대하여 소개 한다.
+KISTI 슈퍼컴퓨터센터의 장비에 lammps-3Mar20 source 버전으로 설치 하는 방법에 대하여 소개 한다.
 
 &#x20;
 
@@ -47,9 +47,17 @@ KISTI 시스템은 PATH, LD\_LIBRARY\_PATH 등을 쉽게 하기 위하여 OpenSo
 
 VORONOI 패키지 설치를 위한 voro++를 우선 설치한다.&#x20;
 
-| 설치과정                                                                                                                                                                        |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ tar xvf voro++-0.4.6.tar.gz<br>$ cd voro++-0.4.6<br>$ mkdir -p ${HOME}/build/library<br>$ vi config.mk<br>----- 수정 사항은 아래의 내용 참고 -----<br>$ make<br>$ make install</p> |
+{% code title="설치과정" %}
+```
+$ tar xvf voro++-0.4.6.tar.gz
+$ cd voro++-0.4.6
+$ mkdir -p ${HOME}/build/library
+$ vi config.mk
+----- 수정 사항은 아래의 내용 참고 -----
+$ make
+$ make install
+```
+{% endcode %}
 
 ****
 
