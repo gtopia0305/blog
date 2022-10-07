@@ -25,11 +25,11 @@ KISTI 시스템은 PATH, LD\_LIBRARY\_PATH 등을 쉽게 하기 위하여 OpenSo
 Environment Modules(http://modules.sourceforge.net)이 구성되어 있고,\
 이하 설치 소개 에서는 module load를 이용한 환경 설정 방법을 이용한다.
 
-****
-
-**\[ 환경 설정 ]**
-
-> &#x20;$ module load intel/18.0.2 cuda/10.0 cudampi/mvapich2-2.3
+{% code title="[ 환경 설정 ]" %}
+```
+$ module load intel/18.0.2 cuda/10.0 cudampi/mvapich2-2.3
+```
+{% endcode %}
 
 ## **3. 설치 과정**
 
@@ -41,25 +41,54 @@ Environment Modules(http://modules.sourceforge.net)이 구성되어 있고,\
 
 NAMD 소스는 charm을 이용하여 빌드한다. charm은 NAMD 소스내에 tar파일 형태로 포함되어 있으며 NAMD 소스를 압축 해제 후 NAMD 소스 파일안에서 설치를 진행한다.
 
-|   **설치과정**                                                                                                                                                                                                                   |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ tar xvf NAMD_2.12_Source.tar.gz</p><p>$ cd NAMD_2.12_Source  </p><p><br></p><p>$ tar xvf charm-6.7.1.tar</p><p>$ cd charm-6.7.1</p><p>$ ./build charm++ verbs-linux-x86_64 icc smp --with-production -static-intel </p> |
+{% code title="설치과정" %}
+```
+$ tar xvf NAMD_2.12_Source.tar.gz
+$ cd NAMD_2.12_Source  
+
+
+$ tar xvf charm-6.7.1.tar
+$ cd charm-6.7.1
+$ ./build charm++ verbs-linux-x86_64 icc smp --with-production -static-intel 
+```
+{% endcode %}
 
 NAMD의 설치 과정에서 호출되는 cuda 식별자 이름이 CUDA 9.1 이후 버전부터 삭제되어 주석처리를 통하여 해당 식별자를 비활성화 한다.&#x20;
 
 ※ "**cufftCheck(cufftSetCompatibilityMode**" 이 포함된 10개 line 주석처리
 
-|   **설치과정**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ cd ..</p><p>$ vi src/CudaPmeSolverUtil.C </p><p><br>&#x3C;수정 전></p><p>cufftCheck(cufftSetCompatibilityMode(forwardPlan, CUFFT_COMPATIBILITY_FFTW_PADDING));</p><p>cufftCheck(cufftSetCompatibilityMode(backwardPlan, CUFFT_COMPATIBILITY_FFTW_PADDING));</p><p> </p><p>&#x3C;수정 후></p><p><strong>//cufftCheck(cufftSetCompatibilityMode(forwardPlan, CUFFT_COMPATIBILITY_FFTW_PADDING));</strong></p><p><strong>//cufftCheck(cufftSetCompatibilityMode(backwardPlan, CUFFT_COMPATIBILITY_FFTW_PADDING));</strong></p> |
+{% code title="  설치과정" %}
+```
+$ cd ..
+$ vi src/CudaPmeSolverUtil.C 
+
+<수정 전>
+cufftCheck(cufftSetCompatibilityMode(forwardPlan, CUFFT_COMPATIBILITY_FFTW_PADDING));
+cufftCheck(cufftSetCompatibilityMode(backwardPlan, CUFFT_COMPATIBILITY_FFTW_PADDING));
+ 
+<수정 후>
+//cufftCheck(cufftSetCompatibilityMode(forwardPlan, CUFFT_COMPATIBILITY_FFTW_PADDING));
+//cufftCheck(cufftSetCompatibilityMode(backwardPlan, CUFFT_COMPATIBILITY_FFTW_PADDING));
+```
+{% endcode %}
 
 
 
 ### **(2) NAMD-2.12 설치** GPU를 사용하기 위해서는 아래와 같이 config 수행시에 --with-cuda, --cuda-prefix 옵션을 추가로 기재한다. &#x20;
 
-|   **설치과정**                                                                                                                                                                                                                                                                                                                    |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ cd ..</p><p>$ ./config Linux-x86_64-icc --charm-base ./charm-6.7.1 \</p><p>--charm-arch verbs-linux-x86_64-smp-icc \</p><p>--with-tcl --with-mkl --mkl-prefix /apps/compiler/intel/18.0.2/mkl \</p><p><strong>--with-cuda --cuda-prefix</strong> /apps/cuda/10.0</p><p><br></p><p>$ cd Linux-x86_64-icc</p><p>$ make</p> |
+{% code title="  설치과정" %}
+```
+$ cd ..
+$ ./config Linux-x86_64-icc --charm-base ./charm-6.7.1 \
+--charm-arch verbs-linux-x86_64-smp-icc \
+--with-tcl --with-mkl --mkl-prefix /apps/compiler/intel/18.0.2/mkl \
+--with-cuda --cuda-prefix /apps/cuda/10.0
+
+
+$ cd Linux-x86_64-icc
+$ make
+```
+{% endcode %}
 
 
 
@@ -68,6 +97,9 @@ NAMD의 설치 과정에서 호출되는 cuda 식별자 이름이 CUDA 9.1 이�
 &#x20;위의 설치 과정에서 소개된 옵션들을 사용하여 설치된 NAMD의 사용방법  \
 ****실행 예제 파일은 apoa1 시뮬레이션 예제 데이터 파일을 다운받아 사용한다.&#x20;
 
-|   **실행방법 예시**                                                                                                   |
-| --------------------------------------------------------------------------------------------------------------- |
-| <p>$ module load intel/18.0.2 cuda/10.0 cudampi/mvapich2-2.3 module load namd/2.12</p><p>$ namd2 apoa1.namd</p> |
+{% code title="  실행방법 예시" %}
+```
+$ module load intel/18.0.2 cuda/10.0 cudampi/mvapich2-2.3 module load namd/2.12
+$ namd2 apoa1.namd
+```
+{% endcode %}
