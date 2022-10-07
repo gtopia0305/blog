@@ -20,51 +20,31 @@ Rhodopsin 프로틴을 모델 시스템으로 사용하여 성능을 테스트�
 
 ### **1) 작업 스크립트 예제**
 
-> \#!/bin/sh
->
-> \#PBS -N LAMMPS                          <mark style="color:blue;"># job의 이름(여러 개의 작업 제출 시 사용자가 구분하기 위한 목적)</mark>
->
-> \#PBS -V                  <mark style="color:blue;"># 작업 제출 노드(로그인 노드)에서 설정한 환경을 계산 노드에 적용하기 위해 사용</mark>
->
-> \#PBS -l select=1:ncpus=68:mpiprocs=68:ompthreads=1     <mark style="color:blue;"># 아래 참조</mark>
->
-> \#PBS -l walltime=06:00:00             ****        <mark style="color:blue;"># 작업을 수행할 시간( normal 큐는 최대 48시간까지 가능)</mark>
->
-> \#PBS -q normal                                                        <mark style="color:blue;"># 사용 큐(일반 사용자는 normal 큐만 사용 가능)</mark>
->
-> \#PBS -A LAMMPS                             <mark style="color:blue;"># 자료 수집의 목적으로 프로그램 이름을 기입해야 함(의무 사항)</mark>
->
-> \#PBS -W sandbox=PRIVATE                                      <mark style="color:blue;"># 아래 참조</mark>     &#x20;
->
-> &#x20;
->
-> module purge
->
-> module load craype-mic-knl intel/18.0.3 impi/18.0.3
->
-> &#x20;
->
-> cd $PBS\_O\_WORKDIR                                                <mark style="color:blue;"># 작업 제출한 경로로 이동</mark>
->
-> export OMP\_NUM\_THREADS=1
->
-> export OMP\_PLACES=cores
->
-> export OMP\_PROC\_BIND=true
->
-> &#x20;
->
-> SCALE="-var x 8 -var y 8 -var z 8"
->
-> \#INTEL\_ARGS="-pk intel 0 mode double omp 1 lrt yes -sf intel"
->
-> INTEL\_ARGS="-pk intel 0 mode mixed omp 1 -sf intel"
->
-> EXEC="<mark style="color:red;">{설치 경로}</mark>/bin/lmp\_mpi"
->
-> time -p mpirun $EXEC -in in.rhodo.scaled $SCALE -log LAMMPS.log $INTEL\_ARGS
->
-> exit 0
+```
+#!/bin/sh
+#PBS -N LAMMPS                          # job의 이름(여러 개의 작업 제출 시 사용자가 구분하기 위한 목적)
+#PBS -V                  # 작업 제출 노드(로그인 노드)에서 설정한 환경을 계산 노드에 적용하기 위해 사용
+#PBS -l select=1:ncpus=68:mpiprocs=68:ompthreads=1     # 아래 참조
+#PBS -l walltime=06:00:00                     # 작업을 수행할 시간( normal 큐는 최대 48시간까지 가능)
+#PBS -q normal                                                        # 사용 큐(일반 사용자는 normal 큐만 사용 가능)
+#PBS -A LAMMPS                             # 자료 수집의 목적으로 프로그램 이름을 기입해야 함(의무 사항)
+#PBS -W sandbox=PRIVATE                                        # 아래 참조       
+ 
+module purge
+module load craype-mic-knl intel/18.0.3 impi/18.0.3
+ 
+cd $PBS_O_WORKDIR                                                # 작업 제출한 경로로 이동
+export OMP_NUM_THREADS=1
+export OMP_PLACES=cores
+export OMP_PROC_BIND=true
+ 
+SCALE="-var x 8 -var y 8 -var z 8"
+#INTEL_ARGS="-pk intel 0 mode double omp 1 lrt yes -sf intel"
+INTEL_ARGS="-pk intel 0 mode mixed omp 1 -sf intel"
+EXEC="{설치 경로}/bin/lmp_mpi"
+time -p mpirun $EXEC -in in.rhodo.scaled $SCALE -log LAMMPS.log $INTEL_ARGS
+exit 0
+```
 
 
 
@@ -87,7 +67,9 @@ D(예제에서는 1) : 한 프로세스가 사용할 OpenMP스레드의 수
 
 3\. 만일 2개의 노드를 사용하고 노드 당 프로세스의 수는 16, OpenMP 스레드의 수는 2로 지정하고 싶다면, 아래와 같이 지정한다.
 
-> \#PBS –l select=2:ncpus=68:mpiprocs=16:ompthreads=2
+```
+#PBS –l select=2:ncpus=68:mpiprocs=16:ompthreads=2
+```
 
 
 
@@ -101,7 +83,9 @@ PBS 배치 작업 수행하는 경우 작업 중 STDOUT과 STDERR을 시스템 �
 
 LAMMPS의 Benchmark 실험은 Intel에서 많이 일반화 되어있으며, Intel 컴파일러를 사용할 때 사용하는 LAMMPS 실행 옵션은 아래의 형태이다. 여기서 lrt 옵션은 hybrid 옵션이 켜져있을 때 성능을 향상시키는 옵션이다.
 
-> INTEL\_ARGS="-pk intel 0 mode double omp 1 lrt yes -sf intel"
+```
+INTEL_ARGS="-pk intel 0 mode double omp 1 lrt yes -sf intel"
+```
 
 실제 코드 수행을 하였을 때 core를 적게 사용하고 위 lrt 옵션을 켜놓으면 아래와 같이 프로세스당 100%를 사용하는 것이 아닌 125%씩 사용하는 것을 확인할 수 있다.
 
@@ -115,7 +99,9 @@ KISTI의 누리온 시스템은 hybrid 옵션을 꺼놓고 있으므로 위 옵�
 
 Intel 컴파일러에서 일반적으로 많이 사용하는 아래의 옵션을 사용하여 실험을 하였으며, 실험 결과는 아래와 같다.
 
-> INTEL\_ARGS="-pk intel 0 mode double omp 1 lrt yes -sf intel"
+```
+INTEL_ARGS="-pk intel 0 mode double omp 1 lrt yes -sf intel"
+```
 
 ※ 실험 데이터는 2018년 6월 누리온에서 4번의 반복 실험을 평균한 결과임
 
