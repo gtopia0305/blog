@@ -6,8 +6,6 @@ description: 슈퍼컴퓨팅인프라센터 2021. 4. 27. 09:17
 
 KISTI 슈퍼컴퓨터센터의 장비에 Quantum Espresso-6.6 source 버전으로 설치하는 방법에 대하여 소개한다.
 
-&#x20;
-
 ## **1. 설치 환경**
 
 |   구분           | 내용                         |
@@ -19,25 +17,32 @@ KISTI 슈퍼컴퓨터센터의 장비에 Quantum Espresso-6.6 source 버전으�
 |  MPI           | IntelMPI 2019.0.5 Version  |
 | <p> 기타<br></p> | Intel MKL Math Library     |
 
-&#x20;
-
 ## **2. 설치 전 환경 설정**
 
 KISTI 시스템은 PATH, LD\_LIBRARY\_PATH 등을 쉽게 하기 위하여 OpenSource 인 Environment Modules(http://modules.sourceforge.net)이 구성되어 있고, 이하 설치 소개에서는 module load를 이용한 환경 설정 방법을 이용한다.
 
-**\[ 환경 설정 ]**
-
+{% code title="[ 환경 설정 ]" %}
 ```
- $ module load intel/19.0.5 impi/19.0.5
+$ module load intel/19.0.5 impi/19.0.5
 ```
+{% endcode %}
 
 ## **3. 설치 과정**
 
 &#x20;설치 과정 소개는 tar 를 이용한 압축 해제 방법과 설정 방법등 진행 절차를 위주로 설명하고, 소스 파일 다운로드 등은 생략한다. &#x20;
 
-| 설치 과정                                                                                                                                                                                                                                                                                                                        |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ tar -xvzf qe-6.6.tar.gz</p><p>$ cd q-e-qe-6.6<br>$ ./configure --prefix=<mark style="color:blue;"><strong>${HOME}/QE/6.6</strong> </mark> \<br>CC=mpiicc F90=mpiifort FC=mpiifort MPIF90=mpiifort \<br>CFLAGS="-O3 -fPIC -xCOMMON-AVX512" \<br>FFLAGS="-O3 -fPIC -xCOMMON-AVX512"  <br>$ make all<br>$ make install</p> |
+{% code title="설치 과정" %}
+```
+$ tar -xvzf qe-6.6.tar.gz
+$ cd q-e-qe-6.6
+$ ./configure --prefix=${HOME}/QE/6.6 \
+CC=mpiicc F90=mpiifort FC=mpiifort MPIF90=mpiifort \
+CFLAGS="-O3 -fPIC -xCOMMON-AVX512" \
+FFLAGS="-O3 -fPIC -xCOMMON-AVX512"  
+$ make all
+$ make install
+```
+{% endcode %}
 
 <mark style="color:red;">**※위 설치 과정에서 파란색으로 표기된 설치 경로 ${HOME}/QE/6.6 은 예제이다. 실제 사용하는 위치로 변경해서 사용해야 한다.**</mark>
 
