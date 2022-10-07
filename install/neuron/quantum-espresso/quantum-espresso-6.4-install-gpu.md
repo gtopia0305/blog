@@ -27,17 +27,39 @@ KISTI 시스템은 PATH, LD\_LIBRARY\_PATH 등을 쉽게 하기 위하여 OpenSo
 
 ****
 
-**\[ 환경 설정 ]**
-
-> &#x20;$ module load pgi/19.1 cuda/10.0 cudampi/openmpi-3.1.0
+{% code title="[ 환경 설정 ]" %}
+```
+ $ module load pgi/19.1 cuda/10.0 cudampi/openmpi-3.1.0
+```
+{% endcode %}
 
 ## **3. 설치 과정**
 
 &#x20;설치 과정 소개는 tar 를 이용한 압축 해제 방법과 설정 방법등 진행 절차를 위주로 설명하고, 소스 파일 다운로드 등은 생략한다. (다운로드 : https://gitlab.com/QEF/q-e-gpu/-/releases)
 
-|   **설치과정**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ tar xvf q-e-gpu-qe-gpu-6.4a1.tar.gz<br><br>$ cd q-e-gpu-qe-gpu-6.4a1<br><br>$ export F90FLAGS="-fast -Ktrap=fp -Mcache_align -Mpreprocess -Mlarge_arrays -mp -tp=px"<br><br>$ export FFLAGS="-fast -Ktrap=fp -mp -tp=px"<br><br>$ ./configure --prefix=$/QE/6.4 \<br><br>--with-cuda=/apps/cuda/10.0 --with-cuda-cc=70 --with-cuda-runtime=10.0 --enable-openmp<br><br>$ vi make.inc<br><br>-----아래 내용으로 수정 -----<br>CFLAGS         = -fast -tp=px -Mpreprocess $(DFLAGS) $(IFLAGS)<br>FOX_FLAGS = -fast -tp=px -Mcache_align -Mpreprocess -Mlarge_arrays<br><br>$ make pw</p> |
+{% code title="  설치과정" %}
+```
+$ tar xvf q-e-gpu-qe-gpu-6.4a1.tar.gz
+
+$ cd q-e-gpu-qe-gpu-6.4a1
+
+$ export F90FLAGS="-fast -Ktrap=fp -Mcache_align -Mpreprocess -Mlarge_arrays -mp -tp=px"
+
+$ export FFLAGS="-fast -Ktrap=fp -mp -tp=px"
+
+$ ./configure --prefix=$/QE/6.4 \
+
+--with-cuda=/apps/cuda/10.0 --with-cuda-cc=70 --with-cuda-runtime=10.0 --enable-openmp
+
+$ vi make.inc
+
+-----아래 내용으로 수정 -----
+CFLAGS         = -fast -tp=px -Mpreprocess $(DFLAGS) $(IFLAGS)
+FOX_FLAGS = -fast -tp=px -Mcache_align -Mpreprocess -Mlarge_arrays
+
+$ make pw
+```
+{% endcode %}
 
 &#x20;&#x20;
 
@@ -47,8 +69,51 @@ KISTI 시스템은 PATH, LD\_LIBRARY\_PATH 등을 쉽게 하기 위하여 OpenSo
 **** 뉴론에서 작업을 제출하기 위해서는 SLURM 작업 스크립트를 사용하여야 한다.\
 &#x20;(작업 스크립트 예제 경로: /apps/applications/test\_samples/QE/)
 
-|   ****  작업스크립트 예제(qe\_job.sh)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>#!/bin/sh<br><br>#SBATCH -J "QE-GPU"<br><br>#SBATCH -p cas_v100_2<br>#SBATCH -N 1<br>#SBATCH -n 20<br>#SBATCH -o %x_%j.out <br><br>#SBATCH -e %x_%j.err<br><br>#SBATCH -t 00:30:00<br><br>#SBATCH --gres=gpu:2<br><br>#SBATCH --comment qe<br> <br>ulimit -a unlimited<br> <br>export NO_STOP_MESSAGE=yes<br> <br>## Setting for gpu acceleration off<br><br>#### export USEGPU=no<br> <br># QE run parameters<br>NGPU=2<br><br>NPOOL=1<br> <br># Node-specific parameters<br>GPU_PER_SOCKET=1<br><br>CORES_PER_SOCKET=10<br> <br>NCORE_PER_RANK=$(($/$))<br> <br>export OMP_NUM_THREADS=$<br><br>export MKL_NUM_THREADS=$<br> <br>srun --cpu_bind=none -n $ -c $ pw.x -input ./pw.in -npool $</p> |
+{% code title="  작업스크립트 예제(qe_job.sh)" %}
+```
+#!/bin/sh
+
+#SBATCH -J "QE-GPU"
+
+#SBATCH -p cas_v100_2
+#SBATCH -N 1
+#SBATCH -n 20
+#SBATCH -o %x_%j.out 
+
+#SBATCH -e %x_%j.err
+
+#SBATCH -t 00:30:00
+
+#SBATCH --gres=gpu:2
+
+#SBATCH --comment qe
+ 
+ulimit -a unlimited
+ 
+export NO_STOP_MESSAGE=yes
+ 
+## Setting for gpu acceleration off
+
+#### export USEGPU=no
+ 
+# QE run parameters
+NGPU=2
+
+NPOOL=1
+ 
+# Node-specific parameters
+GPU_PER_SOCKET=1
+
+CORES_PER_SOCKET=10
+ 
+NCORE_PER_RANK=$(($/$))
+ 
+export OMP_NUM_THREADS=$
+
+export MKL_NUM_THREADS=$
+ 
+srun --cpu_bind=none -n $ -c $ pw.x -input ./pw.in -npool $
+```
+{% endcode %}
 
 &#x20;
