@@ -28,11 +28,12 @@ KISTI 슈퍼컴퓨팅센터의 누리온 시스템에 OpenFOAM-v1712 Source 버�
 
 
 
-\[ 환경 설정 ]
-
-> &#x20;$ module load cmake/3.12.3
->
-> &#x20;$ module load intel/18.0.3 impi/18.0.3
+{% code title="[ 환경 설정 ]" %}
+```
+ $ module load cmake/3.12.3
+ $ module load intel/18.0.3 impi/18.0.3
+```
+{% endcode %}
 
 
 
@@ -41,49 +42,61 @@ KISTI 슈퍼컴퓨팅센터의 누리온 시스템에 OpenFOAM-v1712 Source 버�
 &#x20;설치 과정 소개는 tar 를 이용한 압축 해제 방법과 설정 방법등 진행 절차를 위주로 설명하고,\
 &#x20;소스 파일 다운로드 등은 생략한다.   설치 소개 시 사용된 경로 <mark style="color:blue;">**/scratch/optpar02**</mark> 는 설치 안내를 위한 경로 이므로 실제 사용되는 경로를 사용한다.
 
-|  **설치 과정**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p> $ cd <mark style="color:blue;"><strong>/scratch/optpar02</strong></mark></p><p> $ mkdir OpenFOAM</p><p> $ cd OpenFOAM</p><p> $ tar -xzf OpenFOAM-v1712.tgz</p><p> $ tar -xzf ThirdParty-v1712.tgz</p><p> $ vi OpenFOAM-v1712/etc/config.sh/settings </p><p>  <strong>- - - [settings 수정 사항] 참고 - - -</strong></p><p> $ sed -i -e 's/\(boost_version=\)boost_1_64_0/\1boost-system/' OpenFOAM-v1712/etc/config.sh/CGAL</p><p> $ sed -i -e 's/\(cgal_version=\)CGAL-4.9.1/\1cgal-system/' OpenFOAM-v1712/etc/config.sh/CGAL</p><p> $ vi OpenFOAM-v1712/etc/bashrc </p><p>  <strong>- - - [bashrc 수정 사항] 참고 - - -</strong></p><p> $ source OpenFOAM-v1712/etc/bashrc </p><p> $ mkdir -p $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER</p><p> $ ln -s /apps/common/gmp/6.1.2          $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/gmp-system</p><p> $ ln -s /apps/common/mpfr/4.0.1         $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/mpfr-system</p><p> $ ln -s /apps/common/mpc/1.1.0          $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/mpc-system</p><p> $ ln -s /apps/common/boost/1.68.0       $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/boost-system</p><p> $ ln -s /apps/common/CGAL/4.9.1         $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/cgal-system</p><p> $ ln -s /apps/applications/cmake/3.12.3  $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/cmake-system</p><p> $ cd $WM_PROJECT_DIR $ ./Allwmake</p> |
+{% code title=" 설치 과정" %}
+```
+ $ cd /scratch/optpar02
+ $ mkdir OpenFOAM
+ $ cd OpenFOAM
+ $ tar -xzf OpenFOAM-v1712.tgz
+ $ tar -xzf ThirdParty-v1712.tgz
+ $ vi OpenFOAM-v1712/etc/config.sh/settings 
+  - - - [settings 수정 사항] 참고 - - -
+ $ sed -i -e 's/\(boost_version=\)boost_1_64_0/\1boost-system/' OpenFOAM-v1712/etc/config.sh/CGAL
+ $ sed -i -e 's/\(cgal_version=\)CGAL-4.9.1/\1cgal-system/' OpenFOAM-v1712/etc/config.sh/CGAL
+ $ vi OpenFOAM-v1712/etc/bashrc 
+  - - - [bashrc 수정 사항] 참고 - - -
+ $ source OpenFOAM-v1712/etc/bashrc 
+ $ mkdir -p $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER
+ $ ln -s /apps/common/gmp/6.1.2          $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/gmp-system
+ $ ln -s /apps/common/mpfr/4.0.1         $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/mpfr-system
+ $ ln -s /apps/common/mpc/1.1.0          $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/mpc-system
+ $ ln -s /apps/common/boost/1.68.0       $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/boost-system
+ $ ln -s /apps/common/CGAL/4.9.1         $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/cgal-system
+ $ ln -s /apps/applications/cmake/3.12.3  $WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/cmake-system
+ $ cd $WM_PROJECT_DIR $ ./Allwmake
+```
+{% endcode %}
 
-
-
-**\[settings 수정 사항]**&#x20;
-
-> &#x20;25line : export WM\_CFLAGS="-fPIC -xCOMMON-AVX512"
->
-> &#x20;26line : export WM\_CXXFLAGS="-fPIC -std=c++11 -xCOMMON-AVX512"
+{% code title="[settings 수정 사항] " %}
+```
+ 25line : export WM_CFLAGS="-fPIC -xCOMMON-AVX512"
+ 26line : export WM_CXXFLAGS="-fPIC -std=c++11 -xCOMMON-AVX512"
+```
+{% endcode %}
 
 <mark style="color:blue;">※ SKL 계산노드와 KNL 계산노드 모두 실행할 수 있는 "-xCOMMON-AVX512" 로 안내하고, 필요 시 변경해서 사용</mark>
 
-
-
-**\[bashrc 수정 사항]**&#x20;
-
-> &#x20;45line : FOAM\_INST\_DIR=<mark style="color:blue;">**/scratch/optpar02**</mark>/$WM\_PROJECT
->
-> &#x20;65line : export WM\_COMPILER=Icc
->
-> &#x20;88line : export WM\_MPLIB=INTELMPI
+{% code title="[bashrc 수정 사항] " %}
+```
+ 45line : FOAM_INST_DIR=/scratch/optpar02/$WM_PROJECT
+ 65line : export WM_COMPILER=Icc
+ 88line : export WM_MPLIB=INTELMPI
+```
+{% endcode %}
 
 <mark style="color:blue;">※ 위 수정 예제에서</mark> <mark style="color:blue;"></mark><mark style="color:blue;">**/scratch/optpar02**</mark> <mark style="color:blue;"></mark><mark style="color:blue;">경로는 설치 테스트 시 사용된 경로이므로 변경 후 사용</mark>\
 
 
 ## **4. 테스트**
 
-> &#x20;$ module load intel/18.0.3 impi/18.0.3
->
-> &#x20;$ source <mark style="color:blue;">**/scratch/optpar02**</mark>/OpenFOAM/OpenFOAM-v1712/etc/bashrc&#x20;
->
->
->
-> &#x20;$ mkdir -p $FOAM\_RUN&#x20;
->
-> &#x20;$ run&#x20;
->
-> &#x20;$ cp -r $FOAM\_TUTORIALS/incompressible/simpleFoam/pitzDaily .
->
-> &#x20;$ cd pitzDaily&#x20;
->
-> &#x20;$ blockMesh&#x20;
->
-> &#x20;$ simpleFoam&#x20;
+```
+ $ module load intel/18.0.3 impi/18.0.3
+ $ source /scratch/optpar02/OpenFOAM/OpenFOAM-v1712/etc/bashrc 
+
+ $ mkdir -p $FOAM_RUN 
+ $ run 
+ $ cp -r $FOAM_TUTORIALS/incompressible/simpleFoam/pitzDaily .
+ $ cd pitzDaily 
+ $ blockMesh 
+ $ simpleFoam 
+```
