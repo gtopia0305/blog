@@ -322,11 +322,24 @@ endif
 
 &#x20;(3-8) plumed 설치
 
-|   설치과정                                                                                                                                 |
-| -------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ cd lib/plumed<br>$ vi Install.py<br>----- 수정 사항은 아래의 내용 참고 ----- <br>$ cd ../../src<br>$ make lib-plumed args="-b"<br>$ cd ..</p> |
+{% code title="  설치과정" %}
+```
+$ cd lib/plumed
+$ vi Install.py
+----- 수정 사항은 아래의 내용 참고 ----- 
+$ cd ../../src
+$ make lib-plumed args="-b"
+$ cd ..
+```
+{% endcode %}
 
 
+
+{% code title="[Install.py 수정 사항]" %}
+```
+cmd = 'cd %s/plumed-%s; ./configure --prefix=%s --enable-static-patch CXX=mpiicpc ; make -j%d ; make install' % (homepath,version,homedir,n_cpus
+```
+{% endcode %}
 
 \[Install.py 수정 사항]
 
