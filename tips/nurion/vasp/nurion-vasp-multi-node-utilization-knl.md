@@ -24,23 +24,35 @@ VASP 입력값 중 병렬계산과 관련된 설정들이 있는데, 이 중 병
 
 ### **1) 작업 스크립트 예제**
 
-```
-#!/bin/sh
-#PBS –N vasp_knl                         # job의 이름(여러 개의 작업 제출 시 사용자가 구분하기 위한 목적)
-#PBS –V              # 작업 제출 노드(로그인 노드)에서 설정한 환경을 계산 노드에 적용하기 위해 사용함
-#PBS –l select=1:ncpus=64:mpiprocs=64:ompthreads=1 #아래 참조
-#PBS –q normal                                         # 사용 큐(일반 사용자는 normal 큐만 사용 가능)
-#PBS –l walltime=06:00:00                       # 작업을 수행할 시간( normal 큐는 최대 48시간까지 가능)
-#PBS –A vasp                                     # 자료 수집의 목적으로 프로그램 이름을 기입해야 함(의무사항)
- 
-cd $PBS_O_WORKDIR                                  # 작업 제출한 경로로 이동
-module purge
-module load craype-mic-knl intel/18.0.3 impi/18.0.3
- 
-mpirun {설치경로}/vasp_std
- 
-exit 0
-```
+> \#!/bin/sh
+>
+> \#PBS –N vasp\_knl                     <mark style="color:blue;"># job의 이름(여러 개의 작업 제출 시 사용자가 구분하기 위한 목적)</mark>
+>
+> \#PBS –V              <mark style="color:blue;"># 작업 제출 노드(로그인 노드)에서 설정한 환경을 계산 노드에 적용하기 위해 사용함</mark>
+>
+> \#PBS –l select=1:ncpus=64:mpiprocs=64:ompthreads=1 <mark style="color:blue;">#아래 참조</mark>
+>
+> \#PBS –q normal                                         <mark style="color:blue;"># 사용 큐(일반 사용자는 normal 큐만 사용 가능)</mark>
+>
+> \#PBS –l walltime=06:00:00                      <mark style="color:blue;"># 작업을 수행할 시간( normal 큐는 최대 48시간까지 가능)</mark>
+>
+> \#PBS –A vasp                                     <mark style="color:blue;"># 자료 수집의 목적으로 프로그램 이름을 기입해야 함(의무사항)</mark>
+>
+> &#x20;
+>
+> cd $PBS\_O\_WORKDIR                                  <mark style="color:blue;"># 작업 제출한 경로로 이동</mark>
+>
+> module purge
+>
+> module load craype-mic-knl intel/18.0.3 impi/18.0.3
+>
+> &#x20;
+>
+> mpirun <mark style="color:red;">{설치경로}</mark>/vasp\_std
+>
+> &#x20;
+>
+> exit 0
 
 \* #PBS –l select=1(A):ncpus=64(B):mpiprocs=64(C):ompthreads=1(D)
 
@@ -60,9 +72,7 @@ D(예제에서는 1) : 한 프로세스가 사용할 OpenMP스레드의 수
 
 3\. 만일 2개의 노드를 사용하고 노드 당 프로세스의 수는 16, OpenMP 스레드의 수는 2로 지정하고 싶다면, 아래와 같이 지정한다.
 
-```
-#PBS –l select=2:ncpus=68:mpiprocs=16:ompthreads=2
-```
+> \#PBS –l select=2:ncpus=68:mpiprocs=16:ompthreads=2
 
 
 
