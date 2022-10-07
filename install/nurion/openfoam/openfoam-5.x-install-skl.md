@@ -85,82 +85,81 @@ $ vi ThirdParty-5.0/scotch_6.0.3/src/Make.inc/Makefile.inc.x86-64_pc_linux2.icc
 
 
 
-**\[settings 수정 사항]**&#x20;
-
-> &#x20;38line :      WM\_ARCH=linux64
->
-> &#x20;61line :         64)
->
-> &#x20;62line :             WM\_ARCH=linux64
->
-> &#x20;63line :             export WM\_COMPILER\_LIB\_ARCH=64
->
-> &#x20;64line :             export WM\_CC='icc'
->
-> &#x20;65line :             export WM\_CXX='icpc'
->
-> &#x20;66line :             export WM\_CFLAGS='-m64 -fPIC <mark style="color:blue;">-xCORE-AVX512</mark>'
->
-> &#x20;67line :             export WM\_CXXFLAGS='-m64 -fPIC <mark style="color:blue;">-xCORE-AVX512</mark> -std=c++0x'
->
-> &#x20;68line :             export WM\_LDFLAGS='-m64 -fPIC <mark style="color:blue;">-xCORE-AVX512</mark>'
+{% code title="[settings 수정 사항] " %}
+```
+38line :      WM_ARCH=linux64
+ 61line :         64)
+ 62line :             WM_ARCH=linux64
+ 63line :             export WM_COMPILER_LIB_ARCH=64
+ 64line :             export WM_CC='icc'
+ 65line :             export WM_CXX='icpc'
+ 66line :             export WM_CFLAGS='-m64 -fPIC -xCORE-AVX512'
+ 67line :             export WM_CXXFLAGS='-m64 -fPIC -xCORE-AVX512 -std=c++0x'
+ 68line :             export WM_LDFLAGS='-m64 -fPIC -xCORE-AVX512'
+```
+{% endcode %}
 
 ※ "<mark style="color:blue;">-xCORE-AVX512</mark>" 옵션은 <mark style="color:blue;">SKL CPU 타입 전용 옵션</mark>으로, \
 &#x20;SKL 계산노드와 KNL 계산노드 모두 실행을 희망하는 경우는 "-<mark style="color:blue;">xCOMMON-AVX512</mark>" 로 변경해서 사용
 
 
 
-**\[bashrc 수정 사항]**&#x20;
-
-> &#x20;47line : #export FOAM\_INST\_DIR=$HOME/$WM\_PROJECT
->
-> &#x20;50line : export FOAM\_INST\_DIR=<mark style="color:blue;">${HOME}/OpenFOAM-5.0/SKL</mark>/$WM\_PROJECT
->
-> &#x20;65line : export WM\_COMPILER=Icc&#x20;
->
-> &#x20;89line : export WM\_MPLIB=INTELMPI
+{% code title="[bashrc 수정 사항] " %}
+```
+ 47line : #export FOAM_INST_DIR=$HOME/$WM_PROJECT
+ 50line : export FOAM_INST_DIR=${HOME}/OpenFOAM-5.0/SKL/$WM_PROJECT
+ 65line : export WM_COMPILER=Icc 
+ 89line : export WM_MPLIB=INTELMPI
+```
+{% endcode %}
 
 ※ 위 수정 예제에서 **** <mark style="color:blue;">${HOME}/OpenFOAM-5.0/SKL</mark> **** 경로는 설치 시 사용된 경로이므로 변경 후 사용
 
 
 
-**\[makeCGAL 수정 사항]**&#x20;
-
-> &#x20;46line : cgalPACKAGE=${cgal\_version:-CGAL-4.8.1}
->
-> &#x20;47line : boostPACKAGE=${boost\_version:-boost\_1\_68\_0}
-
-
-
-**\[mpi 수정 사항]**&#x20;
-
-> &#x20;46line :     libDir=\`mpiicc --showme:link | sed -e 's/.\*-L\\(\[^ ]\*\\).\*/\1/'\`
+{% code title="[makeCGAL 수정 사항] " %}
+```
+ 46line : cgalPACKAGE=${cgal_version:-CGAL-4.8.1}
+ 47line : boostPACKAGE=${boost_version:-boost_1_68_0}
+```
+{% endcode %}
 
 
 
-**\[c++ 수정 사항]**&#x20;
-
-> &#x20;9line : CC          = icpc -std=c++11 -<mark style="color:blue;">xCORE-AVX512</mark> -fp-trap=common -fp-model precise
-
-
-
-**\[Makefile.inc.x86-64\_pc\_linux2.icc 수정 사항]**&#x20;
-
-> &#x20;10line : CCP             = mpiicc
->
-> &#x20;12line : CFLAGS          = $(WM\_CFLAGS) -O3 -DCOMMON\_FILE\_COMPRESS\_GZ -DCOMMON\_PTHREAD -DCOMMON\_RANDOM\_FIXED\_SEED -DSCOTCH\_RENAME -DSCOTCH\_PTHREAD -restrict -DIDXSIZE64
+{% code title="[mpi 수정 사항] " %}
+```
+ 46line :     libDir=`mpiicc --showme:link | sed -e 's/.*-L\([^ ]*\).*/\1/'`
+```
+{% endcode %}
 
 
 
-**\[Makefile.inc.i686\_pc\_linux2.shlib-OpenFOAM 수정 사항]**&#x20;
+{% code title="[c++ 수정 사항] " %}
+```
+ 9line : CC          = icpc -std=c++11 -xCORE-AVX512 -fp-trap=common -fp-model precise
 
-> &#x20; 6line : AR              = icc
->
-> &#x20; 9line : CCS             = icc
->
-> &#x20;10line : CCP             = mpiicc
->
-> &#x20;11line : CCD             = mpiicc
+```
+{% endcode %}
+
+
+
+{% code title="[Makefile.inc.x86-64_pc_linux2.icc 수정 사항] " %}
+```
+ 10line : CCP             = mpiicc
+ 12line : CFLAGS          = $(WM_CFLAGS) -O3 -DCOMMON_FILE_COMPRESS_GZ -DCOMMON_PTHREAD -DCOMMON_RANDOM_FIXED_SEED -DSCOTCH_RENAME -DSCOTCH_PTHREAD -restrict -DIDXSIZE64
+```
+{% endcode %}
+
+
+
+{% code title="[Makefile.inc.i686_pc_linux2.shlib-OpenFOAM 수정 사항] " %}
+```
+  6line : AR              = icc
+  9line : CCS             = icc
+ 10line : CCP             = mpiicc
+ 11line : CCD             = mpiicc
+```
+{% endcode %}
 
 ## **4. 테스트**
 
