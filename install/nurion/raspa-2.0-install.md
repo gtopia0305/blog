@@ -28,14 +28,33 @@ KISTI 시스템은 PATH, LD\_LIBRARY\_PATH 등을 쉽게 하기 위하여 OpenSo
 
 
 
-**\[ 환경 설정 ]**
-
-> &#x20;$ module load intel/18.0.3 impi/18.0.3
+{% code title="[ 환경 설정 ]" %}
+```
+ $ module load intel/18.0.3 impi/18.0.3
+```
+{% endcode %}
 
 ## **3. RASPA 2.0 설치 과정**
 
 &#x20;\- 설치 과정에서의 설치 경로는 <mark style="color:blue;">**${HOME}/RASPA2/2.0**</mark>를 사용하였다. 이 위치는 사용자에게 맞는 위치로 변경하여야 한다. &#x20;
 
-|  **설치과정**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ unzip RASPA2-master.zip</p><p>$ cd RASPA2-master</p><p>$ mkdir -p m4</p><p>$ aclocal</p><p>$ autoreconf -i</p><p>$ automake --add-missing</p><p>$ autoconf</p><p>$ ./configure --prefix=<mark style="color:blue;"><strong>${HOME}/RASPA2/2.0</strong></mark> \</p><p> CPPFLAGS="-I/apps/compiler/intel/18.0.3/mkl/include/fftw" \</p><p> LDFLAGS="-L/apps/compiler/intel/18.0.3/mkl/lib/intel64" \</p><p> LIBS="-mkl=cluster" CC=mpiicc CXX=mpiicpc F77=mpiifort \</p><p> CFLAGS="-O3 -fPIC -m64 -xCOMMON-AVX512" \</p><p> CXXFLAGS="-O3 -fPIC -m64 -xCOMMON-AVX512" \</p><p> FFLAGS="-O3 -fPIC -m64 -xCOMMON-AVX512"</p><p>$ make</p><p>$ make install</p> |
+{% code title=" 설치과정" %}
+```
+$ unzip RASPA2-master.zip
+$ cd RASPA2-master
+$ mkdir -p m4
+$ aclocal
+$ autoreconf -i
+$ automake --add-missing
+$ autoconf
+$ ./configure --prefix=${HOME}/RASPA2/2.0 \
+ CPPFLAGS="-I/apps/compiler/intel/18.0.3/mkl/include/fftw" \
+ LDFLAGS="-L/apps/compiler/intel/18.0.3/mkl/lib/intel64" \
+ LIBS="-mkl=cluster" CC=mpiicc CXX=mpiicpc F77=mpiifort \
+ CFLAGS="-O3 -fPIC -m64 -xCOMMON-AVX512" \
+ CXXFLAGS="-O3 -fPIC -m64 -xCOMMON-AVX512" \
+ FFLAGS="-O3 -fPIC -m64 -xCOMMON-AVX512"
+$ make
+$ make install
+```
+{% endcode %}

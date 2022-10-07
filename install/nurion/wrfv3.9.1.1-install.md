@@ -29,243 +29,439 @@ KISTI 슈퍼컴퓨팅센터의 누리온 시스템에 WRFV3.9.1.1 Source 버전�
 
 
 
-{% code title="[ 환경 설정 ]" %}
-```
- $ module load craype-mic-knl intel/18.0.3 impi/18.0.3
- $ module load hdf4/4.2.13 hdf5/1.10.2 netcdf/4.6.1 ncl/6.5.0
- $ export JASPERLIB=/apps/common/jasper/1.900.29/lib
- $ export JASPERINC=/apps/common/jasper/1.900.29/include
-```
-{% endcode %}
+\[ 환경 설정 ]
+
+> &#x20;$ module load craype-mic-knl intel/18.0.3 impi/18.0.3
+>
+> &#x20;$ module load hdf4/4.2.13 hdf5/1.10.2 netcdf/4.6.1 ncl/6.5.0
+>
+> &#x20;$ export JASPERLIB=/apps/common/jasper/1.900.29/lib
+>
+> &#x20;$ export JASPERINC=/apps/common/jasper/1.900.29/include
+
+
 
 ## **3. WRF 설치 과정**
 
 &#x20;설치 과정 소개는 tar 를 이용한 압축 해제 방법과 설정 방법등 진행 절차를 위주로 설명하고, 소스 파일 다운로드 등은 생략한다. &#x20;
 
-```
-$ tar xvzf WRFV3.9.1.1.TAR.gz
-$ cd WRFV3
-$ ./configure 
- - - - - - 아래 [configure 과정 진행 내용] 참고
-$ vi configure.wrf
- - - - - - 아래 [configure.wrf 파일 수정 내용] 참고
-$ ./compile em_real
-```
+> $ tar xvzf WRFV3.9.1.1.TAR.gz
+>
+> $ cd WRFV3
+>
+> $ ./configure&#x20;
+>
+> &#x20;<mark style="color:orange;"></mark> <mark style="color:orange;"></mark>_<mark style="color:orange;">- - - - - 아래</mark> <mark style="color:orange;"></mark><mark style="color:orange;">**\[configure 과정 진행 내용]**</mark> <mark style="color:orange;"></mark><mark style="color:orange;">참고</mark>_
+>
+> $ vi configure.wrf
+>
+> &#x20;_ <mark style="color:orange;">- - - - - 아래</mark> <mark style="color:orange;"></mark><mark style="color:orange;">**\[configure.wrf 파일 수정 내용]**</mark> <mark style="color:orange;"></mark><mark style="color:orange;">참고</mark>_
+>
+> $ ./compile em\_real
 
 ※ WRFV3.9.1.1 버전의 경우 "compile em\_real" "-j 2" 옵션이 기본으로 사용되어 "compile -j 2 em\_real" 으로 빌드 되고, **CentOS 7.3 버전에서 빌드 시 컴파일 오류가 1회 발생함. 이 경우 "compile em\_real" 과정을 한번더 진행.**
 
 
 
-{% code title="[configure 과정 진행 내용]" %}
-```
-$ ./configure 
-checking for perl5... no
-checking for perl... found /usr/bin/perl (perl)
-Will use NETCDF in dir: /apps/compiler/intel/18.0.3/applib1/mic-knl/netcdf/4.6.1
-Will use HDF5 in dir: /apps/compiler/intel/18.0.3/applib1/mic-knl/hdf5/1.10.2
-PHDF5 not set in environment. Will configure WRF for use without.
-Will use 'time' to report timing information
+_**\[configure 과정 진행 내용]**_
+
+> $ ./configure&#x20;
+>
+> checking for perl5... no
+>
+> checking for perl... found /usr/bin/perl (perl)
+>
+> Will use NETCDF in dir: /apps/compiler/intel/18.0.3/applib1/mic-knl/netcdf/4.6.1
+>
+> Will use HDF5 in dir: /apps/compiler/intel/18.0.3/applib1/mic-knl/hdf5/1.10.2
+>
+> PHDF5 not set in environment. Will configure WRF for use without.
+>
+> Will use 'time' to report timing information
+>
+> \
+>
+>
+> If you REALLY want Grib2 output from WRF, modify the arch/Config\_new.pl script.
+>
+> Right now you are not getting the Jasper lib, from the environment, compiled into WRF.
+>
+>
+>
+> \------------------------------------------------------------------------
+>
+> Please select from among the following Linux x86\_64 options:
+>
+>
+>
+> &#x20; 1\. (serial)   2. (smpar)   3. (dmpar)   4. (dm+sm)   PGI (pgf90/gcc)
+>
+> &#x20; 5\. (serial)   6. (smpar)   7. (dmpar)   8. (dm+sm)   PGI (pgf90/pgcc): SGI MPT
+>
+> &#x20; 9\. (serial)  10. (smpar)  11. (dmpar)  12. (dm+sm)   PGI (pgf90/gcc): PGI accelerator
+>
+> &#x20;13\. (serial)  14. (smpar)  15. (dmpar)  16. (dm+sm)   INTEL (ifort/icc)
+>
+> &#x20;                                        17\. (dm+sm)   INTEL (ifort/icc): Xeon Phi (MIC architecture)
+>
+> &#x20;18\. (serial)  19. (smpar)  20. (dmpar)  21. (dm+sm)   INTEL (ifort/icc): Xeon (SNB with AVX mods)
+>
+> &#x20;22\. (serial)  23. (smpar)  24. (dmpar)  25. (dm+sm)   INTEL (ifort/icc): SGI MPT
+>
+> &#x20;26\. (serial)  27. (smpar)  28. (dmpar)  29. (dm+sm)   INTEL (ifort/icc): IBM POE
+>
+> &#x20;30\. (serial)               31. (dmpar)                PATHSCALE (pathf90/pathcc)
+>
+> &#x20;32\. (serial)  33. (smpar)  34. (dmpar)  35. (dm+sm)   GNU (gfortran/gcc)
+>
+> &#x20;36\. (serial)  37. (smpar)  38. (dmpar)  39. (dm+sm)   IBM (xlf90\_r/cc\_r)
+>
+> &#x20;40\. (serial)  41. (smpar)  42. (dmpar)  43. (dm+sm)   PGI (ftn/gcc): Cray XC CLE
+>
+> &#x20;44\. (serial)  45. (smpar)  46. (dmpar)  47. (dm+sm)   CRAY CCE (ftn $(NOOMP)/cc): Cray XE and XC
+>
+> &#x20;48\. (serial)  49. (smpar)  50. (dmpar)  51. (dm+sm)   INTEL (ftn/icc): Cray XC
+>
+> &#x20;52\. (serial)  53. (smpar)  54. (dmpar)  55. (dm+sm)   PGI (pgf90/pgcc)
+>
+> &#x20;56\. (serial)  57. (smpar)  58. (dmpar)  59. (dm+sm)   PGI (pgf90/gcc): -f90=pgf90
+>
+> &#x20;60\. (serial)  61. (smpar)  62. (dmpar)  63. (dm+sm)   PGI (pgf90/pgcc): -f90=pgf90
+>
+> &#x20;64\. (serial)  65. (smpar)  66. (dmpar)  67. (dm+sm)   INTEL (ifort/icc): HSW/BDW
+>
+> &#x20;68\. (serial)  69. (smpar)  70. (dmpar)  71. (dm+sm)   INTEL (ifort/icc): KNL MIC
+>
+> &#x20;72\. (serial)  73. (smpar)  74. (dmpar)  75. (dm+sm)   FUJITSU (frtpx/fccpx): FX10/FX100 SPARC64 IXfx/Xlfx
+>
+>
+>
+> Enter selection \[1-75] : <mark style="color:blue;">**70**</mark>
+>
+> \------------------------------------------------------------------------
+>
+> Compile for nesting? (1=basic, 2=preset moves, 3=vortex following) \[default 1]: <mark style="color:blue;">**1**</mark>
+>
+>
+>
+> Configuration successful!&#x20;
+>
+> \------------------------------------------------------------------------
+>
+> testing for MPI\_Comm\_f2c and MPI\_Comm\_c2f
+>
+> &#x20;  MPI\_Comm\_f2c and MPI\_Comm\_c2f are supported
+>
+> testing for fseeko and fseeko64
+>
+> fseeko64 is supported
+>
+> \------------------------------------------------------------------------
+>
+>
+>
+> \# Settings for    Linux KNL x86\_64 ppc64le i486 i586 i686  (dmpar)
+>
+> \#
+>
+> DESCRIPTION     =       INTEL ($SFC/$SCC): KNL MIC
+>
+> DMPARALLEL      =        1
+>
+> OMPCPP          =       # -D\_OPENMP
+>
+> OMP             =       # -openmp -fpp -auto
+>
+> OMPCC           =       # -openmp -fpp -auto
+>
+> SFC             =       ifort
+>
+> SCC             =       icc
+>
+> CCOMP           =       icc
+>
+> DM\_FC           =       mpif90 -f90=$(SFC)
+>
+> DM\_CC           =       mpicc -cc=$(SCC) -DMPI2\_SUPPORT
+>
+> FC              =       time $(DM\_FC)
+>
+> CC              =       $(DM\_CC) -DFSEEKO64\_OK&#x20;
+>
+> LD              =       $(FC)
+>
+> RWORDSIZE       =       $(NATIVE\_RWORDSIZE)
+>
+> PROMOTION       =       -real-size \`expr 8 \\\* $(RWORDSIZE)\` -i4
+>
+> ARCH\_LOCAL      =       -DNONSTANDARD\_SYSTEM\_FUNC -DWRF\_USE\_CLM
+>
+> CFLAGS\_LOCAL    =       -w -O3 -ip -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -no-multibyte-chars -xMIC-AVX512
+>
+> LDFLAGS\_LOCAL   =       -ip -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -align all -fno-alias -fno-common -xMIC-AVX512
+>
+> CPLUSPLUSLIB    =      &#x20;
+>
+> ESMF\_LDFLAG     =       $(CPLUSPLUSLIB)
+>
+> FCOPTIM         =       -O3
+>
+> FCREDUCEDOPT =       $(FCOPTIM)
+>
+> FCNOOPT =       -O0 -fno-inline -no-ip
+>
+> FCDEBUG         =       # -g $(FCNOOPT) -traceback # -fpe0 -check noarg\_temp\_created,bounds,format,output\_conversion,pointers,uninit -ftrapuv -unroll0 -u
+>
+> FORMAT\_FIXED    =       -FI
+>
+> FORMAT\_FREE     =       -FR
+>
+> FCSUFFIX        =
+>
+> BYTESWAPIO      =       -convert big\_endian
+>
+> RECORDLENGTH    =       -assume byterecl
+>
+> FCBASEOPTS\_NO\_G =       -ip -fp-model precise -w -ftz -align all -fno-alias $(FORMAT\_FREE) $(BYTESWAPIO) -fp-model fast=2 -no-heap-arrays -no-prec-div -no-prec-sqrt -fno-common -xMIC-AVX512
+>
+> FCBASEOPTS      =       $(FCBASEOPTS\_NO\_G) $(FCDEBUG)
+>
+> MODULE\_SRCH\_FLAG =    &#x20;
+>
+> TRADFLAG        =      -traditional-cpp
+>
+> CPP             =      /lib/cpp -P -nostdinc
+>
+> AR              =      ar
+>
+> ARFLAGS         =      ru
+>
+> M4              =      m4
+>
+> RANLIB          =      ranlib
+>
+> RLFLAGS =
+>
+> CC\_TOOLS        =      $(SCC)&#x20;
+>
+>
+>
+> \#insert new stanza here
+>
+>
+>
+> \###########################################################
+>
+> \######################
+>
+> \# POSTAMBLE
+>
+>
+>
+> FGREP = fgrep -iq
+>
+>
+>
+> ARCHFLAGS       =    $(COREDEFS) -DIWORDSIZE=$(IWORDSIZE) -DDWORDSIZE=$(DWORDSIZE) -DRWORDSIZE=$(RWORDSIZE) -DLWORDSIZE=$(LWORDSIZE) \\
+>
+> &#x20;                    $(ARCH\_LOCAL) \\
+>
+> &#x20;                    $(DA\_ARCHFLAGS) \\
+>
+> &#x20;                     \-DDM\_PARALLEL \\
+>
+> &#x20;                      \\
+>
+> &#x20;                     \-DNETCDF \\
+>
+> &#x20;                      \\
+>
+> &#x20;                      \\
+>
+> &#x20;                      \\
+>
+> &#x20;                      \\
+>
+> &#x20;                      \\
+>
+> &#x20;                     \-DHDF5 \\
+>
+> &#x20;                      \\
+>
+> &#x20;                      \\
+>
+> &#x20;                      \\
+>
+> &#x20;                      \\
+>
+> &#x20;                     \-DUSE\_ALLOCATABLES \\
+>
+> &#x20;                     \-DGRIB1 \\
+>
+> &#x20;                     \-DINTIO \\
+>
+> &#x20;                     \-DKEEP\_INT\_AROUND \\
+>
+> &#x20;                     \-DLIMIT\_ARGS \\
+>
+> &#x20;                     \-DCONFIG\_BUF\_LEN=$(CONFIG\_BUF\_LEN) \\
+>
+> &#x20;                     \-DMAX\_DOMAINS\_F=$(MAX\_DOMAINS) \\
+>
+> &#x20;                     \-DMAX\_HISTORY=$(MAX\_HISTORY) \\
+>
+> &#x20;     \-DNMM\_NEST=$(WRF\_NMM\_NEST)
+>
+> CFLAGS          =    $(CFLAGS\_LOCAL) -DDM\_PARALLEL  \\
+>
+> &#x20;                     \-DMAX\_HISTORY=$(MAX\_HISTORY) -DNMM\_CORE=$(WRF\_NMM\_CORE)
+>
+> FCFLAGS         =    $(FCOPTIM) $(FCBASEOPTS)
+>
+> ESMF\_LIB\_FLAGS  =   &#x20;
+>
+> \# ESMF 5 -- these are defined in esmf.mk, included above
+>
+> &#x20;ESMF\_IO\_LIB     =    -L$(WRF\_SRC\_ROOT\_DIR)/external/esmf\_time\_f90 -lesmf\_time
+>
+> ESMF\_IO\_LIB\_EXT =    -L$(WRF\_SRC\_ROOT\_DIR)/external/esmf\_time\_f90 -lesmf\_time
+>
+> INCLUDE\_MODULES =    $(MODULE\_SRCH\_FLAG) \\
+>
+> &#x20;                    $(ESMF\_MOD\_INC) $(ESMF\_LIB\_FLAGS) \\
+>
+> &#x20;                     \-I$(WRF\_SRC\_ROOT\_DIR)/main \\
+>
+> &#x20;                     \-I$(WRF\_SRC\_ROOT\_DIR)/external/io\_netcdf \\
+>
+> &#x20;                     \-I$(WRF\_SRC\_ROOT\_DIR)/external/io\_int \\
+>
+> &#x20;                     \-I$(WRF\_SRC\_ROOT\_DIR)/frame \\
+>
+> &#x20;                     \-I$(WRF\_SRC\_ROOT\_DIR)/share \\
+>
+> &#x20;                     \-I$(WRF\_SRC\_ROOT\_DIR)/phys \\
+>
+> &#x20;                     \-I$(WRF\_SRC\_ROOT\_DIR)/chem -I$(WRF\_SRC\_ROOT\_DIR)/inc \\
+>
+> &#x20;                     \-I$(NETCDFPATH)/include \\
+>
+> &#x20;                    &#x20;
+>
+> REGISTRY        =    Registry
+>
+> CC\_TOOLS\_CFLAGS = -DNMM\_CORE=$(WRF\_NMM\_CORE)
+>
+>
+>
+> &#x20;LIB\_BUNDLED     = \\
+>
+> &#x20;                     $(WRF\_SRC\_ROOT\_DIR)/external/fftpack/fftpack5/libfftpack.a \\
+>
+> &#x20;                     $(WRF\_SRC\_ROOT\_DIR)/external/io\_grib1/libio\_grib1.a \\
+>
+> &#x20;                     $(WRF\_SRC\_ROOT\_DIR)/external/io\_grib\_share/libio\_grib\_share.a \\
+>
+> &#x20;                     $(WRF\_SRC\_ROOT\_DIR)/external/io\_int/libwrfio\_int.a \\
+>
+> &#x20;                     $(ESMF\_IO\_LIB) \\
+>
+> &#x20;                     $(WRF\_SRC\_ROOT\_DIR)/external/RSL\_LITE/librsl\_lite.a \\
+>
+> &#x20;                     $(WRF\_SRC\_ROOT\_DIR)/frame/module\_internal\_header\_util.o \\
+>
+> &#x20;                     $(WRF\_SRC\_ROOT\_DIR)/frame/pack\_utils.o&#x20;
+>
+>
+>
+> &#x20;LIB\_EXTERNAL    = \\
+>
+> &#x20;                     \-L$(WRF\_SRC\_ROOT\_DIR)/external/io\_netcdf -lwrfio\_nf -L/apps/compiler/intel/18.0.3/applib1/mic-knl/netcdf/4.6.1/lib -lnetcdff -lnetcdf     -L/apps/compiler/intel/18.0.3/applib1/mic-knl/hdf5/1.10.2/lib -lhdf5\_fortran -lhdf5 -lm -lz
+>
+> \
+>
+>
+> LIB             =    $(LIB\_BUNDLED) $(LIB\_EXTERNAL) $(LIB\_LOCAL) $(LIB\_WRF\_HYDRO)
+>
+> LDFLAGS         =    $(OMP) $(FCFLAGS) $(LDFLAGS\_LOCAL)&#x20;
+>
+> ENVCOMPDEFS     =   &#x20;
+>
+> WRF\_CHEM = 0&#x20;
+>
+> CPPFLAGS        =    $(ARCHFLAGS) $(ENVCOMPDEFS) -I$(LIBINCLUDE) $(TRADFLAG)&#x20;
+>
+> NETCDFPATH      =    /apps/compiler/intel/18.0.3/applib1/mic-knl/netcdf/4.6.1
+>
+> HDF5PATH        =    /apps/compiler/intel/18.0.3/applib1/mic-knl/hdf5/1.10.2
+>
+> WRFPLUSPATH     =   &#x20;
+>
+> RTTOVPATH       =   &#x20;
+>
+> PNETCDFPATH     =   &#x20;
+>
+>
+>
+> bundled:  io\_only&#x20;
+>
+> external: io\_only $(WRF\_SRC\_ROOT\_DIR)/external/RSL\_LITE/librsl\_lite.a gen\_comms\_rsllite module\_dm\_rsllite $(ESMF\_TARGET)
+>
+> io\_only:  esmf\_time wrfio\_nf   \\
+>
+> &#x20; wrf\_ioapi\_includes wrfio\_grib\_share wrfio\_grib1 wrfio\_int fftpack
+>
+> \
+>
+>
+> \######################
+>
+> \------------------------------------------------------------------------
+>
+> Settings listed above are written to configure.wrf.
+>
+> If you wish to change settings, please edit that file.
+>
+> If you wish to change the default options, edit the file:
+>
+> &#x20;    arch/configure\_new.defaults
+>
+> NetCDF users note:
+>
+> &#x20;This installation of NetCDF supports large file support.  To DISABLE large file
+>
+> &#x20;support in NetCDF, set the environment variable WRFIO\_NCD\_NO\_LARGE\_FILE\_SUPPORT
+>
+> &#x20;to 1 and run configure again. Set to any other value to avoid this message.
+>
+> &#x20; \
+>
+>
+> Testing for NetCDF, C and Fortran compiler
+>
+>
+>
+> This installation of NetCDF is 64-bit
+>
+> &#x20;                C compiler is 64-bit
+>
+> &#x20;          Fortran compiler is 64-bit
+>
+> &#x20;             It will build in 64-bit
 
 
-If you REALLY want Grib2 output from WRF, modify the arch/Config_new.pl script.
-Right now you are not getting the Jasper lib, from the environment, compiled into WRF.
 
-------------------------------------------------------------------------
-Please select from among the following Linux x86_64 options:
+_**\[configure.wrf 파일 수정 내용]**_
 
-  1. (serial)   2. (smpar)   3. (dmpar)   4. (dm+sm)   PGI (pgf90/gcc)
-  5. (serial)   6. (smpar)   7. (dmpar)   8. (dm+sm)   PGI (pgf90/pgcc): SGI MPT
-  9. (serial)  10. (smpar)  11. (dmpar)  12. (dm+sm)   PGI (pgf90/gcc): PGI accelerator
- 13. (serial)  14. (smpar)  15. (dmpar)  16. (dm+sm)   INTEL (ifort/icc)
-                                         17. (dm+sm)   INTEL (ifort/icc): Xeon Phi (MIC architecture)
- 18. (serial)  19. (smpar)  20. (dmpar)  21. (dm+sm)   INTEL (ifort/icc): Xeon (SNB with AVX mods)
- 22. (serial)  23. (smpar)  24. (dmpar)  25. (dm+sm)   INTEL (ifort/icc): SGI MPT
- 26. (serial)  27. (smpar)  28. (dmpar)  29. (dm+sm)   INTEL (ifort/icc): IBM POE
- 30. (serial)               31. (dmpar)                PATHSCALE (pathf90/pathcc)
- 32. (serial)  33. (smpar)  34. (dmpar)  35. (dm+sm)   GNU (gfortran/gcc)
- 36. (serial)  37. (smpar)  38. (dmpar)  39. (dm+sm)   IBM (xlf90_r/cc_r)
- 40. (serial)  41. (smpar)  42. (dmpar)  43. (dm+sm)   PGI (ftn/gcc): Cray XC CLE
- 44. (serial)  45. (smpar)  46. (dmpar)  47. (dm+sm)   CRAY CCE (ftn $(NOOMP)/cc): Cray XE and XC
- 48. (serial)  49. (smpar)  50. (dmpar)  51. (dm+sm)   INTEL (ftn/icc): Cray XC
- 52. (serial)  53. (smpar)  54. (dmpar)  55. (dm+sm)   PGI (pgf90/pgcc)
- 56. (serial)  57. (smpar)  58. (dmpar)  59. (dm+sm)   PGI (pgf90/gcc): -f90=pgf90
- 60. (serial)  61. (smpar)  62. (dmpar)  63. (dm+sm)   PGI (pgf90/pgcc): -f90=pgf90
- 64. (serial)  65. (smpar)  66. (dmpar)  67. (dm+sm)   INTEL (ifort/icc): HSW/BDW
- 68. (serial)  69. (smpar)  70. (dmpar)  71. (dm+sm)   INTEL (ifort/icc): KNL MIC
- 72. (serial)  73. (smpar)  74. (dmpar)  75. (dm+sm)   FUJITSU (frtpx/fccpx): FX10/FX100 SPARC64 IXfx/Xlfx
-
-Enter selection [1-75] : 70
-------------------------------------------------------------------------
-Compile for nesting? (1=basic, 2=preset moves, 3=vortex following) [default 1]: 1
-
-Configuration successful! 
-------------------------------------------------------------------------
-testing for MPI_Comm_f2c and MPI_Comm_c2f
-   MPI_Comm_f2c and MPI_Comm_c2f are supported
-testing for fseeko and fseeko64
-fseeko64 is supported
-------------------------------------------------------------------------
-
-# Settings for    Linux KNL x86_64 ppc64le i486 i586 i686  (dmpar)
-#
-DESCRIPTION     =       INTEL ($SFC/$SCC): KNL MIC
-DMPARALLEL      =        1
-OMPCPP          =       # -D_OPENMP
-OMP             =       # -openmp -fpp -auto
-OMPCC           =       # -openmp -fpp -auto
-SFC             =       ifort
-SCC             =       icc
-CCOMP           =       icc
-DM_FC           =       mpif90 -f90=$(SFC)
-DM_CC           =       mpicc -cc=$(SCC) -DMPI2_SUPPORT
-FC              =       time $(DM_FC)
-CC              =       $(DM_CC) -DFSEEKO64_OK 
-LD              =       $(FC)
-RWORDSIZE       =       $(NATIVE_RWORDSIZE)
-PROMOTION       =       -real-size `expr 8 \* $(RWORDSIZE)` -i4
-ARCH_LOCAL      =       -DNONSTANDARD_SYSTEM_FUNC -DWRF_USE_CLM
-CFLAGS_LOCAL    =       -w -O3 -ip -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -no-multibyte-chars -xMIC-AVX512
-LDFLAGS_LOCAL   =       -ip -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -align all -fno-alias -fno-common -xMIC-AVX512
-CPLUSPLUSLIB    =       
-ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
-FCOPTIM         =       -O3
-FCREDUCEDOPT =       $(FCOPTIM)
-FCNOOPT =       -O0 -fno-inline -no-ip
-FCDEBUG         =       # -g $(FCNOOPT) -traceback # -fpe0 -check noarg_temp_created,bounds,format,output_conversion,pointers,uninit -ftrapuv -unroll0 -u
-FORMAT_FIXED    =       -FI
-FORMAT_FREE     =       -FR
-FCSUFFIX        =
-BYTESWAPIO      =       -convert big_endian
-RECORDLENGTH    =       -assume byterecl
-FCBASEOPTS_NO_G =       -ip -fp-model precise -w -ftz -align all -fno-alias $(FORMAT_FREE) $(BYTESWAPIO) -fp-model fast=2 -no-heap-arrays -no-prec-div -no-prec-sqrt -fno-common -xMIC-AVX512
-FCBASEOPTS      =       $(FCBASEOPTS_NO_G) $(FCDEBUG)
-MODULE_SRCH_FLAG =     
-TRADFLAG        =      -traditional-cpp
-CPP             =      /lib/cpp -P -nostdinc
-AR              =      ar
-ARFLAGS         =      ru
-M4              =      m4
-RANLIB          =      ranlib
-RLFLAGS =
-CC_TOOLS        =      $(SCC) 
-
-#insert new stanza here
-
-###########################################################
-######################
-# POSTAMBLE
-
-FGREP = fgrep -iq
-
-ARCHFLAGS       =    $(COREDEFS) -DIWORDSIZE=$(IWORDSIZE) -DDWORDSIZE=$(DWORDSIZE) -DRWORDSIZE=$(RWORDSIZE) -DLWORDSIZE=$(LWORDSIZE) \
-                     $(ARCH_LOCAL) \
-                     $(DA_ARCHFLAGS) \
-                      -DDM_PARALLEL \
-                       \
-                      -DNETCDF \
-                       \
-                       \
-                       \
-                       \
-                       \
-                      -DHDF5 \
-                       \
-                       \
-                       \
-                       \
-                      -DUSE_ALLOCATABLES \
-                      -DGRIB1 \
-                      -DINTIO \
-                      -DKEEP_INT_AROUND \
-                      -DLIMIT_ARGS \
-                      -DCONFIG_BUF_LEN=$(CONFIG_BUF_LEN) \
-                      -DMAX_DOMAINS_F=$(MAX_DOMAINS) \
-                      -DMAX_HISTORY=$(MAX_HISTORY) \
-      -DNMM_NEST=$(WRF_NMM_NEST)
-CFLAGS          =    $(CFLAGS_LOCAL) -DDM_PARALLEL  \
-                      -DMAX_HISTORY=$(MAX_HISTORY) -DNMM_CORE=$(WRF_NMM_CORE)
-FCFLAGS         =    $(FCOPTIM) $(FCBASEOPTS)
-ESMF_LIB_FLAGS  =    
-# ESMF 5 -- these are defined in esmf.mk, included above
- ESMF_IO_LIB     =    -L$(WRF_SRC_ROOT_DIR)/external/esmf_time_f90 -lesmf_time
-ESMF_IO_LIB_EXT =    -L$(WRF_SRC_ROOT_DIR)/external/esmf_time_f90 -lesmf_time
-INCLUDE_MODULES =    $(MODULE_SRCH_FLAG) \
-                     $(ESMF_MOD_INC) $(ESMF_LIB_FLAGS) \
-                      -I$(WRF_SRC_ROOT_DIR)/main \
-                      -I$(WRF_SRC_ROOT_DIR)/external/io_netcdf \
-                      -I$(WRF_SRC_ROOT_DIR)/external/io_int \
-                      -I$(WRF_SRC_ROOT_DIR)/frame \
-                      -I$(WRF_SRC_ROOT_DIR)/share \
-                      -I$(WRF_SRC_ROOT_DIR)/phys \
-                      -I$(WRF_SRC_ROOT_DIR)/chem -I$(WRF_SRC_ROOT_DIR)/inc \
-                      -I$(NETCDFPATH)/include \
-                      
-REGISTRY        =    Registry
-CC_TOOLS_CFLAGS = -DNMM_CORE=$(WRF_NMM_CORE)
-
- LIB_BUNDLED     = \
-                      $(WRF_SRC_ROOT_DIR)/external/fftpack/fftpack5/libfftpack.a \
-                      $(WRF_SRC_ROOT_DIR)/external/io_grib1/libio_grib1.a \
-                      $(WRF_SRC_ROOT_DIR)/external/io_grib_share/libio_grib_share.a \
-                      $(WRF_SRC_ROOT_DIR)/external/io_int/libwrfio_int.a \
-                      $(ESMF_IO_LIB) \
-                      $(WRF_SRC_ROOT_DIR)/external/RSL_LITE/librsl_lite.a \
-                      $(WRF_SRC_ROOT_DIR)/frame/module_internal_header_util.o \
-                      $(WRF_SRC_ROOT_DIR)/frame/pack_utils.o 
-
- LIB_EXTERNAL    = \
-                      -L$(WRF_SRC_ROOT_DIR)/external/io_netcdf -lwrfio_nf -L/apps/compiler/intel/18.0.3/applib1/mic-knl/netcdf/4.6.1/lib -lnetcdff -lnetcdf     -L/apps/compiler/intel/18.0.3/applib1/mic-knl/hdf5/1.10.2/lib -lhdf5_fortran -lhdf5 -lm -lz
-
-
-LIB             =    $(LIB_BUNDLED) $(LIB_EXTERNAL) $(LIB_LOCAL) $(LIB_WRF_HYDRO)
-LDFLAGS         =    $(OMP) $(FCFLAGS) $(LDFLAGS_LOCAL) 
-ENVCOMPDEFS     =    
-WRF_CHEM = 0 
-CPPFLAGS        =    $(ARCHFLAGS) $(ENVCOMPDEFS) -I$(LIBINCLUDE) $(TRADFLAG) 
-NETCDFPATH      =    /apps/compiler/intel/18.0.3/applib1/mic-knl/netcdf/4.6.1
-HDF5PATH        =    /apps/compiler/intel/18.0.3/applib1/mic-knl/hdf5/1.10.2
-WRFPLUSPATH     =    
-RTTOVPATH       =    
-PNETCDFPATH     =    
-
-bundled:  io_only 
-external: io_only $(WRF_SRC_ROOT_DIR)/external/RSL_LITE/librsl_lite.a gen_comms_rsllite module_dm_rsllite $(ESMF_TARGET)
-io_only:  esmf_time wrfio_nf   \
-  wrf_ioapi_includes wrfio_grib_share wrfio_grib1 wrfio_int fftpack
-
-
-######################
-------------------------------------------------------------------------
-Settings listed above are written to configure.wrf.
-If you wish to change settings, please edit that file.
-If you wish to change the default options, edit the file:
-     arch/configure_new.defaults
-NetCDF users note:
- This installation of NetCDF supports large file support.  To DISABLE large file
- support in NetCDF, set the environment variable WRFIO_NCD_NO_LARGE_FILE_SUPPORT
- to 1 and run configure again. Set to any other value to avoid this message.
-  
-
-Testing for NetCDF, C and Fortran compiler
-
-This installation of NetCDF is 64-bit
-                 C compiler is 64-bit
-           Fortran compiler is 64-bit
-              It will build in 64-bit
-```
-{% endcode %}
-
-
-
-{% code title="[configure.wrf 파일 수정 내용]" %}
-```
-DM_FC           =       mpiifort -f90=$(SFC)
-DM_CC           =       mpiicc -cc=$(SCC) -DMPI2_SUPPORT
-CFLAGS_LOCAL    =       -w -O3 -ip -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -no-multibyte-chars -xCOMMON-AVX512
-LDFLAGS_LOCAL   =       -ip -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -align all -fno-alias -fno-common -xCOMMON-AVX512
-FCBASEOPTS_NO_G =       -ip -fp-model precise -w -ftz -align all -fno-alias $(FORMAT_FREE) $(BYTESWAPIO) -fp-model fast=2 -no-heap-arrays -no-prec-div -no-prec-sqrt -fno-common -xCOMMON-AVX512
-```
-{% endcode %}
+> DM\_FC           =       <mark style="color:blue;">**mpiifort**</mark> -f90=$(SFC)
+>
+> DM\_CC           =       <mark style="color:blue;">**mpiicc**</mark> -cc=$(SCC) -DMPI2\_SUPPORT
+>
+> CFLAGS\_LOCAL    =       -w -O3 -ip -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -no-multibyte-chars <mark style="color:blue;">**-xCOMMON-AVX512**</mark>
+>
+> LDFLAGS\_LOCAL   =       -ip -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -align all -fno-alias -fno-common <mark style="color:blue;">**-xCOMMON-AVX512**</mark>
+>
+> FCBASEOPTS\_NO\_G =       -ip -fp-model precise -w -ftz -align all -fno-alias $(FORMAT\_FREE) $(BYTESWAPIO) -fp-model fast=2 -no-heap-arrays -no-prec-div -no-prec-sqrt -fno-common <mark style="color:blue;">**-xCOMMON-AVX512**</mark>
 
 ※ 설치를 진행한 CPU 타입과 계산을 수행할 CPU 타입이 다른 경우는 꼭 configure.wrf 파일의 "<mark style="color:red;">**-xHost**</mark><mark style="color:red;">"</mark> <mark style="color:red;"></mark><mark style="color:red;">**옵션을 삭제**</mark>하고 빌드를 진행한다.    (예 : login 노드(SKL CPU 타입)에서 설치를 진행 하고 KNL 계산노드 에서 수행하는 경우)
 
@@ -284,93 +480,157 @@ FCBASEOPTS_NO_G =       -ip -fp-model precise -w -ftz -align all -fno-alias $(FO
 
 
 
-{% code title="설치과정" %}
-```
-$ tar xvzf WPSV3.9.1.TAR.gz
-$ cd WPS
-$ ./configure 
- - - - - - 아래 [configure 과정 진행 내용] 참고
-$ vi configure.wps
- - - - - - 아래 [configure.wps 파일 수정 내용] 참고
-$ ./compile 
-```
-{% endcode %}
+설치과정
+
+> $ tar xvzf WPSV3.9.1.TAR.gz
+>
+> $ cd WPS
+>
+> $ ./configure&#x20;
+>
+> &#x20;<mark style="color:orange;"></mark> <mark style="color:orange;"></mark>_<mark style="color:orange;">- - - - - 아래</mark> <mark style="color:orange;"></mark><mark style="color:orange;">**\[configure 과정 진행 내용]**</mark> <mark style="color:orange;"></mark><mark style="color:orange;">참고</mark>_
+>
+> $ vi configure.wps
+>
+> &#x20;<mark style="color:orange;"></mark> <mark style="color:orange;"></mark>_<mark style="color:orange;">- - - - - 아래</mark> <mark style="color:orange;"></mark><mark style="color:orange;">**\[configure.wps 파일 수정 내용]**</mark> <mark style="color:orange;"></mark><mark style="color:orange;">참고</mark>_
+>
+> $ ./compile&#x20;
 
 
 
-{% code title="[configure 과정 진행 내용]" %}
-```
-$ ./configure 
-Will use NETCDF in dir: /apps/compiler/intel/18.0.3/applib1/mic-knl/netcdf/4.6.1
-Found Jasper environment variables for GRIB2 support...
-  $JASPERLIB = /apps/common/jasper/1.900.29/lib
-  $JASPERINC = /apps/common/jasper/1.900.29/include
-------------------------------------------------------------------------
-Please select from among the following supported platforms.
+_**\[configure 과정 진행 내용]**_
 
-   1.  Linux x86_64, gfortran    (serial)
-   2.  Linux x86_64, gfortran    (serial_NO_GRIB2)
-   3.  Linux x86_64, gfortran    (dmpar)
-   4.  Linux x86_64, gfortran    (dmpar_NO_GRIB2)
-   5.  Linux x86_64, PGI compiler   (serial)
-   6.  Linux x86_64, PGI compiler   (serial_NO_GRIB2)
-   7.  Linux x86_64, PGI compiler   (dmpar)
-   8.  Linux x86_64, PGI compiler   (dmpar_NO_GRIB2)
-   9.  Linux x86_64, PGI compiler, SGI MPT   (serial)
-  10.  Linux x86_64, PGI compiler, SGI MPT   (serial_NO_GRIB2)
-  11.  Linux x86_64, PGI compiler, SGI MPT   (dmpar)
-  12.  Linux x86_64, PGI compiler, SGI MPT   (dmpar_NO_GRIB2)
-  13.  Linux x86_64, IA64 and Opteron    (serial)
-  14.  Linux x86_64, IA64 and Opteron    (serial_NO_GRIB2)
-  15.  Linux x86_64, IA64 and Opteron    (dmpar)
-  16.  Linux x86_64, IA64 and Opteron    (dmpar_NO_GRIB2)
-  17.  Linux x86_64, Intel compiler    (serial)
-  18.  Linux x86_64, Intel compiler    (serial_NO_GRIB2)
-  19.  Linux x86_64, Intel compiler    (dmpar)
-  20.  Linux x86_64, Intel compiler    (dmpar_NO_GRIB2)
-  21.  Linux x86_64, Intel compiler, SGI MPT    (serial)
-  22.  Linux x86_64, Intel compiler, SGI MPT    (serial_NO_GRIB2)
-  23.  Linux x86_64, Intel compiler, SGI MPT    (dmpar)
-  24.  Linux x86_64, Intel compiler, SGI MPT    (dmpar_NO_GRIB2)
-  25.  Linux x86_64, Intel compiler, IBM POE    (serial)
-  26.  Linux x86_64, Intel compiler, IBM POE    (serial_NO_GRIB2)
-  27.  Linux x86_64, Intel compiler, IBM POE    (dmpar)
-  28.  Linux x86_64, Intel compiler, IBM POE    (dmpar_NO_GRIB2)
-  29.  Linux x86_64 g95 compiler     (serial)
-  30.  Linux x86_64 g95 compiler     (serial_NO_GRIB2)
-  31.  Linux x86_64 g95 compiler     (dmpar)
-  32.  Linux x86_64 g95 compiler     (dmpar_NO_GRIB2)
-  33.  Cray XE/XC CLE/Linux x86_64, Cray compiler   (serial)
-  34.  Cray XE/XC CLE/Linux x86_64, Cray compiler   (serial_NO_GRIB2)
-  35.  Cray XE/XC CLE/Linux x86_64, Cray compiler   (dmpar)
-  36.  Cray XE/XC CLE/Linux x86_64, Cray compiler   (dmpar_NO_GRIB2)
-  37.  Cray XC CLE/Linux x86_64, Intel compiler   (serial)
-  38.  Cray XC CLE/Linux x86_64, Intel compiler   (serial_NO_GRIB2)
-  39.  Cray XC CLE/Linux x86_64, Intel compiler   (dmpar)
-  40.  Cray XC CLE/Linux x86_64, Intel compiler   (dmpar_NO_GRIB2)
+> $ ./configure&#x20;
+>
+> Will use NETCDF in dir: /apps/compiler/intel/18.0.3/applib1/mic-knl/netcdf/4.6.1
+>
+> Found Jasper environment variables for GRIB2 support...
+>
+> &#x20; $JASPERLIB = /apps/common/jasper/1.900.29/lib
+>
+> &#x20; $JASPERINC = /apps/common/jasper/1.900.29/include
+>
+> \------------------------------------------------------------------------
+>
+> Please select from among the following supported platforms.
+>
+>
+>
+> &#x20;  1\.  Linux x86\_64, gfortran    (serial)
+>
+> &#x20;  2\.  Linux x86\_64, gfortran    (serial\_NO\_GRIB2)
+>
+> &#x20;  3\.  Linux x86\_64, gfortran    (dmpar)
+>
+> &#x20;  4\.  Linux x86\_64, gfortran    (dmpar\_NO\_GRIB2)
+>
+> &#x20;  5\.  Linux x86\_64, PGI compiler   (serial)
+>
+> &#x20;  6\.  Linux x86\_64, PGI compiler   (serial\_NO\_GRIB2)
+>
+> &#x20;  7\.  Linux x86\_64, PGI compiler   (dmpar)
+>
+> &#x20;  8\.  Linux x86\_64, PGI compiler   (dmpar\_NO\_GRIB2)
+>
+> &#x20;  9\.  Linux x86\_64, PGI compiler, SGI MPT   (serial)
+>
+> &#x20; 10\.  Linux x86\_64, PGI compiler, SGI MPT   (serial\_NO\_GRIB2)
+>
+> &#x20; 11\.  Linux x86\_64, PGI compiler, SGI MPT   (dmpar)
+>
+> &#x20; 12\.  Linux x86\_64, PGI compiler, SGI MPT   (dmpar\_NO\_GRIB2)
+>
+> &#x20; 13\.  Linux x86\_64, IA64 and Opteron    (serial)
+>
+> &#x20; 14\.  Linux x86\_64, IA64 and Opteron    (serial\_NO\_GRIB2)
+>
+> &#x20; 15\.  Linux x86\_64, IA64 and Opteron    (dmpar)
+>
+> &#x20; 16\.  Linux x86\_64, IA64 and Opteron    (dmpar\_NO\_GRIB2)
+>
+> &#x20; 17\.  Linux x86\_64, Intel compiler    (serial)
+>
+> &#x20; 18\.  Linux x86\_64, Intel compiler    (serial\_NO\_GRIB2)
+>
+> &#x20; <mark style="color:blue;"></mark>  <mark style="color:blue;"></mark><mark style="color:blue;">**19.  Linux x86\_64, Intel compiler    (dmpar)**</mark>
+>
+> &#x20; 20\.  Linux x86\_64, Intel compiler    (dmpar\_NO\_GRIB2)
+>
+> &#x20; 21\.  Linux x86\_64, Intel compiler, SGI MPT    (serial)
+>
+> &#x20; 22\.  Linux x86\_64, Intel compiler, SGI MPT    (serial\_NO\_GRIB2)
+>
+> &#x20; 23\.  Linux x86\_64, Intel compiler, SGI MPT    (dmpar)
+>
+> &#x20; 24\.  Linux x86\_64, Intel compiler, SGI MPT    (dmpar\_NO\_GRIB2)
+>
+> &#x20; 25\.  Linux x86\_64, Intel compiler, IBM POE    (serial)
+>
+> &#x20; 26\.  Linux x86\_64, Intel compiler, IBM POE    (serial\_NO\_GRIB2)
+>
+> &#x20; 27\.  Linux x86\_64, Intel compiler, IBM POE    (dmpar)
+>
+> &#x20; 28\.  Linux x86\_64, Intel compiler, IBM POE    (dmpar\_NO\_GRIB2)
+>
+> &#x20; 29\.  Linux x86\_64 g95 compiler     (serial)
+>
+> &#x20; 30\.  Linux x86\_64 g95 compiler     (serial\_NO\_GRIB2)
+>
+> &#x20; 31\.  Linux x86\_64 g95 compiler     (dmpar)
+>
+> &#x20; 32\.  Linux x86\_64 g95 compiler     (dmpar\_NO\_GRIB2)
+>
+> &#x20; 33\.  Cray XE/XC CLE/Linux x86\_64, Cray compiler   (serial)
+>
+> &#x20; 34\.  Cray XE/XC CLE/Linux x86\_64, Cray compiler   (serial\_NO\_GRIB2)
+>
+> &#x20; 35\.  Cray XE/XC CLE/Linux x86\_64, Cray compiler   (dmpar)
+>
+> &#x20; 36\.  Cray XE/XC CLE/Linux x86\_64, Cray compiler   (dmpar\_NO\_GRIB2)
+>
+> &#x20; 37\.  Cray XC CLE/Linux x86\_64, Intel compiler   (serial)
+>
+> &#x20; 38\.  Cray XC CLE/Linux x86\_64, Intel compiler   (serial\_NO\_GRIB2)
+>
+> &#x20; 39\.  Cray XC CLE/Linux x86\_64, Intel compiler   (dmpar)
+>
+> &#x20; 40\.  Cray XC CLE/Linux x86\_64, Intel compiler   (dmpar\_NO\_GRIB2)
+>
+>
+>
+> Enter selection \[1-40] : <mark style="color:blue;">**19**</mark>
+>
+> \------------------------------------------------------------------------
+>
+> Configuration successful. To build the WPS, type: compile
+>
+> \------------------------------------------------------------------------
+>
+>
+>
+> Testing for NetCDF, C and Fortran compiler
+>
+>
+>
+> This installation NetCDF is 64-bit
+>
+> C compiler is 64-bit
+>
+> Fortran compiler is 64-bit
+>
+>
 
-Enter selection [1-40] : 19
-------------------------------------------------------------------------
-Configuration successful. To build the WPS, type: compile
-------------------------------------------------------------------------
+_**\[configure.wps 파일 수정 내용]**_
 
-Testing for NetCDF, C and Fortran compiler
-
-This installation NetCDF is 64-bit
-C compiler is 64-bit
-Fortran compiler is 64-bit
-```
-{% endcode %}
-
-{% code title="[configure.wps 파일 수정 내용]" %}
-```
-DM_FC               = mpiifort -f90=ifort
-DM_CC               = mpiicc -cc=icc
-FFLAGS              = -FR -convert big_endian -O2 -xCOMMON-AVX512
-F77FLAGS            = -FI -convert big_endian -O2 -xCOMMON-AVX512
-CFLAGS              = -w -O2 -xCOMMON-AVX512
-```
-{% endcode %}
+> DM\_FC               = <mark style="color:blue;">**mpiifort**</mark> -f90=ifort
+>
+> DM\_CC               = <mark style="color:blue;">**mpiicc**</mark> -cc=icc
+>
+> FFLAGS              = -FR -convert big\_endian <mark style="color:blue;">**-O2 -xCOMMON-AVX512**</mark>
+>
+> F77FLAGS            = -FI -convert big\_endian <mark style="color:blue;">**-O2 -xCOMMON-AVX512**</mark>
+>
+> CFLAGS              = -w <mark style="color:blue;">**-O2 -xCOMMON-AVX512**</mark>
 
 ## **5. 기타**
 
@@ -379,12 +639,12 @@ CFLAGS              = -w -O2 -xCOMMON-AVX512
 
 
 
-{% code title="[ 환경 설정 ]" %}
-```
+\[ 환경 설정 ]
 
- $ module load craype-x86-skylake intel/18.0.3 impi/18.0.3
- $ module load hdf4/4.2.13 hdf5/1.10.2 netcdf/4.6.1 ncl/6.5.0
- $ export JASPERLIB=/apps/common/jasper/1.900.29/lib
- $ export JASPERINC=/apps/common/jasper/1.900.29/include
-```
-{% endcode %}
+> &#x20;$ module load <mark style="color:blue;">craype-x86-skylake</mark> intel/18.0.3 impi/18.0.3
+>
+> &#x20;$ module load hdf4/4.2.13 hdf5/1.10.2 netcdf/4.6.1 ncl/6.5.0
+>
+> &#x20;$ export JASPERLIB=/apps/common/jasper/1.900.29/lib
+>
+> &#x20;$ export JASPERINC=/apps/common/jasper/1.900.29/include
