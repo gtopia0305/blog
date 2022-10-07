@@ -257,21 +257,15 @@ This installation of NetCDF is 64-bit
 
 
 
+{% code title="[configure.wrf 파일 수정 내용]" %}
 ```
-// Some code
+DM_FC           =       mpiifort -f90=$(SFC)
+DM_CC           =       mpiicc -cc=$(SCC) -DMPI2_SUPPORT
+CFLAGS_LOCAL    =       -w -O3 -ip -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -no-multibyte-chars -xCOMMON-AVX512
+LDFLAGS_LOCAL   =       -ip -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -align all -fno-alias -fno-common -xCOMMON-AVX512
+FCBASEOPTS_NO_G =       -ip -fp-model precise -w -ftz -align all -fno-alias $(FORMAT_FREE) $(BYTESWAPIO) -fp-model fast=2 -no-heap-arrays -no-prec-div -no-prec-sqrt -fno-common -xCOMMON-AVX512
 ```
-
-_**\[configure.wrf 파일 수정 내용]**_
-
-> DM\_FC           =       <mark style="color:blue;">**mpiifort**</mark> -f90=$(SFC)
->
-> DM\_CC           =       <mark style="color:blue;">**mpiicc**</mark> -cc=$(SCC) -DMPI2\_SUPPORT
->
-> CFLAGS\_LOCAL    =       -w -O3 -ip -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -no-multibyte-chars <mark style="color:blue;">**-xCOMMON-AVX512**</mark>
->
-> LDFLAGS\_LOCAL   =       -ip -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -align all -fno-alias -fno-common <mark style="color:blue;">**-xCOMMON-AVX512**</mark>
->
-> FCBASEOPTS\_NO\_G =       -ip -fp-model precise -w -ftz -align all -fno-alias $(FORMAT\_FREE) $(BYTESWAPIO) -fp-model fast=2 -no-heap-arrays -no-prec-div -no-prec-sqrt -fno-common <mark style="color:blue;">**-xCOMMON-AVX512**</mark>
+{% endcode %}
 
 ※ 설치를 진행한 CPU 타입과 계산을 수행할 CPU 타입이 다른 경우는 꼭 configure.wrf 파일의 "<mark style="color:red;">**-xHost**</mark><mark style="color:red;">"</mark> <mark style="color:red;"></mark><mark style="color:red;">**옵션을 삭제**</mark>하고 빌드를 진행한다.    (예 : login 노드(SKL CPU 타입)에서 설치를 진행 하고 KNL 계산노드 에서 수행하는 경우)
 
@@ -290,157 +284,93 @@ _**\[configure.wrf 파일 수정 내용]**_
 
 
 
-설치과정
-
-> $ tar xvzf WPSV3.9.1.TAR.gz
->
-> $ cd WPS
->
-> $ ./configure&#x20;
->
-> &#x20;<mark style="color:orange;"></mark> <mark style="color:orange;"></mark>_<mark style="color:orange;">- - - - - 아래</mark> <mark style="color:orange;"></mark><mark style="color:orange;">**\[configure 과정 진행 내용]**</mark> <mark style="color:orange;"></mark><mark style="color:orange;">참고</mark>_
->
-> $ vi configure.wps
->
-> &#x20;<mark style="color:orange;"></mark> <mark style="color:orange;"></mark>_<mark style="color:orange;">- - - - - 아래</mark> <mark style="color:orange;"></mark><mark style="color:orange;">**\[configure.wps 파일 수정 내용]**</mark> <mark style="color:orange;"></mark><mark style="color:orange;">참고</mark>_
->
-> $ ./compile&#x20;
+{% code title="설치과정" %}
+```
+$ tar xvzf WPSV3.9.1.TAR.gz
+$ cd WPS
+$ ./configure 
+ - - - - - 아래 [configure 과정 진행 내용] 참고
+$ vi configure.wps
+ - - - - - 아래 [configure.wps 파일 수정 내용] 참고
+$ ./compile 
+```
+{% endcode %}
 
 
 
-_**\[configure 과정 진행 내용]**_
+{% code title="[configure 과정 진행 내용]" %}
+```
+$ ./configure 
+Will use NETCDF in dir: /apps/compiler/intel/18.0.3/applib1/mic-knl/netcdf/4.6.1
+Found Jasper environment variables for GRIB2 support...
+  $JASPERLIB = /apps/common/jasper/1.900.29/lib
+  $JASPERINC = /apps/common/jasper/1.900.29/include
+------------------------------------------------------------------------
+Please select from among the following supported platforms.
 
-> $ ./configure&#x20;
->
-> Will use NETCDF in dir: /apps/compiler/intel/18.0.3/applib1/mic-knl/netcdf/4.6.1
->
-> Found Jasper environment variables for GRIB2 support...
->
-> &#x20; $JASPERLIB = /apps/common/jasper/1.900.29/lib
->
-> &#x20; $JASPERINC = /apps/common/jasper/1.900.29/include
->
-> \------------------------------------------------------------------------
->
-> Please select from among the following supported platforms.
->
->
->
-> &#x20;  1\.  Linux x86\_64, gfortran    (serial)
->
-> &#x20;  2\.  Linux x86\_64, gfortran    (serial\_NO\_GRIB2)
->
-> &#x20;  3\.  Linux x86\_64, gfortran    (dmpar)
->
-> &#x20;  4\.  Linux x86\_64, gfortran    (dmpar\_NO\_GRIB2)
->
-> &#x20;  5\.  Linux x86\_64, PGI compiler   (serial)
->
-> &#x20;  6\.  Linux x86\_64, PGI compiler   (serial\_NO\_GRIB2)
->
-> &#x20;  7\.  Linux x86\_64, PGI compiler   (dmpar)
->
-> &#x20;  8\.  Linux x86\_64, PGI compiler   (dmpar\_NO\_GRIB2)
->
-> &#x20;  9\.  Linux x86\_64, PGI compiler, SGI MPT   (serial)
->
-> &#x20; 10\.  Linux x86\_64, PGI compiler, SGI MPT   (serial\_NO\_GRIB2)
->
-> &#x20; 11\.  Linux x86\_64, PGI compiler, SGI MPT   (dmpar)
->
-> &#x20; 12\.  Linux x86\_64, PGI compiler, SGI MPT   (dmpar\_NO\_GRIB2)
->
-> &#x20; 13\.  Linux x86\_64, IA64 and Opteron    (serial)
->
-> &#x20; 14\.  Linux x86\_64, IA64 and Opteron    (serial\_NO\_GRIB2)
->
-> &#x20; 15\.  Linux x86\_64, IA64 and Opteron    (dmpar)
->
-> &#x20; 16\.  Linux x86\_64, IA64 and Opteron    (dmpar\_NO\_GRIB2)
->
-> &#x20; 17\.  Linux x86\_64, Intel compiler    (serial)
->
-> &#x20; 18\.  Linux x86\_64, Intel compiler    (serial\_NO\_GRIB2)
->
-> &#x20; <mark style="color:blue;"></mark>  <mark style="color:blue;"></mark><mark style="color:blue;">**19.  Linux x86\_64, Intel compiler    (dmpar)**</mark>
->
-> &#x20; 20\.  Linux x86\_64, Intel compiler    (dmpar\_NO\_GRIB2)
->
-> &#x20; 21\.  Linux x86\_64, Intel compiler, SGI MPT    (serial)
->
-> &#x20; 22\.  Linux x86\_64, Intel compiler, SGI MPT    (serial\_NO\_GRIB2)
->
-> &#x20; 23\.  Linux x86\_64, Intel compiler, SGI MPT    (dmpar)
->
-> &#x20; 24\.  Linux x86\_64, Intel compiler, SGI MPT    (dmpar\_NO\_GRIB2)
->
-> &#x20; 25\.  Linux x86\_64, Intel compiler, IBM POE    (serial)
->
-> &#x20; 26\.  Linux x86\_64, Intel compiler, IBM POE    (serial\_NO\_GRIB2)
->
-> &#x20; 27\.  Linux x86\_64, Intel compiler, IBM POE    (dmpar)
->
-> &#x20; 28\.  Linux x86\_64, Intel compiler, IBM POE    (dmpar\_NO\_GRIB2)
->
-> &#x20; 29\.  Linux x86\_64 g95 compiler     (serial)
->
-> &#x20; 30\.  Linux x86\_64 g95 compiler     (serial\_NO\_GRIB2)
->
-> &#x20; 31\.  Linux x86\_64 g95 compiler     (dmpar)
->
-> &#x20; 32\.  Linux x86\_64 g95 compiler     (dmpar\_NO\_GRIB2)
->
-> &#x20; 33\.  Cray XE/XC CLE/Linux x86\_64, Cray compiler   (serial)
->
-> &#x20; 34\.  Cray XE/XC CLE/Linux x86\_64, Cray compiler   (serial\_NO\_GRIB2)
->
-> &#x20; 35\.  Cray XE/XC CLE/Linux x86\_64, Cray compiler   (dmpar)
->
-> &#x20; 36\.  Cray XE/XC CLE/Linux x86\_64, Cray compiler   (dmpar\_NO\_GRIB2)
->
-> &#x20; 37\.  Cray XC CLE/Linux x86\_64, Intel compiler   (serial)
->
-> &#x20; 38\.  Cray XC CLE/Linux x86\_64, Intel compiler   (serial\_NO\_GRIB2)
->
-> &#x20; 39\.  Cray XC CLE/Linux x86\_64, Intel compiler   (dmpar)
->
-> &#x20; 40\.  Cray XC CLE/Linux x86\_64, Intel compiler   (dmpar\_NO\_GRIB2)
->
->
->
-> Enter selection \[1-40] : <mark style="color:blue;">**19**</mark>
->
-> \------------------------------------------------------------------------
->
-> Configuration successful. To build the WPS, type: compile
->
-> \------------------------------------------------------------------------
->
->
->
-> Testing for NetCDF, C and Fortran compiler
->
->
->
-> This installation NetCDF is 64-bit
->
-> C compiler is 64-bit
->
-> Fortran compiler is 64-bit
->
->
+   1.  Linux x86_64, gfortran    (serial)
+   2.  Linux x86_64, gfortran    (serial_NO_GRIB2)
+   3.  Linux x86_64, gfortran    (dmpar)
+   4.  Linux x86_64, gfortran    (dmpar_NO_GRIB2)
+   5.  Linux x86_64, PGI compiler   (serial)
+   6.  Linux x86_64, PGI compiler   (serial_NO_GRIB2)
+   7.  Linux x86_64, PGI compiler   (dmpar)
+   8.  Linux x86_64, PGI compiler   (dmpar_NO_GRIB2)
+   9.  Linux x86_64, PGI compiler, SGI MPT   (serial)
+  10.  Linux x86_64, PGI compiler, SGI MPT   (serial_NO_GRIB2)
+  11.  Linux x86_64, PGI compiler, SGI MPT   (dmpar)
+  12.  Linux x86_64, PGI compiler, SGI MPT   (dmpar_NO_GRIB2)
+  13.  Linux x86_64, IA64 and Opteron    (serial)
+  14.  Linux x86_64, IA64 and Opteron    (serial_NO_GRIB2)
+  15.  Linux x86_64, IA64 and Opteron    (dmpar)
+  16.  Linux x86_64, IA64 and Opteron    (dmpar_NO_GRIB2)
+  17.  Linux x86_64, Intel compiler    (serial)
+  18.  Linux x86_64, Intel compiler    (serial_NO_GRIB2)
+  19.  Linux x86_64, Intel compiler    (dmpar)
+  20.  Linux x86_64, Intel compiler    (dmpar_NO_GRIB2)
+  21.  Linux x86_64, Intel compiler, SGI MPT    (serial)
+  22.  Linux x86_64, Intel compiler, SGI MPT    (serial_NO_GRIB2)
+  23.  Linux x86_64, Intel compiler, SGI MPT    (dmpar)
+  24.  Linux x86_64, Intel compiler, SGI MPT    (dmpar_NO_GRIB2)
+  25.  Linux x86_64, Intel compiler, IBM POE    (serial)
+  26.  Linux x86_64, Intel compiler, IBM POE    (serial_NO_GRIB2)
+  27.  Linux x86_64, Intel compiler, IBM POE    (dmpar)
+  28.  Linux x86_64, Intel compiler, IBM POE    (dmpar_NO_GRIB2)
+  29.  Linux x86_64 g95 compiler     (serial)
+  30.  Linux x86_64 g95 compiler     (serial_NO_GRIB2)
+  31.  Linux x86_64 g95 compiler     (dmpar)
+  32.  Linux x86_64 g95 compiler     (dmpar_NO_GRIB2)
+  33.  Cray XE/XC CLE/Linux x86_64, Cray compiler   (serial)
+  34.  Cray XE/XC CLE/Linux x86_64, Cray compiler   (serial_NO_GRIB2)
+  35.  Cray XE/XC CLE/Linux x86_64, Cray compiler   (dmpar)
+  36.  Cray XE/XC CLE/Linux x86_64, Cray compiler   (dmpar_NO_GRIB2)
+  37.  Cray XC CLE/Linux x86_64, Intel compiler   (serial)
+  38.  Cray XC CLE/Linux x86_64, Intel compiler   (serial_NO_GRIB2)
+  39.  Cray XC CLE/Linux x86_64, Intel compiler   (dmpar)
+  40.  Cray XC CLE/Linux x86_64, Intel compiler   (dmpar_NO_GRIB2)
 
-_**\[configure.wps 파일 수정 내용]**_
+Enter selection [1-40] : 19
+------------------------------------------------------------------------
+Configuration successful. To build the WPS, type: compile
+------------------------------------------------------------------------
 
-> DM\_FC               = <mark style="color:blue;">**mpiifort**</mark> -f90=ifort
->
-> DM\_CC               = <mark style="color:blue;">**mpiicc**</mark> -cc=icc
->
-> FFLAGS              = -FR -convert big\_endian <mark style="color:blue;">**-O2 -xCOMMON-AVX512**</mark>
->
-> F77FLAGS            = -FI -convert big\_endian <mark style="color:blue;">**-O2 -xCOMMON-AVX512**</mark>
->
-> CFLAGS              = -w <mark style="color:blue;">**-O2 -xCOMMON-AVX512**</mark>
+Testing for NetCDF, C and Fortran compiler
+
+This installation NetCDF is 64-bit
+C compiler is 64-bit
+Fortran compiler is 64-bit
+```
+{% endcode %}
+
+{% code title="[configure.wps 파일 수정 내용]" %}
+```
+DM_FC               = mpiifort -f90=ifort
+DM_CC               = mpiicc -cc=icc
+FFLAGS              = -FR -convert big_endian -O2 -xCOMMON-AVX512
+F77FLAGS            = -FI -convert big_endian -O2 -xCOMMON-AVX512
+CFLAGS              = -w -O2 -xCOMMON-AVX512
+```
+{% endcode %}
 
 ## **5. 기타**
 
@@ -449,12 +379,12 @@ _**\[configure.wps 파일 수정 내용]**_
 
 
 
-\[ 환경 설정 ]
+{% code title="[ 환경 설정 ]" %}
+```
 
-> &#x20;$ module load <mark style="color:blue;">craype-x86-skylake</mark> intel/18.0.3 impi/18.0.3
->
-> &#x20;$ module load hdf4/4.2.13 hdf5/1.10.2 netcdf/4.6.1 ncl/6.5.0
->
-> &#x20;$ export JASPERLIB=/apps/common/jasper/1.900.29/lib
->
-> &#x20;$ export JASPERINC=/apps/common/jasper/1.900.29/include
+ $ module load craype-x86-skylake intel/18.0.3 impi/18.0.3
+ $ module load hdf4/4.2.13 hdf5/1.10.2 netcdf/4.6.1 ncl/6.5.0
+ $ export JASPERLIB=/apps/common/jasper/1.900.29/lib
+ $ export JASPERINC=/apps/common/jasper/1.900.29/include
+```
+{% endcode %}
