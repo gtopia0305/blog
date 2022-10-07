@@ -59,18 +59,18 @@ $ make install
 ```
 {% endcode %}
 
-****
-
-**\[**config.mk 수정 사항]
-
-> **CXX=mpiicpc**\
-> **CFLAGS= -Wall -ansi -pedantic -O3 -fPIC**\
-> E\_INC= -I../../src\
-> E\_LIB= -L../../src\
-> **PREFIX= ${HOME}/build/library**\
-> INSTALL= install\
-> IFLAGS\_EXEC= -m 0755\
-> IFLAGS= -m 0644
+{% code title="[config.mk 수정 사항]" %}
+```
+CXX=mpiicpc
+CFLAGS= -Wall -ansi -pedantic -O3 -fPIC
+E_INC= -I../../src
+E_LIB= -L../../src
+PREFIX= ${HOME}/build/library
+INSTALL= install
+IFLAGS_EXEC= -m 0755
+IFLAGS= -m 0644
+```
+{% endcode %}
 
 ### &#x20;**(2) LATTE 설치** (다운로드 : [https://github.com/lanl/LATTE/releases](https://github.com/lanl/LATTE/releases))
 
@@ -78,53 +78,62 @@ LATTTE 패키지 설치를 위한 Latte 라이브러리를 우선 설치한다.
 
 다운로드 받은 파일을 적당한 위치($HOME/build)에 올린 후 다음과 같은 명령으로 압축 묶음 파일을 푼다.
 
-| 설치과정                                                                                                                                              |
-| ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ cd ${HOME}/build<br>$ tar xzvf LATTE-1.2.1.tar.gz<br>$ cd LATTE-1.2.1<br>$ vi makefile.CHOICES<br>----- 수정 사항은 아래의 내용 참고 -----<br>$ make</p> |
+{% code title="설치과정" %}
+```
+$ cd ${HOME}/build
+$ tar xzvf LATTE-1.2.1.tar.gz
+$ cd LATTE-1.2.1
+$ vi makefile.CHOICES
+----- 수정 사항은 아래의 내용 참고 -----
+$ make
+```
+{% endcode %}
 
 
 
-\[makefile.CHOICES 수정 사항]
+{% code title="[makefile.CHOICES 수정 사항]" %}
+```
+#
+# CPU Fortran options
+#
+ 
+#For GNU compiler:
+#FC = mpif90
+#FC = gfortran
+#FCL = $(FC)
+#FFLAGS = -O3 -fopenmp -cpp
+#FFLAGS = -fast -Mpreprocess -mp
+#LINKFLAG = -fopenmp
+ 
+#For intel compiler:
+FC = ifort
+FCL = $(FC)
+FFLAGS = -O3 -fpp -qopenmp
+LINKFLAG = -qopenmp
+#LIB = -mkl=parallel
+ 
+#GNU BLAS/LAPACK libraries:
+#LIB = -llapack -lblas
+ 
+#Intel MKL BLAS/LAPACK libraries:
+LIB = -Wl,--no-as-needed -L${MKLROOT}/lib/intel64 \
+-lmkl_lapack95_lp64 -lmkl_gf_lp64 -lmkl_gnu_thread -lmkl_core \
+-lmkl_gnu_thread -lmkl_core -ldl -lpthread -lm
 
-> \#\
-> \# CPU Fortran options\
-> \#\
-> &#x20;\
-> \#For GNU compiler:\
-> \#FC = mpif90\
-> **#FC = gfortran**\
-> **#FCL = $(FC)**\
-> **#FFLAGS = -O3 -fopenmp -cpp**\
-> \#FFLAGS = -fast -Mpreprocess -mp\
-> **#LINKFLAG = -fopenmp**\
-> &#x20;\
-> \#For intel compiler:\
-> **FC = ifort**\
-> **FCL = $(FC)**\
-> **FFLAGS = -O3 -fpp -qopenmp**\
-> **LINKFLAG = -qopenmp**\
-> \#LIB = -mkl=parallel\
-> &#x20;\
-> \#GNU BLAS/LAPACK libraries:\
-> **#LIB = -llapack -lblas**\
-> &#x20;\
-> \#Intel MKL BLAS/LAPACK libraries:\
-> **LIB = -Wl,--no-as-needed -L${MKLROOT}/lib/intel64 \\**\
-> **-lmkl\_lapack95\_lp64 -lmkl\_gf\_lp64 -lmkl\_gnu\_thread -lmkl\_core \\**\
-> **-lmkl\_gnu\_thread -lmkl\_core -ldl -lpthread -lm**\
-> \
-> \#Alternative flags for MKL:\
-> **LIB += -mkl=parallel** \
-> \
-> \
-> \#\
-> \# GPU options\
-> \#\
-> &#x20;\
-> **#GPU\_CUDA\_LIB = -L/opt/cudatoolkit-5.5/lib64 -lcublas -lcudart**\
-> \
-> \
-> **#GPU\_ARCH = sm\_20**&#x20;
+#Alternative flags for MKL:
+LIB += -mkl=parallel 
+
+
+#
+# GPU options
+#
+ 
+#GPU_CUDA_LIB = -L/opt/cudatoolkit-5.5/lib64 -lcublas -lcudart
+
+
+#GPU_ARCH = sm_20 
+```
+{% endcode %}
 
 ### &#x20;**(3) 라이브러리 패키지 설치**
 
@@ -142,17 +151,29 @@ $ tar xzvf lammps-3Mar20.tar.gz
 
 lammps 압축 해제후 lammps-3Mar20 폴더로 이동하여 아래의 작업을 진행한다.
 
-| 설치과정                                                                                                                                                                  |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ cd lammps-3Mar20<br>$ cd lib/voronoi<br>$ ln -s ${HOME}/build/library/include/voro++ includelink<br>$ ln -s ${HOME}/build/library/lib liblink<br>$ cd ../../</p> |
+{% code title="설치과정" %}
+```
+$ cd lammps-3Mar20
+$ cd lib/voronoi
+$ ln -s ${HOME}/build/library/include/voro++ includelink
+$ ln -s ${HOME}/build/library/lib liblink
+$ cd ../../
+```
+{% endcode %}
 
 &#x20;
 
 &#x20;(3-2) poems 설치
 
-| 설치과정                                                                                                                |
-| ------------------------------------------------------------------------------------------------------------------- |
-| <p>$ cd lib/poems<br>$ vi Makefile.mpi<br>----- 수정 사항은 아래의 내용 참고 -----<br>$ make -f Makefile.mpi<br>$ cd ../../</p> |
+{% code title="설치과정" %}
+```
+$ cd lib/poems
+$ vi Makefile.mpi
+----- 수정 사항은 아래의 내용 참고 -----
+$ make -f Makefile.mpi
+$ cd ../../
+```
+{% endcode %}
 
 
 
