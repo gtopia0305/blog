@@ -89,8 +89,6 @@ $ make
 ```
 {% endcode %}
 
-
-
 {% code title="[makefile.CHOICES 수정 사항]" %}
 ```
 #
@@ -175,16 +173,18 @@ $ cd ../../
 ```
 {% endcode %}
 
+{% code title="[Makefile.mpi 수정 사항]" %}
+```
+CC =            mpiicpc
+CCFLAGS =       -O3 -g -fPIC -Wall #-Wno-deprecated
+ARCHIVE =       ar
+ARCHFLAG =      -rc
+DEPFLAGS =      -M
+LINK =          mpiicpc
+```
+{% endcode %}
 
 
-\[Makefile.mpi 수정 사항]
-
-> **CC =            mpiicpc**\
-> CCFLAGS =       -O3 -g -fPIC -Wall #-Wno-deprecated\
-> ARCHIVE =       ar\
-> ARCHFLAG =      -rc\
-> DEPFLAGS =      -M\
-> **LINK =          mpiicpc**
 
 &#x20;(3-3) awpmd 설치
 
