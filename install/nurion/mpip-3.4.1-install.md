@@ -27,11 +27,9 @@ KISTI 시스템은 PATH, LD\_LIBRARY\_PATH 등을 쉽게 하기 위하여 OpenSo
 
 
 
-{% code title="[ 환경 설정 ]" %}
-```
-$ module load gcc/7.2.0 openmpi/3.1.0
-```
-{% endcode %}
+**\[ 환경 설정 ]**
+
+> &#x20;$ module load gcc/7.2.0 openmpi/3.1.0
 
 ## **3. 설치 과정**
 
@@ -43,68 +41,44 @@ $ module load gcc/7.2.0 openmpi/3.1.0
 
 ### &#x20; **(1) binutils 설치**
 
-{% code title="  설치과정" %}
-```
-$ tar xzvf binutils-2.32.tar.gz
-$ cd binutils-2.32 
-$ ./configure --prefix=${HOME}/apps/binutils \
---libdir=${HOME}/apps/my_lib \
---includedir=${HOME}/apps/my_include \
---enable-ld=yes --with-system-zlib \
---with-mpc=/apps/common/mpc/1.1.0 --with-mpfr=/apps/common/mpfr/4.0.1 \
---with-gmp=/apps/common/gmp/6.1.2 --enable-install-libiberty
-$ make
-$ make install
-```
-{% endcode %}
+|   **설치과정**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <p>$ tar xzvf binutils-2.32.tar.gz</p><p>$ cd binutils-2.32 </p><p>$ ./configure --prefix=<mark style="color:blue;"><strong>${HOME}/apps/binutils</strong></mark> \</p><p>--libdir=<mark style="color:blue;"><strong>${HOME}/apps/my_lib</strong></mark> \</p><p>--includedir=<mark style="color:blue;"><strong>${HOME}/apps/my_include</strong></mark> \</p><p>--enable-ld=yes --with-system-zlib \</p><p>--with-mpc=/apps/common/mpc/1.1.0 --with-mpfr=/apps/common/mpfr/4.0.1 \</p><p>--with-gmp=/apps/common/gmp/6.1.2 --enable-install-libiberty</p><p>$ make</p><p>$ make install</p> |
+
+
 
 ### &#x20; **(2) libunwind 설치**
 
-{% code title="  설치과정" %}
-```
-$ tar xzvf libunwind-1.2.tar.gz
-$ cd libunwind-1.2
-$ ./configure --prefix=${HOME}/apps/libunwind \
---libdir=${HOME}/apps/my_lib \
---includedir=${HOME}/apps/my_include \
---enable-shared --enable-static
-$ make
-$ make install
-```
-{% endcode %}
+|   **설치과정**                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <p>$ tar xzvf libunwind-1.2.tar.gz</p><p>$ cd libunwind-1.2</p><p>$ ./configure --prefix=<mark style="color:blue;"><strong>${HOME}/apps/libunwind</strong></mark> \</p><p>--libdir=<mark style="color:blue;"><strong>${HOME}/apps/my_lib</strong></mark> \</p><p>--includedir=<mark style="color:blue;"><strong>${HOME}/apps/my_include</strong></mark> \</p><p>--enable-shared --enable-static</p><p>$ make</p><p>$ make install</p> |
+
+
 
 ### &#x20; **(3) mpiP 설치**
 
-{% code title="  설치과정" %}
-```
-$ tar xzvf mpiP-3.4.1.tar.gz
-$ cd mpiP-3.4.1
-$ ./configure --prefix=${HOME}/apps/mpiP \
---libdir=${HOME}/apps/my_lib \
---includedir=${HOME}/apps/my_include \
-LDFLAGS="-L/apps/compiler/gcc/7.2.0/openmpi/3.1.0/lib \
--L${HOME}/apps/my_lib" \
-CPPFLAGS="-I/apps/compiler/gcc/7.2.0/openmpi/3.1.0/include \
--I${HOME}/apps/my_include"
-$ vi mpiPi.h
------ 수정 사항은 아래의 내용 참고 -----
-$ make
-$ make install
-```
-{% endcode %}
+|   **설치과정**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| <p>$ tar xzvf mpiP-3.4.1.tar.gz</p><p>$ cd mpiP-3.4.1</p><p>$ ./configure --prefix=<mark style="color:blue;"><strong>${HOME}/apps/mpiP</strong></mark> \</p><p>--libdir=<mark style="color:blue;"><strong>${HOME}/apps/my_lib</strong></mark> \</p><p>--includedir=<mark style="color:blue;"><strong>${HOME}/apps/my_include</strong></mark> \</p><p>LDFLAGS="-L/apps/compiler/gcc/7.2.0/openmpi/3.1.0/lib \</p><p>-L${HOME}/apps/my_lib" \</p><p>CPPFLAGS="-I/apps/compiler/gcc/7.2.0/openmpi/3.1.0/include \</p><p>-I${HOME}/apps/my_include"</p><p>$ <strong>vi mpiPi.h</strong></p><p>----- 수정 사항은 아래의 내용 참고 -----</p><p>$ make</p><p>$ make install</p> |
 
-{% code title="[vi mpiPi.h수정 사항]" %}
-```
-<수정 전>
-#ifndef _MPIPI_H
-#define _MPIPI_H
 
-<수정 후>
-#ifndef _MPIPI_H
-#define _MPIPI_H
-#define PACKAGE 1
-#define PACKAGE_VERSION 1
 
-```
-{% endcode %}
+\[vi mpiPi.h수정 사항]
+
+> <수정 전>
+>
+> \#ifndef \_MPIPI\_H
+>
+> \#define \_MPIPI\_H
+>
+> \
+> <수정 후>
+>
+> \#ifndef \_MPIPI\_H
+>
+> \#define \_MPIPI\_H
+>
+> **#define PACKAGE 1**
+>
+> **#define PACKAGE\_VERSION 1**
 
