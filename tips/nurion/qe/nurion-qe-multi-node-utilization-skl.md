@@ -16,28 +16,33 @@ QE (6.4.1 버전)의 실행 테스트를 위하여, 실리콘 128개 원소로 �
 
 ### **1) 작업 스크립트 예제**
 
-```
-#!/bin/sh
-#PBS –N 1L01N40C40M01T         # job의 이름(여러 개의 작업 제출 시 사용자가 구분하기 위한 목적)
-#PBS –V              # 작업 제출 노드(로그인 노드)에서 설정한 환경을 계산 노드에 적용하기 위해 사용함
-#PBS –q norm_skl                                      # 사용 큐
-#PBS –l select=1:ncpus=40:mpiprocs=40:ompthreads=1 # 아래 참조
-#PBS –l walltime=06:00:00                        # 작업을 수행할 시간( normal 큐는 최대 48시간까지 가능)
-#PBS –A qe                                          # 자료 수집의 목적으로 프로그램 이름을 기입해야 함(의무사항)
- 
-cd {작업 위치}
- 
-time -p mpirun {설치 위치}/pw.x -nimage 1 -npool 1 -ntg 1 -ndiag 1 -inp Si.in > ./Si.out
-
-```
+> \#!/bin/sh
+>
+> \#PBS –N 1L01N40C40M01T         <mark style="color:blue;"># job의 이름(여러 개의 작업 제출 시 사용자가 구분하기 위한 목적)</mark>
+>
+> \#PBS –V              <mark style="color:blue;"># 작업 제출 노드(로그인 노드)에서 설정한 환경을 계산 노드에 적용하기 위해 사용함</mark>
+>
+> \#PBS –q norm\_skl                                      <mark style="color:blue;"># 사용 큐</mark>
+>
+> \#PBS –l select=1:ncpus=40:mpiprocs=40:ompthreads=1 <mark style="color:blue;"># 아래 참조</mark>
+>
+> \#PBS –l walltime=06:00:00                        <mark style="color:blue;"># 작업을 수행할 시간( normal 큐는 최대 48시간까지 가능)</mark>
+>
+> \#PBS –A qe                                          <mark style="color:blue;"># 자료 수집의 목적으로 프로그램 이름을 기입해야 함(의무사항)</mark>
+>
+> &#x20;
+>
+> cd <mark style="color:red;">{작업 위치}</mark>
+>
+> &#x20;
+>
+> time -p mpirun <mark style="color:red;">{설치 위치}</mark>/pw.x -nimage 1 -npool 1 -ntg 1 -ndiag 1 -inp Si.in > ./Si.out
 
 
 
 \* 작업 스크립트는 이전의 KNL과 거의 동일, 차이점은 사용하는 큐가 normal 큐에서, norm\_skl로 바뀐 점, 그리고 KNL이 노드 당 코어를 68개인 것에 반해 SKL은 40개의 코어를 가지고 있기 때문에, 아래와 같이 가용 core수와 MPI 프로세스 수가 40이 넘을 수 없다는 점임.
 
-```
-#PBS –l select=1:ncpus=40:mpiprocs=40:ompthreads=1
-```
+> \#PBS –l select=1:ncpus=40:mpiprocs=40:ompthreads=1
 
 
 
