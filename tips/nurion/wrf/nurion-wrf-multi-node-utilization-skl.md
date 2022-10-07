@@ -22,28 +22,37 @@ WRF의 실행 테스트를 위하여, 아래의 환경으로 2018년 10월 16일
 
 ### **1) 작업 스크립트 예제**
 
-```
- #!/bin/sh
-#PBS -N comp_WRFv3
-#PBS -V
-#PBS -q normal_skl
-#PBS -l select=1:ncpus=40:mpiprocs=40:ompthreads=1
-#PBS -l walltime=06:00:00
-
-cd $PBS_O_WORKDIR
-module load craype-x86-skylake intel/18.0.3 impi/18.0.3
-module load hdf4/4.2.13 hdf5/1.10.2 netcdf/4.6.1 ncl/6.5.0
-export JASPERLIB=/apps/common/jasper/1.900.29/lib
-export JASPERINC=/apps/common/jasper/1.900.29/include
-
-mpirun {설치 경로}/main/wrf.exe
-```
+> &#x20;**** #!/bin/sh
+>
+> \#PBS -N comp\_WRFv3
+>
+> \#PBS -V
+>
+> <mark style="color:blue;">#PBS -q normal\_skl</mark>
+>
+> <mark style="color:blue;">#PBS -l select=1:ncpus=40:mpiprocs=40:ompthreads=1</mark>
+>
+> \#PBS -l walltime=06:00:00
+>
+>
+>
+> cd $PBS\_O\_WORKDIR
+>
+> module load craype-x86-skylake intel/18.0.3 impi/18.0.3
+>
+> module load hdf4/4.2.13 hdf5/1.10.2 netcdf/4.6.1 ncl/6.5.0
+>
+> export JASPERLIB=/apps/common/jasper/1.900.29/lib
+>
+> export JASPERINC=/apps/common/jasper/1.900.29/include
+>
+>
+>
+> mpirun {설치 경로}/main/wrf.exe
 
 \* 작업 스크립트는 이전의 KNL과 거의 동일, 차이점은 사용하는 큐가 normal 큐에서, norm\_skl로 바뀐 점, 그리고 KNL이 노드 당 코어를 68개인 것에 반해 SKL은 40개의 코어를 가지고 있기 때문에, 아래와 같이 가용 core수와 MPI 프로세스 수가 40이 넘을 수 없다는 점임.
 
-```
-#PBS –l select=1:ncpus=40:mpiprocs=40:ompthreads=1
-```
+> \#PBS –l select=1:ncpus=40:mpiprocs=40:ompthreads=1
 
 ****
 

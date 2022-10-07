@@ -30,9 +30,7 @@ vasp download portal 또는 vasp wiki 에서 다운 로드 가능.
 
 각 압축 파일을 Gunzip 후 vasp.5.4.4 root directory 에서 패치 진행(압축해제 방법은 생략한다)
 
-```
-$ patch -p0 < patch.5.4.4.16052018
-```
+> $ patch -p0 < patch.5.4.4.16052018
 
 
 

@@ -34,10 +34,16 @@ vasp download portal 또는 vasp wiki 에서 다운 로드 가능.
 
 각 압축 파일을 Gunzip 후 vasp.5.4.1 root directory 에서 패치 진행(압축해제 방법은 생략한다)
 
-```
-$ patch -p1 < patch.5.4.1.08072015
-$ patch -p1 < patch.5.4.1.27082015
-$ patch -p1 < patch.5.4.1.06112015
-```
+> $ patch -p1 < patch.5.4.1.08072015
+>
+> $ patch -p1 < patch.5.4.1.27082015
+>
+> $ patch -p1 < patch.5.4.1.06112015
+
+\
+
+
+\
+
 
 \
