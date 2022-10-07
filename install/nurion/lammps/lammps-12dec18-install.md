@@ -289,45 +289,63 @@ FFLAGS0 = -O0 -fPIC
 
 &#x20;(3-7) reax 설치
 
-|   **설치과정**                                                      |
-| --------------------------------------------------------------- |
-| <p>$ cd lib/reax<br>$ make -f Makefile.ifort<br>$ cd ../../</p> |
+{% code title="  설치과정" %}
+```
+$ cd lib/reax
+$ make -f Makefile.ifort
+$ cd ../../
+```
+{% endcode %}
 
 
 
 &#x20;(3-8) latte 설치
 
-|   **설치과정**                                                                                                                                                                                                                                                             |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ cd lib/latte<br>$ ln -s ${HOME}/build/LATTE-1.2.1/src includelink<br>$ ln -s ${HOME}/build/LATTE-1.2.1 liblink<br>$ ln -s ${HOME}/build/LATTE-1.2.1/src/latte_c_bind.o filelink.o<br>$ vi Makefile.lammps.mpi<br>----- 수정 사항은 아래의 내용 참고 ----- <br>$ cd ../../</p> |
+{% code title="  설치과정" %}
+```
+$ cd lib/latte
+$ ln -s ${HOME}/build/LATTE-1.2.1/src includelink
+$ ln -s ${HOME}/build/LATTE-1.2.1 liblink
+$ ln -s ${HOME}/build/LATTE-1.2.1/src/latte_c_bind.o filelink.o
+$ vi Makefile.lammps.mpi
+----- 수정 사항은 아래의 내용 참고 ----- 
+$ cd ../../
+```
+{% endcode %}
 
-
-
-\[Makefile.lammps.mpi 수정 사항]
-
-> latte\_SYSINC =\
-> **latte\_SYSLIB = ../../lib/latte/filelink.o -llatte -llinalg -lifport**\
-> **latte\_SYSPATH = -L../../lib/linalg -qopenmp**
+{% code title=" [Makefile.lammps.mpi 수정 사항]" %}
+```
+latte_SYSINC =
+latte_SYSLIB = ../../lib/latte/filelink.o -llatte -llinalg -lifport
+latte_SYSPATH = -L../../lib/linalg -qopenmp
+```
+{% endcode %}
 
 
 
 &#x20;(3-9) message 설치
 
-|   **설치과정**                                                                                                                                        |
-| ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ cd lib/message/cslib/src<br>$ vi Makefile<br>----- 수정 사항은 아래의 내용 참고 ----- <br>$ make lib_parallel zmq=no<br>$ cp libcsmpi.a libmessage.a</p> |
+{% code title="  설치과정" %}
+```
+$ cd lib/message/cslib/src
+$ vi Makefile
+----- 수정 사항은 아래의 내용 참고 ----- 
+$ make lib_parallel zmq=no
+$ cp libcsmpi.a libmessage.a
+```
+{% endcode %}
 
-
-
-\[Makefile 수정 사항]
-
-> ifeq ($(MPI),YES)\
-> &#x20; **CC = mpiicpc**\
-> else\
-> &#x20; CCFLAGS += -I./STUBS\_MPI\
-> &#x20; LIB = libcsnompi.a\
-> &#x20; SHLIB = libcsnompi.so\
-> endif
+{% code title="[Makefile 수정 사항]" %}
+```
+ifeq ($(MPI),YES)
+  CC = mpiicpc
+else
+  CCFLAGS += -I./STUBS_MPI
+  LIB = libcsnompi.a
+  SHLIB = libcsnompi.so
+endif
+```
+{% endcode %}
 
 
 
@@ -343,44 +361,45 @@ lammps 설치 디렉토리($HOME/build/lammps-12Dec18) 아래 src 폴더로 이�
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | <p>$ cd src<br>$ make package-status<br>$ make yes-standard<br>$ make yes-message<br>$ make no-GPU<br>$ make no-PYTHON<br>$ make no-kim<br>$ make no-KOKKOS<br>$ make no-MSCG<br>$ make yes-USER-ATC<br>$ make yes-USER-AWPMD<br>$ make yes-USER-MEAMC<br>$ make yes-USER-OMP<br>$ make yes-USER-REAXC<br>$ make package-status<br>$ vi MAKE/Makefile.mpi<br>-- 수정 사항은 아래 내용 참고 --<br>$ vi Makefile.package.settings<br>-- 수정 사항은 아래 내용 참고 --<br><br>$ make mpi</p> | <p> <br> package 선택 확인<br> standard package 선택<br> <br> standard package 중 gpu package 제외<br> standard package 중 PYTHON package 제외<br> standard package 중 kim package 제외<br> standard package 중 KOKKOS package 제외<br> standard package 중 MSCG package 제외<br> <br> <br><br><br> <br> <br> package 선택 확인<br> <br> <br> <br> <br></p> |
 
+{% code title="[MAKE/Makefile.mpi 수정 사항]" %}
+```
+CC = mpiicpc
+OPTFLAGS = -xCOMMON-AVX512 -O3 -fp-model fast=2 -no-prec-div -qoverride-limits
+CCFLAGS = -qopenmp -qno-offload -fno-alias -ansi-alias -restrict \
+-DLMP_INTEL_USELRT -DLMP_USE_MKL_RNG $(OPTFLAGS)
+CCFLAGS += -I/apps/compiler/intel/18.0.3/mkl/include -lmkl_rt
+SHFLAGS = -fPIC
+DEPFLAGS = -M
+ 
+LINK = mpiicpc
+LINKFLAGS = -qopenmp $(OPTFLAGS)
+LIB =
+SIZE = size
+ 
+ARCHIVE = ar
+ARFLAGS = -rc
+SHLIBFLAGS = -shared
+ 
+FFT_INC = -DFFT_MKL -DFFT_SINGLE
+FFT_PATH =
+FFT_LIB = -L${MKLROOT}/lib/intel64/ -lmkl_intel_ilp64 -lmkl_sequential -lmkl_core
 
+```
+{% endcode %}
 
-\[MAKE/Makefile.mpi 수정 사항]
-
-> **CC = mpiicpc**\
-> **OPTFLAGS = -xCOMMON-AVX512 -O3 -fp-model fast=2 -no-prec-div -qoverride-limits**\
-> **CCFLAGS = -qopenmp -qno-offload -fno-alias -ansi-alias -restrict \\**\
-> **-DLMP\_INTEL\_USELRT -DLMP\_USE\_MKL\_RNG $(OPTFLAGS)**\
-> **CCFLAGS += -I/apps/compiler/intel/18.0.3/mkl/include -lmkl\_rt**\
-> SHFLAGS = -fPIC\
-> DEPFLAGS = -M\
-> &#x20;\
-> **LINK = mpiicpc**\
-> **LINKFLAGS = -qopenmp $(OPTFLAGS)**\
-> LIB =\
-> SIZE = size\
-> &#x20;\
-> ARCHIVE = ar\
-> ARFLAGS = -rc\
-> SHLIBFLAGS = -shared\
-> &#x20;\
-> **FFT\_INC = -DFFT\_MKL -DFFT\_SINGLE**\
-> FFT\_PATH =\
-> **FFT\_LIB = -L${MKLROOT}/lib/intel64/ -lmkl\_intel\_ilp64 -lmkl\_sequential -lmkl\_core**
-
-
-
-\[Makefile.package.settings 수정 사항]
-
-> include ../../lib/awpmd/Makefile.lammps\
-> include ../../lib/atc/Makefile.lammps\
-> **include ../../lib/message/Makefile.lammps.nozmq**\
-> include ../../lib/voronoi/Makefile.lammps\
-> include ../../lib/reax/Makefile.lammps\
-> include ../../lib/poems/Makefile.lammps\
-> include ../../lib/meam/Makefile.lammps\
-> **include ../../lib/latte/Makefile.lammps.mpi**\
-> include ../../lib/compress/Makefile.lammps
+{% code title="[Makefile.package.settings 수정 사항]" %}
+```
+include ../../lib/awpmd/Makefile.lammps
+include ../../lib/atc/Makefile.lammps
+include ../../lib/message/Makefile.lammps.nozmq
+include ../../lib/voronoi/Makefile.lammps
+include ../../lib/reax/Makefile.lammps
+include ../../lib/poems/Makefile.lammps
+include ../../lib/meam/Makefile.lammps
+include ../../lib/latte/Makefile.lammps.mpi
+include ../../lib/compress/Makefile.lammps
+```
+{% endcode %}
 
 ****
 
@@ -388,12 +407,12 @@ lammps 설치 디렉토리($HOME/build/lammps-12Dec18) 아래 src 폴더로 이�
 
 &#x20;설치가 완료되면 사용에 편의를 위해 bin 경로를 만들어 실행 파일인 lmp\_mpi를 bin 경로에 복사한다.(선택사항)
 
-> $ ls -l lmp\_mpi\
-> $ cd ${HOME}/build/lammps-12Dec18/\
-> $ mkdir bin\
-> $ cp ${HOME}/build/lammps-12Dec18/src/lmp\_mpi/bin .
-
-
+```
+$ ls -l lmp_mpi
+$ cd ${HOME}/build/lammps-12Dec18/
+$ mkdir bin
+$ cp ${HOME}/build/lammps-12Dec18/src/lmp_mpi/bin .
+```
 
 ## **5. 누리온에서 LAMMPS 사용을 위한 PBS 작업 스크립트 예제**
 
@@ -402,6 +421,24 @@ lammps 설치 디렉토리($HOME/build/lammps-12Dec18) 아래 src 폴더로 이�
 
 실행 예제로는 examples/meam 아래의 데이터를 이용하였다.
 
-|   **작업스크립트 예제**(lammps\_test-run.sh)                                                                                                                                                                                                                                                                                                                                          |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>#!/bin/sh<br>#PBS -V<br>#PBS -N lammps_job_test<br>#PBS -q normal<br>#PBS -l select=2:ncpus=60:mpiprocs=60:ompthreads=1<br>#PBS -l walltime=04:00:00<br>#PBS -A lammps<br> <br>cd $PBS_O_WORKDIR<br> <br>module purge<br>module load intel/18.0.3 impi/18.0.3<br>export PATH=${HOME}/build/lammps-12Dec18/bin:$PATH<br> <br>mpirun lmp_mpi -in in.meamc<br> <br>exit 0</p> |
+{% code title="  작업스크립트 예제(lammps_test-run.sh)" %}
+```
+#!/bin/sh
+#PBS -V
+#PBS -N lammps_job_test
+#PBS -q normal
+#PBS -l select=2:ncpus=60:mpiprocs=60:ompthreads=1
+#PBS -l walltime=04:00:00
+#PBS -A lammps
+ 
+cd $PBS_O_WORKDIR
+ 
+module purge
+module load intel/18.0.3 impi/18.0.3
+export PATH=${HOME}/build/lammps-12Dec18/bin:$PATH
+ 
+mpirun lmp_mpi -in in.meamc
+ 
+exit 0
+```
+{% endcode %}
