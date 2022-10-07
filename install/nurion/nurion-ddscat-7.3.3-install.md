@@ -47,57 +47,69 @@ KISTI 슈퍼컴퓨팅센터의 누리온 시스템에 DDSCAT-7.3.3 Source 버전
 
 &#x20;소스 파일 다운로드 등은 생략한다.  &#x20;
 
-| 설치 과정                                                                                                                                                                                                                     |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p> $ tar -xzvf ddscat7.3.3_200717.tgz<br> $ cd src<br> $ cp $MKLROOT/include/mkl_dfti.f90 .<br> $ vi Makefile<br> - - - - - [ Makefile 파일 수정 내용] 참고 - - - - -<br> <br> $ make ddscat<br> <br> $ ls ddscat<br> ddscat</p> |
+{% code title="설치 과정" %}
+```
+ $ tar -xzvf ddscat7.3.3_200717.tgz
+ $ cd src
+ $ cp $MKLROOT/include/mkl_dfti.f90 .
+ $ vi Makefile
+ - - - - - [ Makefile 파일 수정 내용] 참고 - - - - -
+ 
+ $ make ddscat
+ 
+ $ ls ddscat
+ ddscat
+```
+{% endcode %}
 
 &#x20;
 
-\[Makefile 파일 수정 내용]
+{% code title="[Makefile 파일 수정 내용]" %}
+```
+#### line 114 ~ 125 주석처리 ####
+110 # 1.  gfortran compiler
+111 #     sp + no MKL + no OpenMP + no MPI
+112 #
+113 # define the following:
+114 # PRECISION   = sp
+115 # CXFFTMKL.f  = cxfft3_mkl_fake.f90
+116 # CXFFTMKL.o  = cxfft3_mkl_fake.o
+117 # MKLM        =
+118 # DOMP        =
+119 # OPENMP      =
+120 # MPI.f       = mpi_fake.f90
+121 # MPI.o       = mpi_fake.o
+122 # DMPI        =
+123 # FC      = gfortran
+124 # FFLAGS      = -O2
+125 # LFLAGS      =
 
-> \#### line 114 \~ 125 주석처리 ####\
-> 110 # 1.  gfortran compiler\
-> 111 #     sp + no MKL + no OpenMP + no MPI\
-> 112 #\
-> 113 # define the following:\
-> 114 # PRECISION   = sp\
-> 115 # CXFFTMKL.f  = cxfft3\_mkl\_fake.f90\
-> 116 # CXFFTMKL.o  = cxfft3\_mkl\_fake.o\
-> 117 # MKLM        =\
-> 118 # DOMP        =\
-> 119 # OPENMP      =\
-> 120 # MPI.f       = mpi\_fake.f90\
-> 121 # MPI.o       = mpi\_fake.o\
-> 122 # DMPI        =\
-> 123 # FC      = gfortran\
-> 124 # FFLAGS      = -O2\
-> 125 # LFLAGS      =\
-> \
-> \
-> \
-> \
-> \#### line 266 \~ 277 주석처리 해제 및 수정 ####\
-> 258 # 8.  ifort compiler (via mpif90)\
-> 259 #     sp + MKL + OpenMP + MPI\
-> 260 \
-> 261 # on some systems, before compiling, type\
-> 262 #   module purge\
-> 263 #   module load intel-mkl openmpi\
-> 264 \
-> 265 # define the following:\
-> 266 PRECISION  = sp\
-> 267 CXFFTMKL.f = $(MKL\_f)\
-> 268 CXFFTMKL.o = $(MKL\_o)\
-> 269 MKLM       = $(MKL\_m)\
-> 270 DOMP       = -Dopenmp\
-> 271 OPENMP     = <mark style="color:blue;">-qopenmp</mark>\
-> 272 MPI.f      = $(MPI\_f)\
-> 273 MPI.o      = $(MPI\_o)\
-> 274 DMPI       = -Dmpi\
-> 275 FC     = <mark style="color:blue;">mpiifort</mark>\
-> 276 FFLAGS     = -O2\
-> 277 LFLAGS     = <mark style="color:blue;">-traceback -mkl=parallel -lmpi</mark>\
->
+
+
+
+#### line 266 ~ 277 주석처리 해제 및 수정 ####
+258 # 8.  ifort compiler (via mpif90)
+259 #     sp + MKL + OpenMP + MPI
+260 
+261 # on some systems, before compiling, type
+262 #   module purge
+263 #   module load intel-mkl openmpi
+264 
+265 # define the following:
+266 PRECISION  = sp
+267 CXFFTMKL.f = $(MKL_f)
+268 CXFFTMKL.o = $(MKL_o)
+269 MKLM       = $(MKL_m)
+270 DOMP       = -Dopenmp
+271 OPENMP     = -qopenmp
+272 MPI.f      = $(MPI_f)
+273 MPI.o      = $(MPI_o)
+274 DMPI       = -Dmpi
+275 FC     = mpiifort
+276 FFLAGS     = -O2
+277 LFLAGS     = -traceback -mkl=parallel -lmpi
+```
+{% endcode %}
 
 ## **4. 실기영상**
 
