@@ -230,8 +230,6 @@ $ cd ../../
 ```
 {% endcode %}
 
-&#x20;
-
 {% code title="[Makefile.lammps.linalg 수정 사항]" %}
 ```
 user-atc_SYSINC =
@@ -240,69 +238,85 @@ user-atc_SYSPATH = -L../../lib/linalg$(LIBOBJDIR)
 ```
 {% endcode %}
 
-\[Makefile.lammps.linalg 수정 사항]
-
-> user-atc\_SYSINC =\
-> **user-atc\_SYSLIB = -llinalg**\
-> user-atc\_SYSPATH = -L../../lib/linalg$(LIBOBJDIR)
-
-
-
-\[Makefile.mpi 수정 사항]
-
-> **CC =            mpiicpc**
+{% code title="[Makefile.mpi 수정 사항]" %}
+```
+CC =            mpiicpc
+```
+{% endcode %}
 
 
 
 &#x20;(3-5) linalg 설치
 
-|   설치과정                                                                                                               |
-| -------------------------------------------------------------------------------------------------------------------- |
-| <p>$ cd lib/linalg<br>$ vi Makefile.mpi<br>----- 수정 사항은 아래의 내용 참고 -----<br>$ make -f Makefile.mpi<br>$ cd ../../</p> |
+{% code title="  설치과정" %}
+```
+$ cd lib/linalg
+$ vi Makefile.mpi
+----- 수정 사항은 아래의 내용 참고 -----
+$ make -f Makefile.mpi
+$ cd ../../ 
+```
+{% endcode %}
 
-&#x20;
-
-\[Makefile.mpi 수정 사항]
-
-> **FC = mpiifort**\
-> FFLAGS = -O3 -fPIC\
-> FFLAGS0 = -O0 -fPIC
+{% code title="[Makefile.mpi 수정 사항]" %}
+```
+FC = mpiifort
+FFLAGS = -O3 -fPIC
+FFLAGS0 = -O0 -fPIC
+```
+{% endcode %}
 
 &#x20;
 
 &#x20;(3-6) latte 설치
 
-|   설치과정                                                                                                                                                                                                                                                                 |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ cd lib/latte<br>$ ln -s ${HOME}/build/LATTE-1.2.1/src includelink<br>$ ln -s ${HOME}/build/LATTE-1.2.1 liblink<br>$ ln -s ${HOME}/build/LATTE-1.2.1/src/latte_c_bind.o filelink.o<br>$ vi Makefile.lammps.mpi<br>----- 수정 사항은 아래의 내용 참고 ----- <br>$ cd ../../</p> |
+{% code title="  설치과정" %}
+```
+$ cd lib/latte
+$ ln -s ${HOME}/build/LATTE-1.2.1/src includelink
+$ ln -s ${HOME}/build/LATTE-1.2.1 liblink
+$ ln -s ${HOME}/build/LATTE-1.2.1/src/latte_c_bind.o filelink.o
+$ vi Makefile.lammps.mpi
+----- 수정 사항은 아래의 내용 참고 ----- 
+$ cd ../../
+```
+{% endcode %}
 
+{% code title="[Makefile.lammps.mpi 수정 사항]" %}
+```
 
-
-\[Makefile.lammps.mpi 수정 사항]
-
-> latte\_SYSINC =\
-> **latte\_SYSLIB = ../../lib/latte/filelink.o -llatte -llinalg -lifport -lifcore**\
-> **latte\_SYSPATH = -L../../lib/linalg -qopenmp**
+latte_SYSINC =
+latte_SYSLIB = ../../lib/latte/filelink.o -llatte -llinalg -lifport -lifcore
+latte_SYSPATH = -L../../lib/linalg -qopenmp
+```
+{% endcode %}
 
 &#x20;
 
 &#x20;(3-7) message 설치
 
-| 설치과정                                                                                                                                                                   |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ cd lib/message/cslib/src<br>$ vi Makefile<br>----- 수정 사항은 아래의 내용 참고 ----- <br>$ make lib_parallel zmq=no<br>$ cp libcsmpi.a libmessage.a<br>$ cd ../../../../</p> |
+{% code title="설치과정" %}
+```
+$ cd lib/message/cslib/src
+$ vi Makefile
+----- 수정 사항은 아래의 내용 참고 ----- 
+$ make lib_parallel zmq=no
+$ cp libcsmpi.a libmessage.a
+$ cd ../../../../
+```
+{% endcode %}
 
-
-
-\[Makefile 수정 사항]
-
-> ifeq ($(MPI),YES)\
-> &#x20; **CC = mpiicpc**\
-> else\
-> &#x20; CCFLAGS += -I./STUBS\_MPI\
-> &#x20; LIB = libcsnompi.a\
-> &#x20; SHLIB = libcsnompi.so\
-> endif
+{% code title="[Makefile 수정 사항]" %}
+```
+ifeq ($(MPI),YES)
+  CC = mpiicpc
+else
+  CCFLAGS += -I./STUBS_MPI
+  LIB = libcsnompi.a
+  SHLIB = libcsnompi.so
+endif
+```
+{% endcode %}
 
 &#x20;
 
