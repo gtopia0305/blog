@@ -24,32 +24,43 @@ VASP 입력값 중 병렬계산과 관련된 설정들이 있는데, 이 중 병
 
 ### **1) 작업 스크립트 예제**
 
-```
-#!/bin/sh
-#PBS -N vasp_skl
-#PBS -V
-#PBS -l select=1:ncpus=40:mpiprocs=40:ompthreads=1
-#PBS –q norm_skl
-#PBS –l walltime=06:00:00 #　작업 수행 시간(최대 48시간)
-#PBS –A vasp # Application 별 PBS옵션 이름표.
- 
-cd $PBS_O_WORKDIR
-module purge
-module load craype-x86-skylake
-module load intel/18.0.3 impi/18.0.3
- 
-mpirun {설치 경로}/vasp_std
- 
-exit 0
-```
+> \#!/bin/sh
+>
+> \#PBS -N vasp\_skl
+>
+> \#PBS -V
+>
+> <mark style="color:blue;">#PBS -l select=1:ncpus=40:mpiprocs=40:ompthreads=1</mark>
+>
+> <mark style="color:blue;">#PBS –q norm\_skl</mark>
+>
+> \#PBS –l walltime=06:00:00 #　작업 수행 시간(최대 48시간)
+>
+> \#PBS –A vasp # Application 별 PBS옵션 이름표.
+>
+> &#x20;
+>
+> cd $PBS\_O\_WORKDIR
+>
+> module purge
+>
+> module load craype-x86-skylake
+>
+> module load intel/18.0.3 impi/18.0.3
+>
+> &#x20;
+>
+> mpirun {<mark style="color:red;">설치 경로</mark>}/vasp\_std
+>
+> &#x20;
+>
+> exit 0
 
 
 
 \* 작업 스크립트는 이전의 KNL과 거의 동일, 차이점은 사용하는 큐가 normal 큐에서, norm\_skl로 바뀐 점, 그리고 KNL이 노드 당 코어를 68개인 것에 반해 SKL은 40개의 코어를 가지고 있기 때문에, 아래와 같이 가용 core수와 MPI 프로세스 수가 40이 넘을 수 없다는 점임.
 
-```
-#PBS –l select=1:ncpus=40:mpiprocs=40:ompthreads=1
-```
+> \#PBS –l select=1:ncpus=40:mpiprocs=40:ompthreads=1
 
 
 
