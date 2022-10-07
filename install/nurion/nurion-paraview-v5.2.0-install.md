@@ -29,32 +29,20 @@ KISTI 슈퍼컴퓨팅센터의 누리온 시스템에  ParaView-v5.2.0 Source �
 
 
 
-{% code title="[ 환경 설정 ]" %}
-```
- $ module load intel/18.0.3 impi/18.0.3
- $ module load cmake/3.17.4
-```
-{% endcode %}
+\[ 환경 설정 ]
+
+> &#x20;$ module load intel/18.0.3 impi/18.0.3
+>
+> &#x20;$ module load cmake/3.17.4
 
 ## **3. ParaView-v5.2.0 버전 설치 과정**
 
 &#x20;설치 과정 소개는 tar 를 이용한 압축 해제 방법과 설정 방법등 진행 절차를 위주로 설명하고,\
 &#x20;소스 파일 다운로드 등은 생략한다. &#x20;
 
-{% code title=" 설치 과정" %}
-```
- $ tar -xzvf ParaView-v5.2.0.tar.gz
- $ cd ParaView-v5.2.0
- $ mkdir build
- $ cd build
- $ cmake .. -DVTK_RENDERING_BACKEND=OpenGL
- $ make
-
-
- $ ls bin/paraview
- bin/paraview
-```
-{% endcode %}
+|  **설치 과정**                                                                                                                                                                                                                           |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| <p> $ tar -xzvf ParaView-v5.2.0.tar.gz</p><p> $ cd ParaView-v5.2.0</p><p> $ mkdir build</p><p> $ cd build</p><p> $ cmake .. -DVTK_RENDERING_BACKEND=OpenGL</p><p> $ make</p><p><br></p><p> $ ls bin/paraview</p><p> bin/paraview</p> |
 
 ※ 의존 라이브러리 버전 등의 문제로 누리온 시스템에서 ParaView-v5.2.0 이후 버전은 사용 불가
 
