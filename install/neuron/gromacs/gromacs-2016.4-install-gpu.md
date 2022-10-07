@@ -27,17 +27,36 @@ description: 슈퍼컴퓨팅인프라센터 2019. 4. 30. 10:13
 
 &#x20;  [http://www.gromacs.org ](http://www.gromacs.org/)
 
-|   **GROMACS 소스 압축 풀기 & 빌드할 디렉토리 생성**                                                                                        |
-| --------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ tar xzf gromacs-2016.4.tar.gz </p><p>$ cd gromacs-2016.4  </p><p>$ <strong>mkdir build</strong> </p><p>$ cd build </p> |
+{% code title="  GROMACS 소스 압축 풀기 & 빌드할 디렉토리 생성 " %}
+```
+$ tar xzf gromacs-2016.4.tar.gz 
+$ cd gromacs-2016.4  
+$ mkdir build 
+$ cd build 
+```
+{% endcode %}
 
 
 
 &#x20;intel mkl 라이브러리를 사용하기 위해서는 아래의 cmake 명령을 참고하여 수행한다.&#x20;
 
-|   **intel mkl 을 사용하기 위한 cmake 명령**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| <p>$ module load intel/18.0.2 cuda/10.0 cudampi/mvapich2-2.3 </p><p>$ module load cmake/3.12.3</p><p></p><p>$ export CC=mpicc </p><p>$ export CXX=mpicxx </p><p>$ cmake -DGMX_OPENMP=ON <mark style="color:blue;">-DGMX_GPU=ON -DGMX_MPI=ON</mark> \</p><p><mark style="color:blue;">-DGMX_FFT_LIBRARY=mkl</mark> \</p><p>-DGMX_PREFER_STATIC_LIBS=ON -DCMAKE_BUILD_TYPE=Release \</p><p>-DCMAKE_INSTALL_PREFIX=<mark style="color:red;">${HOME}/applications/GROMACS/2016.4</mark> \</p><p>-DGMX_HWLOC=OFF \</p><p>..</p><p>$ make</p><p>$ make install</p> |
+{% code title="  intel mkl 을 사용하기 위한 cmake 명령 " %}
+```
+$ module load intel/18.0.2 cuda/10.0 cudampi/mvapich2-2.3 
+$ module load cmake/3.12.3
+
+$ export CC=mpicc 
+$ export CXX=mpicxx 
+$ cmake -DGMX_OPENMP=ON -DGMX_GPU=ON -DGMX_MPI=ON  \
+-DGMX_FFT_LIBRARY=mkl \
+-DGMX_PREFER_STATIC_LIBS=ON -DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_INSTALL_PREFIX=${HOME}/applications/GROMACS/2016.4 \
+-DGMX_HWLOC=OFF \
+..
+$ make
+$ make install
+```
+{% endcode %}
 
 &#x20;<mark style="color:red;">※ 옵션  - 설치할 디렉토리를 명시하고자 할때 : -DCMAKE\_INSTALL\_PREFIX=\<GROMACS\_INSTALL\_DIR> 를 추가한다.</mark>&#x20;
 
@@ -45,12 +64,32 @@ description: 슈퍼컴퓨팅인프라센터 2019. 4. 30. 10:13
 
 **\[참고] 뉴론시스템 상에서 slurm 스케쥴러를 이용한 간단한 테스트**
 
-|   **테스트 방법**                                                                                                                                                                                                                                                                                                                                                     |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ module load intel/18.0.2 cuda/10.0 cudampi/mvapich2-2.3  gromacs/2016.4</p><p>$ cp /apps/applications/test_samples/Gromacs/* .</p><p>$ tar xvzf water_GMX50_bare.tar.gz</p><p>$ gmx_mpi grompp -f pme.mdp -c conf.gro -p topol.top -o topol_pme.tpr</p><p>$ gmx_mpi grompp -f rf.mdp -c conf.gro -p topol.top -o topol_rf.tpr</p><p>$ sbatch gromacs.sh</p> |
+{% code title="  테스트 방법" %}
+```
+$ module load intel/18.0.2 cuda/10.0 cudampi/mvapich2-2.3  gromacs/2016.4
+$ cp /apps/applications/test_samples/Gromacs/* .
+$ tar xvzf water_GMX50_bare.tar.gz
+$ gmx_mpi grompp -f pme.mdp -c conf.gro -p topol.top -o topol_pme.tpr
+$ gmx_mpi grompp -f rf.mdp -c conf.gro -p topol.top -o topol_rf.tpr
+$ sbatch gromacs.sh
+```
+{% endcode %}
 
+{% code title="  작업 스크립트 (gromacs.sh)" %}
+```
+#!/bin/sh
+#SBATCH -J “gromacs_test”
+#SBATCH -p ivy_v100_2
+#SBATCH -N 1
+#SBATCH -n 4
+#SBATCH -o %x_%j.out
+#SBATCH -e %x_%j.err
+#SBATCH -t 00:30:00
+#SBATCH --gres=gpu:2
+#SBATCH --comment gromacs
 
+ulimit -s unlimited
 
-|   **작업 스크립트 (gromacs.sh)**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>#!/bin/sh</p><p>#SBATCH -J “gromacs_test”</p><p>#SBATCH -p ivy_v100_2</p><p>#SBATCH -N 1</p><p>#SBATCH -n 4</p><p>#SBATCH -o %x_%j.out</p><p>#SBATCH -e %x_%j.err</p><p>#SBATCH -t 00:30:00</p><p><mark style="color:red;">#SBATCH --gres=gpu:2</mark></p><p><mark style="color:red;">#SBATCH --comment gromacs</mark></p><p></p><p>ulimit -s unlimited</p><p></p><p>srun gmx_mpi mdrun <mark style="color:red;">-ntomp</mark> 5 <mark style="color:red;">-dlb</mark> yes <mark style="color:red;">-nb gpu</mark> -nsteps 4000 -s ./topol_pme.tpr</p> |
+srun gmx_mpi mdrun -ntomp 5 -dlb yes -nb gpu -nsteps 4000 -s ./topol_pme.tpr
+```
+{% endcode %}
