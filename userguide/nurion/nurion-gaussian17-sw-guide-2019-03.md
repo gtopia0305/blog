@@ -2,7 +2,7 @@
 description: 슈퍼컴퓨팅인프라센터 2019. 3. 4. 10:04
 ---
 
-# 누리온 가우시안16(Gaussian16) S/W 사용 안내 (2019.03)
+# 가우시안16(Gaussian16) S/W 사용 안내 (2019.03)
 
 본 문서는 누리온 시스템에서 가우시안 소프트웨어 사용을 위한 기초적인 정보를 제공하고 있습니다. 따라서, 가우시안 소프트웨어 사용법 및 누리온/리눅스 사용법 등은 포함되어 있지 않습니다. 누리온/리눅스 사용법에 대한 정보는 KISTI 홈페이지 (https://www.ksc.re.kr)의 기술지원 > 지침서 내 누리온 사용자 지침서 등을 참고하시기 바랍니다.
 
@@ -75,8 +75,27 @@ $ module load gaussian/g16.a03
 
 파일 위치: /apps/commercial/test\_samples/G16/g16.sh
 
-| <p>#!/bin/sh<br>#PBS -V<br>#PBS -N gaussian_test<br>#PBS -q normal <mark style="color:orange;"><mark style="color:yellow;"># PBS의 queue를 지정</mark></mark><br>#PBS -l select=1:ncpus=64:mpiprocs=1:ompthreads=64<br>#PBS -l walltime=01:00:00 <mark style="color:orange;"><mark style="color:yellow;"># 예상 작업소요시간 지정 (시:분:초)</mark></mark><br><mark style="color:red;">#PBS -A gaussian</mark><br><br>cd $PBS_O_WORKDIR<br><br>module purge<br>module load gaussian/g16.a03<br><br>export GAUSS_SCRDIR="/scratch/${USER}"<br>export GAUSS_PDEF=$NCPUS<br><br>g16 test.com<br><br>exit 0</p> |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+```
+#!/bin/sh
+#PBS -V
+#PBS -N gaussian_test
+#PBS -q normal # PBS의 queue를 지정
+#PBS -l select=1:ncpus=64:mpiprocs=1:ompthreads=64
+#PBS -l walltime=01:00:00 # 예상 작업소요시간 지정 (시:분:초)
+#PBS -A gaussian
+
+cd $PBS_O_WORKDIR
+
+module purge
+module load gaussian/g16.a03
+
+export GAUSS_SCRDIR="/scratch/${USER}"
+export GAUSS_PDEF=$NCPUS
+
+g16 test.com
+
+exit 0
+```
 
 <mark style="color:red;">- 2019년 3월 PM 이후</mark>\ <mark style="color:red;">(3월14일)</mark>\ <mark style="color:red;">부터는 "#PBS -A gaussian" 옵션이 없는 경우 작업제출이 되지 않습니다.</mark>
 

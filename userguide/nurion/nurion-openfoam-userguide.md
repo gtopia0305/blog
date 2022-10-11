@@ -2,7 +2,7 @@
 description: 슈퍼컴퓨팅인프라센터 2019. 5. 28. 15:17
 ---
 
-# OpenFOAM 사용자 지침서
+# 누리온 OpenFOAM 사용자 지침서
 
 본 문서는 누리온 시스템에서 OpenFOAM 소프트웨어 사용을 위한 기초적인 정보를 제공하고 있습니다.
 
@@ -24,7 +24,7 @@ OpenFOAM 사용법에 대한 정보는 OpenFOAM 사이트([https://www.openfoam.
 
 **(2) 설치 위치**
 
-![](../../.gitbook/assets/install\_location.png)
+![](../../../.gitbook/assets/install\_location.png)
 
 
 
@@ -32,73 +32,57 @@ OpenFOAM 사용법에 대한 정보는 OpenFOAM 사이트([https://www.openfoam.
 
 **(1) OpenFOAM-4.1 KNL 버전**
 
-```
-$ module load intel/17.0.5 impi/17.0.5
-$ source /apps/applications/OpenFOAM/4.1/intel/17.0.5/impi/17.0.5/mic-knl/OpenFOAM/OpenFOAM-4.1/etc/bashrc WM_MPLIB=MPI
-```
+| <p>$ module load intel/17.0.5 impi/17.0.5</p><p>$ source /apps/applications/OpenFOAM/4.1/intel/17.0.5/impi/17.0.5/mic-knl/OpenFOAM/OpenFOAM-4.1/etc/bashrc WM_MPLIB=MPI</p> |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 
 
 **(2) OpenFOAM-4.1 SKL 버전**
 
-```
-$ module load intel/17.0.5 impi/17.0.5
-$ source /apps/applications/OpenFOAM/4.1/intel/17.0.5/impi/17.0.5/x86-skylake/OpenFOAM/OpenFOAM-4.1/etc/bashrc WM_MPLIB=MPI
-```
+| <p>$ module load intel/17.0.5 impi/17.0.5</p><p>$ source /apps/applications/OpenFOAM/4.1/intel/17.0.5/impi/17.0.5/x86-skylake/OpenFOAM/OpenFOAM-4.1/etc/bashrc WM_MPLIB=MPI</p> |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 
 
 **(3) OpenFOAM-5.0 KNL 버전**
 
-```
-$ module load intel/18.0.3 impi/18.0.3
-$ source /apps/applications/OpenFOAM/5.0/intel/18.0.3/impi/18.0.3/mic-knl/OpenFOAM/OpenFOAM-5.0/etc/bashrc
-```
+| <p>$ module load intel/18.0.3 impi/18.0.3</p><p>$ source /apps/applications/OpenFOAM/5.0/intel/18.0.3/impi/18.0.3/mic-knl/OpenFOAM/OpenFOAM-5.0/etc/bashrc</p> |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 
 
 **(4) OpenFOAM-5.0 SKL 버전**
 
-```
-$ module load intel/18.0.3 impi/18.0.3
-$ source /apps/applications/OpenFOAM/5.0/intel/18.0.3/impi/18.0.3/x86-skylake/OpenFOAM/OpenFOAM-5.0/etc/bashrc
-```
+| <p>$ module load intel/18.0.3 impi/18.0.3</p><p>$ source /apps/applications/OpenFOAM/5.0/intel/18.0.3/impi/18.0.3/x86-skylake/OpenFOAM/OpenFOAM-5.0/etc/bashrc</p> |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 
 
 
 **(5) OpenFOAM-7.0 KNL 버전**
 
-```
-$ module load intel/18.0.3 impi/18.0.3
-$ source /apps/applications/OpenFOAM/7.0/intel/18.0.3/impi/18.0.3/mic-knl/OpenFOAM/OpenFOAM-7/etc/bashrc
-```
+| <p>$ module load intel/18.0.3 impi/18.0.3</p><p>$ source /apps/applications/OpenFOAM/7.0/intel/18.0.3/impi/18.0.3/mic-knl/OpenFOAM/OpenFOAM-7/etc/bashrc</p> |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 
 
 
 **(6) OpenFOAM-7.0 SKL 버전**
 
-```
-$ module load intel/18.0.3 impi/18.0.3
-$ source /apps/applications/OpenFOAM/7.0/intel/18.0.3/impi/18.0.3/x86-skylake/OpenFOAM/OpenFOAM-7/etc/bashrc
-```
+| <p>$ module load intel/18.0.3 impi/18.0.3</p><p>$ source /apps/applications/OpenFOAM/7.0/intel/18.0.3/impi/18.0.3/x86-skylake/OpenFOAM/OpenFOAM-7/etc/bashrc</p> |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 
 
 **(7) OpenFOAM-v1912 KNL 버전**
 
-```
-$ module load intel/18.0.3 impi/18.0.3
-$ source /apps/applications/OpenFOAM/v1912/intel/18.0.3/impi/18.0.3/mic-knl/OpenFOAM/OpenFOAM-v1912/etc/bashrc
-```
+| <p>$ module load intel/18.0.3 impi/18.0.3</p><p>$ source /apps/applications/OpenFOAM/v1912/intel/18.0.3/impi/18.0.3/mic-knl/OpenFOAM/OpenFOAM-v1912/etc/bashrc</p> |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 
 
 
 **(8) OpenFOAM-v1912 SKL 버전**
 
-```
-$ module load intel/18.0.3 impi/18.0.3
-$ source /apps/applications/OpenFOAM/v1912/intel/18.0.3/impi/18.0.3/x86-skylake/OpenFOAM/OpenFOAM-v1912/etc/bashrc
-```
+| <p>$ module load intel/18.0.3 impi/18.0.3</p><p>$ source /apps/applications/OpenFOAM/v1912/intel/18.0.3/impi/18.0.3/x86-skylake/OpenFOAM/OpenFOAM-v1912/etc/bashrc</p> |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 
 
@@ -110,19 +94,8 @@ $ source /apps/applications/OpenFOAM/v1912/intel/18.0.3/impi/18.0.3/x86-skylake/
 
 ※ 아래 예제는 OpenFOAM 의 simpleFoam 에 대한 예제입니다.
 
-```
-#!/bin/sh
-#PBS -V
-#PBS -N OpenFOAM_job
-#PBS -q normal
-#PBS -l select=2:ncpus=32:mpiprocs=32:ompthreads=1
-#PBS -l walltime=04:00:00
-#PBS -A openfoam
-
-cd $PBS_O_WORKDIR
-
-mpirun simpleFoam -parallel
-```
+| <p>#!/bin/sh</p><p>#PBS -V</p><p>#PBS -N <mark style="color:blue;">OpenFOAM_job</mark></p><p>#PBS -q <mark style="color:blue;">normal</mark></p><p>#PBS -l select=2:ncpus=<mark style="color:blue;">32</mark>:mpiprocs=<mark style="color:blue;">32</mark>:ompthreads=<mark style="color:blue;">1</mark></p><p>#PBS -l walltime=<mark style="color:blue;">04:00:00</mark></p><p><mark style="color:red;">#PBS -A openfoam</mark></p><p></p><p>cd $PBS_O_WORKDIR</p><p></p><p>mpirun <mark style="color:blue;">simpleFoam -parallel</mark></p> |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 \- 위에서 파란색으로 표기된 부분은 사용자가 적절히 수정해야 합니다.
 
