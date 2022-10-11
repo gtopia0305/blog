@@ -2,7 +2,7 @@
 description: 슈퍼컴퓨팅인프라센터 2019. 8. 13. 10:38
 ---
 
-# 뉴론 가우시안16(Gaussian16) GPU S/W 사용 안내 (2019.08)
+# 가우시안16(Gaussian16) GPU S/W 사용 안내 (2019.08)
 
 본 문서는 뉴론 시스템에서 가우시안 소프트웨어 사용을 위한 기초적인 정보를 제공하고 있습니다. 따라서, 가우시안 소프트웨어 사용법 및 뉴론/리눅스 사용법 등은 포함되어 있지 않습니다. 뉴론/리눅스 사용법에 대한 정보는 KISTI 홈페이지 (https://www.ksc.re.kr)의 기술지원 > 지침서 내 뉴론 사용자 지침서 등을 참고하시기 바랍니다.
 
@@ -72,8 +72,34 @@ $ module load gaussian/g16
 
 파일 위치: /apps/applications/test\_samples/G16/g16\_gpu.sh
 
-| <p>#!/bin/sh</p><p>#SBATCH -J test</p><p>#SBATCH -p ivy_k40_2 <mark style="color:orange;"># 뉴론 은 tesla_node partition을 사용한다.</mark></p><p>#SBATCH -N 1</p><p>#SBATCH -n 20</p><p>#SBATCH -o gautest.o%j <mark style="color:orange;"># 표준 출력의 파일 이름을 정의</mark></p><p>#SBATCH -e gautest.e%j <mark style="color:orange;"># 표준 에러의 파일 이름을 정의</mark></p><p>#SBATCH -t 00:30:00</p><p>#SBATCH --gres=gpu:2</p><p>#SBATCH --comment gaussian</p><p><br><mark style="color:blue;">export g16root="/apps/applications/G16"</mark></p><p><mark style="color:blue;">export g16BASIS=${g16root}/g16/basis</mark></p><p><mark style="color:blue;">export GAUSS_EXEDIR=${g16root}/g16</mark></p><p><mark style="color:blue;">export GAUSS_LIBDIR=${g16root}/g16</mark></p><p><mark style="color:blue;">export GAUSS_ARCHDIR=${g16root}/g16/arch</mark></p><p><mark style="color:blue;">export LD_LIBRARY_PATH="${g16root}/g16:${LD_LIBRARY_PATH}"</mark></p><p><mark style="color:blue;">export PATH="${g16root}/g16:${PATH}"</mark></p><p>export GAUSS_SCRDIR="/scratch/${USER}"</p><p></p><p>export GAUSS_CDEF="0-19"</p><p>export GAUSS_GDEF="0-1=0,10"</p><p>export GAUSS_MDEF="10240mb"</p><p></p><p>g16 test.com</p><p></p> |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+```
+#!/bin/sh
+#SBATCH -J test
+#SBATCH -p ivy_k40_2 # 뉴론 은 tesla_node partition을 사용한다.
+#SBATCH -N 1
+#SBATCH -n 20
+#SBATCH -o gautest.o%j # 표준 출력의 파일 이름을 정의
+#SBATCH -e gautest.e%j # 표준 에러의 파일 이름을 정의
+#SBATCH -t 00:30:00
+#SBATCH --gres=gpu:2
+#SBATCH --comment gaussian
+
+export g16root="/apps/applications/G16"
+export g16BASIS=${g16root}/g16/basis
+export GAUSS_EXEDIR=${g16root}/g16
+export GAUSS_LIBDIR=${g16root}/g16
+export GAUSS_ARCHDIR=${g16root}/g16/arch
+export LD_LIBRARY_PATH="${g16root}/g16:${LD_LIBRARY_PATH}"
+export PATH="${g16root}/g16:${PATH}"
+export GAUSS_SCRDIR="/scratch/${USER}"
+
+export GAUSS_CDEF="0-19"
+export GAUSS_GDEF="0-1=0,10"
+export GAUSS_MDEF="10240mb"
+
+g16 test.com
+
+```
 
 \- 위 작업 스크립트 파일에서 파란색 부분은 이미 module load를 이용하여 가우시안 환경변수 설정을 했다면 생략가능합니다.
 
