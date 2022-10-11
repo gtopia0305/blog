@@ -2,7 +2,7 @@
 description: 슈퍼컴퓨팅인프라센터 2020. 7. 9. 09:19
 ---
 
-# 뉴론 OpenFOAM 사용자 지침서
+# OpenFOAM 사용자 지침서
 
 본 문서는 뉴론 시스템에서 OpenFOAM 소프트웨어 사용을 위한 기초적인 정보를 제공하고 있습니다.\
 따라서, OpenFOAM 소프트웨어 사용법 및 뉴론/리눅스 사용법 등은 포함되어 있지 않습니다.\
@@ -31,8 +31,10 @@ OpenFOAM 사용법에 대한 정보는 OpenFOAM 사이트([https://www.openfoam.
 
 **(1) OpenFOAM-v1912 버전**
 
-| <p>$ module load intel/18.0.2 mpi/impi-18.0.2</p><p>$ source /apps/applications/OpenFOAM/v1920/intel/18.0.2/impi/18.0.2/OpenFOAM/OpenFOAM-v1912/etc/bashrc</p> |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+```
+$ module load intel/18.0.2 mpi/impi-18.0.2
+$ source /apps/applications/OpenFOAM/v1920/intel/18.0.2/impi/18.0.2/OpenFOAM/OpenFOAM-v1912/etc/bashrc
+```
 
 
 
@@ -44,8 +46,19 @@ OpenFOAM 사용법에 대한 정보는 OpenFOAM 사이트([https://www.openfoam.
 
 ※ 아래 예제는 OpenFOAM 의 simpleFoam 에 대한 예제입니다.
 
-| <p>#!/bin/sh</p><p>#SBATCH -J <mark style="color:blue;">OpenFOAM_job</mark></p><p>#SBATCH -p <mark style="color:blue;">skl</mark></p><p>#SBATCH -N <mark style="color:blue;">2</mark> # number of nodes</p><p>#SBATCH -n <mark style="color:blue;">8</mark> # total process</p><p>#SBATCH -o %x_%j.out</p><p>#SBATCH -e %x_%j.err</p><p>#SBATCH --time=<mark style="color:blue;">24:00:00</mark></p><p>#SBATCH --comment <mark style="color:red;">openfoam</mark></p><p><mark style="color:red;"></mark></p><p>srun <mark style="color:blue;">simpleFoam -parallel</mark></p> |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+```
+#!/bin/sh
+#SBATCH -J OpenFOAM_job
+#SBATCH -p skl
+#SBATCH -N 2 # number of nodes
+#SBATCH -n 8 # total process
+#SBATCH -o %x_%j.out
+#SBATCH -e %x_%j.err
+#SBATCH --time=24:00:00
+#SBATCH --comment openfoam
+
+srun simpleFoam -parallel
+```
 
 \- 위에서 파란색으로 표기된 부분은 사용자가 적절히 수정해야 합니다.
 
