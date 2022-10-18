@@ -2,7 +2,7 @@
 description: 슈퍼컴퓨팅인프라센터 2019. 9. 18. 10:31
 ---
 
-# 뉴론 Keras 기반 Multi GPU 사용 방법 (2020.10)
+# Keras 기반 Multi GPU 사용 방법 (2020.10)
 
 Keras(케라스)는 파이썬으로 작성된 오픈 소스 신경망 라이브러리로, MXNet, Deeplearning4j, 텐서플로, Microsoft Cognitive Toolkit 또는 Theano 위에서 수행할 수 있는 High-level Neural Network API이다. 케라스의 특징은 User friendliness, Modularity, Easy Extensibility로 Multi-GPU를 사용하고자 하는 사용자도 코드를 최소한으로 수정하여 쉽게 Multi-GPU를 사용할 수 있도록 하고 있다.
 
@@ -10,7 +10,7 @@ KISTI GPU 클러스터인 NEURON의 큐 구성은 다음과 같으며, ivy\_k40\
 
 
 
-![\<NEURON 큐 구성 (2020.10월 기준)>](../../../.gitbook/assets/neuron\_que\_configuration\_2020\_10.png)
+![\<NEURON 큐 구성 (2020.10월 기준)>](../../.gitbook/assets/neuron\_que\_configuration\_2020\_10.png)
 
 **※ 노드 구성은 시스템 부하에 따라 시스템 운영 중에 조정될 수 있음.**
 
@@ -24,19 +24,19 @@ KISTI GPU 클러스터인 NEURON의 큐 구성은 다음과 같으며, ivy\_k40\
 
 ## **1. 학습에 사용된 신경망 코드 (cifar10.py)**
 
-![](../../../.gitbook/assets/997C723F5D818DBB06.png)
+![](../../.gitbook/assets/997C723F5D818DBB06.png)
 
-![](../../../.gitbook/assets/99E2DA3D5D818DE51F.png)
+![](../../.gitbook/assets/99E2DA3D5D818DE51F.png)
 
-![](../../../.gitbook/assets/996A393D5D818DE61D.png)
+![](../../.gitbook/assets/996A393D5D818DE61D.png)
 
-![](../../../.gitbook/assets/99A4D23D5D818DE620.png)
+![](../../.gitbook/assets/99A4D23D5D818DE620.png)
 
-![](../../../.gitbook/assets/993150485D81944509.png)
+![](../../.gitbook/assets/993150485D81944509.png)
 
-![](../../../.gitbook/assets/992B3D475D8192ED01.png)
+![](../../.gitbook/assets/992B3D475D8192ED01.png)
 
-![](../../../.gitbook/assets/9943AB4F5D8194A005.png)
+![](../../.gitbook/assets/9943AB4F5D8194A005.png)
 
 ## **2. 단일 GPU 사용 작업 제출 방법**
 
@@ -65,7 +65,7 @@ srun python cifar10.py
 
 \- ivy\_v100\_2노드에는 GPU가 2개 장착되어 있기 때문에 2개 GPU를 모두 사용할 수 있지만, 코드에 Multi-GPU를 사용한다고 명시하지 않았기 때문에 —gres옵션으로 gpu를 2개 사용한다고 하여도 하나의 gpu만을 사용한다는 것을 확인할 수 있음.
 
-![\<GPU 모니터링 – 단일 GPU 사용 확인>](../../../.gitbook/assets/999A06445D8185B82E.png)
+![\<GPU 모니터링 – 단일 GPU 사용 확인>](../../.gitbook/assets/999A06445D8185B82E.png)
 
 ****
 
@@ -73,13 +73,32 @@ srun python cifar10.py
 
 1\) \[from keras.utils import multi\_gpu\_model] 모듈 추가
 
-| <p>from __feature__ import print_function</p><p>import keras</p><p>from keras.datasets import cifar10</p><p>from keras.preprocessing.image import ImageDataGenerator</p><p>from keras.models import Sequential</p><p>from keras.layers import Dense, Dropout, Activation, Flatten</p><p>from keras.layers import Conv2D, MaxPooling2D</p><p><mark style="color:red;">from keras.utils import multi_gpu_model</mark></p><p>import os</p> |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+```
+from __feature__ import print_function
+import keras
+from keras.datasets import cifar10
+from keras.preprocessing.image import ImageDataGenerator
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Activation, Flatten
+from keras.layers import Conv2D, MaxPooling2D
+from keras.utils import multi_gpu_model
+import os
+```
 
 2\) 코드 내 multi-gpu사용 선언
 
-| <p># initiate RMSprop optimizer</p><p>opt = keras.optimizers.rmsprop(lr=0.0001, decay=1e-6)</p><p></p><p>#multi-gpu</p><p><mark style="color:red;">model = multi_gpu_model(model, gpus=2)</mark></p><p></p><p># Let's train the model using RMSprop</p><p>model.compile(loss='categorical_crossentropy',</p><p>optimizer=opt,</p><p>metrics=['accuracy'])</p> |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+```
+# initiate RMSprop optimizer
+opt = keras.optimizers.rmsprop(lr=0.0001, decay=1e-6)
+
+#multi-gpu
+model = multi_gpu_model(model, gpus=2)
+
+# Let's train the model using RMSprop
+model.compile(loss='categorical_crossentropy',
+optimizer=opt,
+metrics=['accuracy'])
+```
 
 \-사용하고자하는 GPU 개수만큼 gpus를 설정.\
 (ex. skl\_v100nv\_4노드의 경우에는 gpus=4라고 설정)
@@ -107,4 +126,4 @@ source activate tf_gpu
 srun python cifar10.py
 ```
 
-![\<GPU 모니터링 – Multi-GPU 사용 확인>](../../../.gitbook/assets/99B49C455D8185CE2E.png)
+![\<GPU 모니터링 – Multi-GPU 사용 확인>](../../.gitbook/assets/99B49C455D8185CE2E.png)
