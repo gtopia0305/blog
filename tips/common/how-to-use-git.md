@@ -8,8 +8,42 @@ description: 슈퍼컴퓨팅인프라센터 2020. 4. 24. 13:54
 
 누리온 시스템에서는 git이 기본 명령어로 설정되어 있지 않기 때문에, module 환경설정을 이용하여 사용 가능
 
-| <p> $ module load git/1.8.3.4</p><p> $ git --help</p><p> usage: git [--version] [--help] [-c name=value]</p><p>           [--exec-path[=&#x3C;path>]] [--html-path] [--man-path] [--info-path]</p><p>           [-p|--paginate|--no-pager] [--no-replace-objects] [--bare]</p><p>           [--git-dir=&#x3C;path>] [--work-tree=&#x3C;path>] [--namespace=&#x3C;name>]</p><p>           &#x3C;command> [&#x3C;args>]</p><p></p><p> The most commonly used git commands are:</p><p>   add        Add file contents to the index</p><p>   bisect     Find by binary search the change that introduced a bug</p><p>   branch     List, create, or delete branches</p><p>   checkout   Checkout a branch or paths to the working tree</p><p>   clone      Clone a repository into a new directory</p><p>   commit     Record changes to the repository</p><p>   diff       Show changes between commits, commit and working tree, etc</p><p>   fetch      Download objects and refs from another repository</p><p>   grep       Print lines matching a pattern</p><p>   init       Create an empty Git repository or reinitialize an existing one</p><p>   log        Show commit logs</p><p>   merge      Join two or more development histories together</p><p>   mv         Move or rename a file, a directory, or a symlink</p><p>   pull       Fetch from and merge with another repository or a local branch</p><p>   push       Update remote refs along with associated objects</p><p>   rebase     Forward-port local commits to the updated upstream head</p><p>   reset      Reset current HEAD to the specified state</p><p>   rm         Remove files from the working tree and from the index</p><p>   show       Show various types of objects</p><p>   status     Show the working tree status</p><p>   tag        Create, list, delete or verify a tag object signed with GPG</p><p><br> 'git help -a' and 'git help -g' lists available subcommands and some</p><p> concept guides. See 'git help &#x3C;command>' or 'git help &#x3C;concept>'</p><p> to read about a specific subcommand or concept.</p> |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+```
+ $ module load git/1.8.3.4
+ $ git --help
+ usage: git [--version] [--help] [-c name=value]
+           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]
+           [-p|--paginate|--no-pager] [--no-replace-objects] [--bare]
+           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]
+           <command> [<args>]
+
+ The most commonly used git commands are:
+   add        Add file contents to the index
+   bisect     Find by binary search the change that introduced a bug
+   branch     List, create, or delete branches
+   checkout   Checkout a branch or paths to the working tree
+   clone      Clone a repository into a new directory
+   commit     Record changes to the repository
+   diff       Show changes between commits, commit and working tree, etc
+   fetch      Download objects and refs from another repository
+   grep       Print lines matching a pattern
+   init       Create an empty Git repository or reinitialize an existing one
+   log        Show commit logs
+   merge      Join two or more development histories together
+   mv         Move or rename a file, a directory, or a symlink
+   pull       Fetch from and merge with another repository or a local branch
+   push       Update remote refs along with associated objects
+   rebase     Forward-port local commits to the updated upstream head
+   reset      Reset current HEAD to the specified state
+   rm         Remove files from the working tree and from the index
+   show       Show various types of objects
+   status     Show the working tree status
+   tag        Create, list, delete or verify a tag object signed with GPG
+
+ 'git help -a' and 'git help -g' lists available subcommands and some
+ concept guides. See 'git help <command>' or 'git help <concept>'
+ to read about a specific subcommand or concept.
+```
 
 
 
@@ -17,8 +51,41 @@ description: 슈퍼컴퓨팅인프라센터 2020. 4. 24. 13:54
 
 뉴론 시스템에서는 git이 기본 명령어로 설정되어 있기 때문에, 별도의 환경설정 없이 사용 가능
 
-| <p> $ git --help</p><p> usage: git [--version] [--help] [-c name=value]</p><p>           [--exec-path[=&#x3C;path>]] [--html-path] [--man-path] [--info-path]</p><p>           [-p|--paginate|--no-pager] [--no-replace-objects] [--bare]</p><p>           [--git-dir=&#x3C;path>] [--work-tree=&#x3C;path>] [--namespace=&#x3C;name>]</p><p>           &#x3C;command> [&#x3C;args>]</p><p></p><p> The most commonly used git commands are:</p><p>   add        Add file contents to the index</p><p>   bisect     Find by binary search the change that introduced a bug</p><p>   branch     List, create, or delete branches</p><p>   checkout   Checkout a branch or paths to the working tree</p><p>   clone      Clone a repository into a new directory</p><p>   commit     Record changes to the repository</p><p>   diff       Show changes between commits, commit and working tree, etc</p><p>   fetch      Download objects and refs from another repository</p><p>   grep       Print lines matching a pattern</p><p>   init       Create an empty Git repository or reinitialize an existing one</p><p>   log        Show commit logs</p><p>   merge      Join two or more development histories together</p><p>   mv         Move or rename a file, a directory, or a symlink</p><p>   pull       Fetch from and merge with another repository or a local branch</p><p>   push       Update remote refs along with associated objects</p><p>   rebase     Forward-port local commits to the updated upstream head</p><p>   reset      Reset current HEAD to the specified state</p><p>   rm         Remove files from the working tree and from the index</p><p>   show       Show various types of objects</p><p>   status     Show the working tree status</p><p>   tag        Create, list, delete or verify a tag object signed with GPG</p><p></p><p> 'git help -a' and 'git help -g' lists available subcommands and some</p><p> concept guides. See 'git help &#x3C;command>' or 'git help &#x3C;concept>'</p><p> to read about a specific subcommand or concept.</p> |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+```
+ $ git --help
+ usage: git [--version] [--help] [-c name=value]
+           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]
+           [-p|--paginate|--no-pager] [--no-replace-objects] [--bare]
+           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]
+           <command> [<args>]
+
+ The most commonly used git commands are:
+   add        Add file contents to the index
+   bisect     Find by binary search the change that introduced a bug
+   branch     List, create, or delete branches
+   checkout   Checkout a branch or paths to the working tree
+   clone      Clone a repository into a new directory
+   commit     Record changes to the repository
+   diff       Show changes between commits, commit and working tree, etc
+   fetch      Download objects and refs from another repository
+   grep       Print lines matching a pattern
+   init       Create an empty Git repository or reinitialize an existing one
+   log        Show commit logs
+   merge      Join two or more development histories together
+   mv         Move or rename a file, a directory, or a symlink
+   pull       Fetch from and merge with another repository or a local branch
+   push       Update remote refs along with associated objects
+   rebase     Forward-port local commits to the updated upstream head
+   reset      Reset current HEAD to the specified state
+   rm         Remove files from the working tree and from the index
+   show       Show various types of objects
+   status     Show the working tree status
+   tag        Create, list, delete or verify a tag object signed with GPG
+
+ 'git help -a' and 'git help -g' lists available subcommands and some
+ concept guides. See 'git help <command>' or 'git help <concept>'
+ to read about a specific subcommand or concept.
+```
 
 
 
