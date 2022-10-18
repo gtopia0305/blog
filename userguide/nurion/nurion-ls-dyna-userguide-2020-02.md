@@ -2,7 +2,7 @@
 description: 슈퍼컴퓨팅인프라센터 2019. 3. 4. 09:48
 ---
 
-# LS-DYNA 사용자 지침서(2020.02)
+# 누리온 LS-DYNA 사용자 지침서(2020.02)
 
 본 문서는 누리온 시스템에서 LS-DYNA 소프트웨어 사용을 위한 기초적인 정보를 제공하고 있습니다.\
 따라서, LS-DYNA 소프트웨어 사용법 및 누리온/리눅스 사용법 등은 포함되어 있지 않습니다.\
@@ -52,7 +52,7 @@ description: 슈퍼컴퓨팅인프라센터 2019. 3. 4. 09:48
 
 ※ **ls-dyna 명령어**는 **(2)실행 예제** 및 관련 표를 참고하시고, **option**에 대한 정보는 아래 표를 참고하여 사용하시길 바랍니다.
 
-![](../../.gitbook/assets/ls\_dyna\_command.png)
+![](../../../.gitbook/assets/ls\_dyna\_command.png)
 
 **(2) 실행 예제**
 
@@ -82,7 +82,7 @@ $ [LS-DYNA 명령어] i=airbag.deploy.k memory=100m ncpu=4
 
 <mark style="color:red;">※ 사용가능한 LS-DYNA 명령어는 아래 표를 참고하여 선택한다.</mark>
 
-![](../../.gitbook/assets/ls\_dyna\_command2.png)
+![](../../../.gitbook/assets/ls\_dyna\_command2.png)
 
 ****
 
@@ -116,7 +116,7 @@ $ mpirun -np 4 [LS-DYNA 명령어] i=airbag.deploy.k memory=100m memory2=20m -pr
 
 <mark style="color:red;">※ 사용가능한 LS-DYNA 명령어는 아래 표를 참고하여 선택한다.</mark>
 
-![](../../.gitbook/assets/ls\_dyna\_command3.png)
+![](../../../.gitbook/assets/ls\_dyna\_command3.png)
 
 **(3) 실행 방법**
 
@@ -139,24 +139,10 @@ $ mpirun -np 4 [LS-DYNA 명령어] i=airbag.deploy.k memory=100m memory2=20m -pr
 \- 예제 파일 : /apps/commercial/test\_samples/LSDYNA/lsdyna\_smp.sh **(단일 노드에서 수행)**\
 &#x20;                        ****                         /apps/commercial/test\_samples/LSDYNA/lsdyna\_mpp.sh **(멀티 노드에서 수행)**
 
-{% code title="※ 아래 예제는 누리온 시스템 에서의 LS-DYNA에 대한 예제입니다. (단일 노드에서 수행)" %}
-```
-#!/bin/sh
-#PBS -V
-#PBS -N lsdyna_job
-#PBS -q commercial
-#PBS -l select=1:ncpus=40:mpiprocs=1:ompthreads=40
-#PBS -l walltime=04:00:00
-#PBS -A lsdyna
+※ 아래 예제는 누리온 시스템 에서의 LS-DYNA에 대한 예제입니다. **(단일 노드에서 수행)**
 
-cd $PBS_O_WORKDIR
-
-module load lsdyna/smp
-
-
-/apps/commercial/LSDYNA/SMP/R10.1.0/ls-dyna_smp_s_r1010_x64_redhat5_ifort160 \ i=airbag.deploy.k memory=1000m ncpu=$NCPUS
-```
-{% endcode %}
+| <p>#!/bin/sh</p><p>#PBS -V</p><p>#PBS -N <mark style="color:blue;">lsdyna_job</mark></p><p>#PBS -q commercial</p><p>#PBS -l select=1:ncpus=<mark style="color:blue;">40</mark>:mpiprocs=1:ompthreads=<mark style="color:blue;">40</mark></p><p>#PBS -l walltime=<mark style="color:blue;">04:00:00</mark></p><p><mark style="color:red;">#PBS -A lsdyna</mark></p><p><mark style="color:red;"></mark></p><p>cd $PBS_O_WORKDIR</p><p></p><p>module load lsdyna/smp</p><p></p><p></p><p><mark style="color:blue;">/apps/commercial/LSDYNA/SMP/R10.1.0/ls-dyna_smp_s_r1010_x64_redhat5_ifort160 <mark style="color:red;">\</mark> i=airbag.deploy.k</mark> memory=<mark style="color:blue;">1000m</mark> ncpu=$NCPUS</p> |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 \- 위에서 파란색으로 표기된 부분은 사용자가 적절히 수정해야 합니다.
 
@@ -166,25 +152,8 @@ module load lsdyna/smp
 
 ※ 아래 예제는 누리온 시스템 에서의 LS-DYNA에 대한 예제입니다. **(멀티 노드에서 수행)**
 
-{% code title="※ 아래 예제는 누리온 시스템 에서의 LS-DYNA에 대한 예제입니다. (멀티 노드에서 수행)" %}
-```
-#!/bin/sh
-#PBS -V
-#PBS -N lsdyna_job
-#PBS -q commercial
-#PBS -l select=2:ncpus=20:mpiprocs=20:ompthreads=1
-#PBS -l walltime=04:00:00
-#PBS -A lsdyna
-
-cd $PBS_O_WORKDIR
-
-module load lsdyna/mpp
-
-mpirun -machinefile $PBS_NODEFILE \
-/apps/commercial/LSDYNA/MPP/R10.1.0/ls-dyna_mpp_s_r10_1_123355_x64_redhat54_ifort160_sse2_platformmpi \
-i=airbag.deploy.k memory=1000m
-```
-{% endcode %}
+| <p>#!/bin/sh</p><p>#PBS -V</p><p>#PBS -N <mark style="color:blue;">lsdyna_job</mark></p><p>#PBS -q commercial</p><p>#PBS -l select=<mark style="color:blue;">2</mark>:ncpus=<mark style="color:blue;">20</mark>:mpiprocs=<mark style="color:blue;">20</mark>:ompthreads=1</p><p>#PBS -l walltime=04:00:00</p><p><mark style="color:red;">#PBS -A lsdyna</mark></p><p><mark style="color:red;"></mark></p><p>cd $PBS_O_WORKDIR</p><p></p><p>module load lsdyna/mpp</p><p></p><p>mpirun -machinefile $PBS_NODEFILE <mark style="color:red;">\</mark></p><p><mark style="color:blue;">/apps/commercial/LSDYNA/MPP/R10.1.0/ls-dyna_mpp_s_r10_1_123355_x64_redhat54_ifort160_sse2_platformmpi</mark> \</p><p>i=<mark style="color:blue;">airbag.deploy.k</mark> memory=<mark style="color:blue;">1000m</mark></p> |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 
 \- 위에서 파란색으로 표기된 부분은 사용자가 적절히 수정해야 합니다.
 

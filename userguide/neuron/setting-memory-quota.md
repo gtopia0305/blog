@@ -31,8 +31,11 @@ description: 슈퍼컴퓨팅인프라센터 2022. 3. 31. 12:07
 
 \- GPU 작업 시, 메모리 할당에 대한 안내 및 이해를 돕고자, gpu 사용 개수가 cpu core 수를 초과하는 경우에 아래 안내 메시지 출력되며 작업이 제출되지 않도록 설정되어 있음.
 
-| <p>sbatch: error: Job submission failed due to 'CPU_cores_per_node(#cpu core 개수) &#x3C; GPU_gres_per_node(#gpu 개수)'<br>sbatch: error: if 'CPU_cores_per_node >= GPU_gres_per_node' then job submission is successful!<br>…</p> |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+```
+sbatch: error: Job submission failed due to 'CPU_cores_per_node(#cpu core 개수) < GPU_gres_per_node(#gpu 개수)'
+sbatch: error: if 'CPU_cores_per_node >= GPU_gres_per_node' then job submission is successful!
+…
+```
 
 \- 메모리 할당량을 설정하지 않으면 메모리 부족으로 작업이 종료될 수 있기 때문에 사용자 작업 방식에 맞게 ntasks-per-node, cpus-per-task 또는 exclusive SBATCH 옵션 입력하여 작업 수행 권함
 
@@ -53,8 +56,18 @@ description: 슈퍼컴퓨팅인프라센터 2022. 3. 31. 12:07
 
 \- 사용자는 자신이 제출한 작업이 수행되고 있는 계산노드에 ssh 명령으로 접속하여 메모리 사용량을 확인할 수 있음
 
-| <p>1. 작업이 수행중인 계산노드 확인<br>$ squeue -u $USER<br>JOBID PARTITION NAME USER ST TIME NODES NODELIST(REASON)<br>job_number cas_v100_ gpu_job username R 0:00 1 <strong>gpu99</strong><br><br>2. ssh 명령으로 계산노드 접속<br>$ <strong>ssh gpu99</strong><br><br>3. 이후 top, nvidia-smi, htop, nvtop 등의 명령으로 자원 사용량에 대해 확인<br>(htop, nvtop은 module load nvtop htop 후 사용 가능)</p> |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+```
+1. 작업이 수행중인 계산노드 확인
+$ squeue -u $USER
+JOBID PARTITION NAME USER ST TIME NODES NODELIST(REASON)
+job_number cas_v100_ gpu_job username R 0:00 1 gpu99
+
+2. ssh 명령으로 계산노드 접속
+$ ssh gpu99
+
+3. 이후 top, nvidia-smi, htop, nvtop 등의 명령으로 자원 사용량에 대해 확인
+(htop, nvtop은 module load nvtop htop 후 사용 가능)
+```
 
 \- 메모리 사용량은 작업 수행과정에 따라 일시적으로 증가할 수 있기 때문에 노드에 접속하여 확인한 값보다 여유롭게 설정하는 것을 권장
 
@@ -64,8 +77,23 @@ description: 슈퍼컴퓨팅인프라센터 2022. 3. 31. 12:07
 
 1\) 프로그램 실행에 사용할 core 수는 적으나, 메모리 사용량이 큰 경우 노드당 수행될 프로세스 수로 메모리 할당량을 조절하여 프로그램 실행하는 예제
 
-| <p><br>#!/bin/sh<br>#SBATCH -J mem_alloc_job<br>#SBATCH -p cas_v100_4<br>#SBATCH --nodes=1<br>#SBATCH --ntasks-per-node=40<br>#SBATCH -o %x_%j.out<br>#SBATCH -e %x_%j.err<br>#SBATCH --time=01:00:00<br>#SBATCH --comment etc #Application별 SBATCH 옵션 이름표 참고<br><br>module purge<br>module load intel/18.0.2 mpi/impi-18.0.2<br><br>#실행할 프로세스 수를 -n 옵션으로 입력<br>srun -n 1 ./test.exe</p> |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+```
+#!/bin/sh
+#SBATCH -J mem_alloc_job
+#SBATCH -p cas_v100_4
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=40
+#SBATCH -o %x_%j.out
+#SBATCH -e %x_%j.err
+#SBATCH --time=01:00:00
+#SBATCH --comment etc #Application별 SBATCH 옵션 이름표 참고
+
+module purge
+module load intel/18.0.2 mpi/impi-18.0.2
+
+#실행할 프로세스 수를 -n 옵션으로 입력
+srun -n 1 ./test.exe
+```
 
 ※ cas\_v100\_4 1개 노드 모든 core 점유하여 메모리 할당받는 예제
 
@@ -75,7 +103,22 @@ description: 슈퍼컴퓨팅인프라센터 2022. 3. 31. 12:07
 
 2\) #SBATCH –exclusive 설정으로 노드를 전용으로 사용하는 예시
 
-| <p>#!/bin/sh<br>#SBATCH -J exclusive_test<br>#SBATCH -p cas_v100_4<br>#SBATCH --nodes=1<br>#SBATCH --gres=gpu:1<br>#SBATCH --exclusive<br>#SBATCH -o %x_%j.out<br>#SBATCH -e %x_%j.err<br>#SBATCH --time=01:00:00<br>#SBATCH --comment etc #Application별 SBATCH 옵션 이름표 참고<br><br>module purge<br>module load python/3.7.1<br><br>python test.py</p> |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+```
+#!/bin/sh
+#SBATCH -J exclusive_test
+#SBATCH -p cas_v100_4
+#SBATCH --nodes=1
+#SBATCH --gres=gpu:1
+#SBATCH --exclusive
+#SBATCH -o %x_%j.out
+#SBATCH -e %x_%j.err
+#SBATCH --time=01:00:00
+#SBATCH --comment etc #Application별 SBATCH 옵션 이름표 참고
+
+module purge
+module load python/3.7.1
+
+python test.py
+```
 
 ※ exclusive 옵션으로 노드 메모리 가용량의 95%를 작업에 할당받음
