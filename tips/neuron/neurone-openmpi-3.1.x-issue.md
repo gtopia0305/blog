@@ -58,19 +58,22 @@ Hello, World! I am process 1 of size 2 on login02&#x20;
 
 &#x20;
 
-{% code title="[수정 전]" %}
-```
-#if HAVE_DECL_IBV_EXP_QUERY_DEVICE 
-    device->ib_exp_dev_attr.comp_mask = IBV_EXP_DEVICE_ATTR_RESERVED - 1;
-```
-{% endcode %}
+\[수정 전]
 
-{% code title="[수정 후]" %}
-```
-#if HAVE_DECL_IBV_EXP_QUERY_DEVICE 
-    memset(&device->ib_exp_dev_attr, 0, sizeof(device->ib_exp_dev_attr));
-    device->ib_exp_dev_attr.comp_mask = IBV_EXP_DEVICE_ATTR_RESERVED - 1;
-```
-{% endcode %}
+\#if HAVE\_DECL\_IBV\_EXP\_QUERY\_DEVICE&#x20;
+
+&#x20;   device->ib\_exp\_dev\_attr.comp\_mask = IBV\_EXP\_DEVICE\_ATTR\_RESERVED - 1;
 
 &#x20;
+
+\[수정 후]
+
+\#if HAVE\_DECL\_IBV\_EXP\_QUERY\_DEVICE&#x20;
+
+&#x20;   **memset(\&device->ib\_exp\_dev\_attr, 0, sizeof(device->ib\_exp\_dev\_attr));**
+
+&#x20;   device->ib\_exp\_dev\_attr.comp\_mask = IBV\_EXP\_DEVICE\_ATTR\_RESERVED - 1;
+
+&#x20;
+
+\

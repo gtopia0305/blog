@@ -24,21 +24,19 @@ QE (6.4.1 버전)의 실행 테스트를 위하여, 실리콘 128개 원소로 �
 
 
 
-```
-#!/bin/sh
-#PBS –N 1L01N64C64M01T            # job의 이름(여러 개의 작업 제출 시 사용자가 구분하기 위한 목적)
-#PBS –V              # 작업 제출 노드(로그인 노드)에서 설정한 환경을 계산 노드에 적용하기 위해 사용함
-#PBS –q normal                               # 사용 큐(일반 사용자는 normal 큐만 사용 가능)
-#PBS –l select=1:ncpus=64:mpiprocs=64:ompthreads=1 # 아래 참조
-#PBS –l walltime=06:00:00             # 작업을 수행할 시간( normal 큐는 최대 48시간까지 가능)
-#PBS –A vasp # 자료 수집의 목적으로 프로그램 이름을 기입해야 함(의무사항)
-
-cd {작업위치}
-
-time -p mpirun {설치 위치}/bin/pw.x -nimage 1 -npool 1 -ntg 1 -ndiag 1 -inp Si.in > ./Si.out
-
-exit 0
-```
+> \#!/bin/sh\
+> \#PBS –N 1L01N64C64M01T           **** <mark style="color:blue;"># job의 이름(여러 개의 작업 제출 시 사용자가 구분하기 위한 목적)</mark>\
+> \#PBS –V              <mark style="color:blue;"># 작업 제출 노드(로그인 노드)에서 설정한 환경을 계산 노드에 적용하기 위해 사용함</mark>\
+> \#PBS –q normal                               <mark style="color:blue;"># 사용 큐(일반 사용자는 normal 큐만 사용 가능)</mark>\
+> \#PBS –l select=1:ncpus=64:mpiprocs=64:ompthreads=1 <mark style="color:blue;"># 아래 참조</mark>\
+> \#PBS –l walltime=06:00:00             <mark style="color:blue;"># 작업을 수행할 시간( normal 큐는 최대 48시간까지 가능)</mark>\
+> \#PBS –A vasp <mark style="color:blue;"># 자료 수집의 목적으로 프로그램 이름을 기입해야 함(의무사항)</mark>\
+> \
+> cd <mark style="color:red;">{작업위치}</mark>\
+> \
+> time -p mpirun <mark style="color:red;">{설치 위치}</mark>/bin/pw.x -nimage 1 -npool 1 -ntg 1 -ndiag 1 -inp Si.in > ./Si.out\
+> \
+> exit 0
 
 \#PBS –l select=<mark style="color:red;">1(A)</mark>:ncpus=<mark style="color:red;">64(B)</mark>:mpiprocs=<mark style="color:red;">64(C)</mark>:ompthreads=<mark style="color:red;">1(D)</mark>
 
@@ -58,9 +56,7 @@ D(예제에서는 1) : 한 프로세스가 사용할 OpenMP스레드의 수
 
 3\. 만일 2개의 노드를 사용하고 노드 당 프로세스의 수는 16, OpenMP 스레드의 수는 2로 지정하고 싶다면, 아래와 같이 지정한다.
 
-```
-#PBS –l select=2:ncpus=68:mpiprocs=16:ompthreads=2
-```
+> \#PBS –l select=2:ncpus=68:mpiprocs=16:ompthreads=2
 
 ****
 
@@ -123,12 +119,10 @@ QE는 Output 파일에 Profiling 결과가 표시가 된다. 이 Profiling 결�
 위의 내용을 기반으로 벤치마크에 사용한 input의 경우 nbgrp와 ntg의 input에 따라 성능이 차이가 발생할 수 있음을 알 수 있다.\
 노드수를 증가하면 오류가 발생하게 되는데, 이 오류는 계산량보다 코어수가 많을 경우 발생하는 오류이다.
 
-```
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Error in routine n_plane_waves (1):
-No plane waves found: running on too many processors?
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-```
+> %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\
+> Error in routine n\_plane\_waves (1):\
+> No plane waves found: running on too many processors?\
+> %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 이와 같은 기본사항을 기반으로 하여 실험을 진행하였다.
 
