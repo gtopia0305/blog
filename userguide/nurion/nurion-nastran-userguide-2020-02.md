@@ -2,7 +2,7 @@
 description: 슈퍼컴퓨팅인프라센터 2019. 3. 4. 09:55
 ---
 
-# 누리온 NASTRAN 사용자 지침서(2020.02)
+# NASTRAN 사용자 지침서(2020.02)
 
 본 문서는 누리온 시스템에서 NASTRAN 소프트웨어 사용을 위한 기초적인 정보를 제공하고 있습니다.\
 따라서, NASTRAN 소프트웨어 사용법 및 누리온/리눅스 사용법 등은 포함되어 있지 않습니다.\
@@ -81,8 +81,7 @@ description: 슈퍼컴퓨팅인프라센터 2019. 3. 4. 09:55
 
 
 
-\[ nast20182rc 파일 예제 ]
-
+{% code title="[ nast20182rc 파일 예제 ]" %}
 ```
 auth=27500@vaccine02.ext
 
@@ -116,6 +115,7 @@ auth=27500@vaccine02.ext
 
  $ End 
 ```
+{% endcode %}
 
 <mark style="color:red;">※ 사용자 홈디렉토리로 복사할 때 아래와 같이 사용하면 됩니다.</mark>
 
@@ -147,10 +147,22 @@ $ cp /apps/commercial/MSC/Nastran/conf/nast20182rc ./.nast20182rc
 
 
 
-※ 아래 예제는 누리온 시스템 에서의 NASTRAN에 대한 예제입니다.
+{% code title="※ 아래 예제는 누리온 시스템 에서의 NASTRAN에 대한 예제입니다." %}
+```
+#!/bin/sh
+#PBS -V
+#PBS -N Nastran_job
+#PBS -q commercial
+#PBS -l select=1:ncpus=40:mpiprocs=1:ompthreads=40
+#PBS -l walltime=04:00:00
+#PBS -A nastran
 
-| <p>#!/bin/sh</p><p>#PBS -V</p><p>#PBS -N <mark style="color:blue;">Nastran_job</mark></p><p>#PBS -q commercial</p><p>#PBS -l select=1:ncpus=<mark style="color:blue;">40</mark>:mpiprocs=1:ompthreads=<mark style="color:blue;">40</mark></p><p>#PBS -l walltime=<mark style="color:blue;">04:00:00</mark></p><p><mark style="color:red;">#PBS -A nastran</mark></p><p></p><p>cd $PBS_O_WORKDIR</p><p></p><p></p><p>/apps/commercial/MSC/Nastran/bin/nast20182 <mark style="color:blue;">car_mod_freq.bdf</mark> smp=$NCPUS batch=no sdir="."</p> |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+cd $PBS_O_WORKDIR
+
+
+/apps/commercial/MSC/Nastran/bin/nast20182 car_mod_freq.bdf smp=$NCPUS batch=no sdir="."
+```
+{% endcode %}
 
 \- 위에서 파란색으로 표기된 부분은 사용자가 적절히 수정해야 합니다.
 

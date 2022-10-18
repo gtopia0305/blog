@@ -2,7 +2,7 @@
 description: 슈퍼컴퓨팅인프라센터 2019. 9. 27. 08:20
 ---
 
-# 누리온 딥러닝 프레임워크 병렬화 사용법
+# 딥러닝 프레임워크 병렬화 사용법
 
 ### **가. Tensorflow에서 Horovod 사용법**
 
@@ -16,10 +16,13 @@ description: 슈퍼컴퓨팅인프라센터 2019. 9. 27. 08:20
 
 
 
-**◦ Tensorflow에서 Horovod 사용을 위한 import 및 메인 함수에서 Horovod 초기화**
-
-| <p>import horovod.tensorflow as hvd</p><p>...</p><p>hvd.init()</p> |
-| ------------------------------------------------------------------ |
+{% code title="◦ Tensorflow에서 Horovod 사용을 위한 import 및 메인 함수에서 Horovod 초기화" %}
+```
+import horovod.tensorflow as hvd
+...
+hvd.init()
+```
+{% endcode %}
 
 ※ horovod.tensorflow: Horovod를 Tensorflow와 연동하기 위한 모듈
 
@@ -27,19 +30,27 @@ description: 슈퍼컴퓨팅인프라센터 2019. 9. 27. 08:20
 
 
 
-**◦ 메인 함수에서 Horovod 활용을 위한 Dataset 설정**
-
-| <p>(x_train, y_train), (x_test, y_test) = &#x3C;/p></p><p>keras.datasets.mnist.load_data('MNIST-data-%d' % hvd.rank())</p> |
-| -------------------------------------------------------------------------------------------------------------------------- |
+{% code title="◦ 메인 함수에서 Horovod 활용을 위한 Dataset 설정" %}
+```
+(x_train, y_train), (x_test, y_test) = </p>
+keras.datasets.mnist.load_data('MNIST-data-%d' % hvd.rank())
+```
+{% endcode %}
 
 ※ 각 작업별로 접근할 dataset을 설정하기 위하여 Horovod rank에 따라 설정 및 생성한다.
 
 
 
-**◦ 메인 함수에서 optimizer에 Horovod 관련 설정 및 broadcast, 학습 진행 수 설정**
-
-| <p>opt = tf.train.AdamOptimizer(0.001 * hvd.size())</p><p>opt = hvd.DistributedOptimizer(opt)</p><p>global_step = tf.train.get_or_create_global_step()</p><p>train_op = opt.minimize(loss, global_step=global_step)</p><p>hooks = [hvd.BroadcastGlobalVariablesHook(0),</p><p>tf.train.StopAtStepHook(last_step=20000 // hvd.size()), ... ]</p> |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+{% code title="◦ 메인 함수에서 optimizer에 Horovod 관련 설정 및 broadcast, 학습 진행 수 설정" %}
+```
+opt = tf.train.AdamOptimizer(0.001 * hvd.size())
+opt = hvd.DistributedOptimizer(opt)
+global_step = tf.train.get_or_create_global_step()
+train_op = opt.minimize(loss, global_step=global_step)
+hooks = [hvd.BroadcastGlobalVariablesHook(0),
+tf.train.StopAtStepHook(last_step=20000 // hvd.size()), ... ]
+```
+{% endcode %}
 
 ※ Optimizer에 Horovod 관련 설정을 적용하고 각 작업에 broadcast를 활용하여 전달함
 
@@ -47,10 +58,13 @@ description: 슈퍼컴퓨팅인프라센터 2019. 9. 27. 08:20
 
 
 
-**◦ Inter operation 및 Intra operation의 병렬처리 설정**
-
-| <p>config = tf.ConfigProto()</p><p>config.intra_op_parallelism_threads = int(os.environ[‘OMP_NUM_THREADS’])</p><p>config.inter_op_parallelism_threads = 2</p> |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+{% code title="◦ Inter operation 및 Intra operation의 병렬처리 설정" %}
+```
+config = tf.ConfigProto()
+config.intra_op_parallelism_threads = int(os.environ[‘OMP_NUM_THREADS’])
+config.inter_op_parallelism_threads = 2
+```
+{% endcode %}
 
 ※ config.intra\_op\_parallelism\_threads: 연산 작업에서 사용할 thread 개수를 설정하는데 사용되며 job script에서 설정한 OMP\_NUM\_THREADS를 불러와서 적용함 (본 예시의 경우 OMP\_NUM\_THREADS를 32로 설정함)
 
@@ -58,10 +72,15 @@ description: 슈퍼컴퓨팅인프라센터 2019. 9. 27. 08:20
 
 
 
-◦ Rank 0 작업에 Checkpoint 설정
-
-| <p>checkpoint_dir = './checkpoints' if hvd.rank() == 0 else None</p><p>...</p><p>with tf.train.MonitoredTrainingSession(checkpoint_dir=checkpoint_dir,</p><p>hooks=hooks,</p><p>config=config) as mon_sess:</p> |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+{% code title="◦ Rank 0 작업에 Checkpoint 설정" %}
+```
+checkpoint_dir = './checkpoints' if hvd.rank() == 0 else None
+...
+with tf.train.MonitoredTrainingSession(checkpoint_dir=checkpoint_dir,
+hooks=hooks,
+config=config) as mon_sess:
+```
+{% endcode %}
 
 ※ Checkpoint 저장 및 불러오는 작업은 하나의 프로세스에서 수행되어야 하므로 rank 0번에 설정함
 
@@ -74,10 +93,38 @@ Caffe의 다중노드 병렬화는 Horovod에서 공식적으로 지원하지 �
 
 딥러닝 개발자에 의해 수정된 Caffe의 코드에 대하여 병렬처리를 수행할 경우 Intel Caffe 소스코드에 해당 부분을 업데이트하여 컴파일 후 실행하여야 한다.
 
-**◦ Intel Caffe 병렬처리 수행 방법 (스크립트 예제)**
+{% code title="◦ Intel Caffe 병렬처리 수행 방법 (스크립트 예제)" %}
+```
+#!/bin/sh
+#PBS -N test
+#PBS -V
+#PBS -l select=4:ncpus=68:mpiprocs=1:ompthreads=68
+#PBS -q normal
+#PBS -l walltime=04:00:00
+#PBS -A caffe
 
-| <p>#!/bin/sh</p><p>#PBS -N test</p><p>#PBS -V</p><p>#PBS -l select=4:ncpus=68:mpiprocs=1:ompthreads=68</p><p>#PBS -q normal</p><p>#PBS -l walltime=04:00:00</p><p>#PBS -A caffe</p><p></p><p>cd $PBS_O_WORKDIR</p><p></p><p>module purge</p><p>module load conda/intel_caffe_1.1.5</p><p></p><p>source /apps/applications/miniconda3/envs/intel_caffe/mlsl_2018.3.008/intel64/bin/mlslvars.sh</p><p></p><p>export KMP_AFFINITY=verbose,granularity=fine,compact=1</p><p>export KMP_BLOCKTIME=1</p><p>export KMP_SETTINGS=1</p><p></p><p><mark style="color:blue;">export OMP_NUM_THREADS=60</mark></p><p><mark style="color:blue;">mpirun -PSM2 -prepend-rank caffe train &#x3C;/p></mark></p><p><mark style="color:blue;">--solver ./models/intel_optimized_models/multinode/alexnet_4nodes/solver.prototxt</mark></p><p><mark style="color:blue;"># 혹은</mark></p><p><mark style="color:blue;">./scripts/run_intelcaffe.sh --hostfile $PBS_NODEFILE &#x3C;/p></mark></p><p><mark style="color:blue;">--caffe_bin /apps/applications/miniconda3/envs/intel_caffe/bin/caffe &#x3C;/p></mark></p><p><mark style="color:blue;">--solver models/intel_optimized_models/multinode/alexnet_4nodes/solver.prototxt &#x3C;/p></mark></p><p><mark style="color:blue;">--network opa --ppn 1 --num_omp_threads 60</mark></p><p>exit 0</p> |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+cd $PBS_O_WORKDIR
+
+module purge
+module load conda/intel_caffe_1.1.5
+
+source /apps/applications/miniconda3/envs/intel_caffe/mlsl_2018.3.008/intel64/bin/mlslvars.sh
+
+export KMP_AFFINITY=verbose,granularity=fine,compact=1
+export KMP_BLOCKTIME=1
+export KMP_SETTINGS=1
+
+export OMP_NUM_THREADS=60
+mpirun -PSM2 -prepend-rank caffe train </p>
+--solver ./models/intel_optimized_models/multinode/alexnet_4nodes/solver.prototxt
+# 혹은
+./scripts/run_intelcaffe.sh --hostfile $PBS_NODEFILE </p>
+--caffe_bin /apps/applications/miniconda3/envs/intel_caffe/bin/caffe </p>
+--solver models/intel_optimized_models/multinode/alexnet_4nodes/solver.prototxt </p>
+--network opa --ppn 1 --num_omp_threads 60
+exit 0
+```
+{% endcode %}
 
 ※ Network 옵션: Intel Onmi-Path Architecture (OPA)로 설정
 
