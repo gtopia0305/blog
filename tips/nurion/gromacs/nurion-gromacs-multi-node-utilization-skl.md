@@ -18,65 +18,72 @@ Gromacs (2018.6 버전)의 실행 테스트를 위하여, 프로틴을 모델 �
 
 ## **나. 실행 방법 및 성능 분석**
 
-**\[Gromacs 실행 명령 부분]**
-
-> $gmxBin grompp -f opls.mdp -c em20.gro -p topol.top -o md00.tpr
->
-> mpirun $gmxBin mdrun -notunepme -ntomp 1 -dlb yes -v -nsteps 40000 -resethway -noconfout -s ${WorkloadPath}/md00.tpr
+{% code title="[Gromacs 실행 명령 부분]" %}
+```
+$gmxBin grompp -f opls.mdp -c em20.gro -p topol.top -o md00.tpr
+mpirun $gmxBin mdrun -notunepme -ntomp 1 -dlb yes -v -nsteps 40000 -resethway -noconfout -s ${WorkloadPath}/md00.tpr
+```
+{% endcode %}
 
 ****
 
 ### **1) 작업 스크립트 예제**
 
-> \#!/bin/sh
->
-> \#PBS -N 01N
->
-> \#PBS -V
->
-> <mark style="color:blue;">#PBS -l select=1:ncpus=40:mpiprocs=40:ompthreads=1</mark>
->
-> <mark style="color:blue;">#PBS -q norm\_skl</mark>
->
-> \#PBS -l walltime=06:00:00
->
-> \#PBS -A gromacs
->
-> \#PBS -W sandbox=PRIVATE
->
-> &#x20;
->
-> module purge
->
-> module load craype-x86-skylake intel/18.0.3 impi/18.0.3 cmake/3.12.3
->
-> &#x20;
->
-> cd $PBS\_O\_WORKDIR
->
-> &#x20;
->
-> WorkloadPath=<mark style="color:red;">{작업 경로}</mark>
->
-> InstallDir=<mark style="color:red;">{설치 경로}</mark>/bin
->
-> gmxBin="${InstallDir}/gmx\_mpi"
->
-> &#x20;
->
-> $gmxBin grompp -f opls.mdp -c em20.gro -p topol.top -o md00.tpr
->
-> \#$gmxBin grompp -f rf.mdp -c conf.gro -p topol.top -o topol\_rf.tpr
->
-> &#x20;
->
-> export I\_MPI\_DEBUG=5
->
-> export I\_MPI\_PIN\_MODE=lib
->
-> &#x20;
->
-> time -p mpirun $gmxBin mdrun -notunepme -ntomp 1 -dlb yes -v -nsteps 40000 -resethway -noconfout -s ${WorkloadPath}/md00.tpr
+```
+#!/bin/sh
+#PBS -N 01N
+#PBS -V
+#PBS -l select=1:ncpus=40:mpiprocs=40:ompthreads=1
+#PBS -q norm_skl
+#PBS -l walltime=06:00:00
+#PBS -A gromacs
+#PBS -W sandbox=PRIVATE
+ 
+module purge
+module load craype-x86-skylake intel/18.0.3 impi/18.0.3 cmake/3.12.3
+ 
+cd $PBS_O_WORKDIR
+ 
+WorkloadPath={작업 경로}
+InstallDir={설치 경로}/bin
+gmxBin="${InstallDir}/gmx_mpi"
+ 
+$gmxBin grompp -f opls.mdp -c em20.gro -p topol.top -o md00.tpr
+#$gmxBin grompp -f rf.mdp -c conf.gro -p topol.top -o topol_rf.tpr
+ 
+export I_MPI_DEBUG=5
+export I_MPI_PIN_MODE=lib
+ 
+time -p mpirun $gmxBin mdrun -notunepme -ntomp 1 -dlb yes -v -nsteps 40000 -resethway -noconfout -s ${WorkloadPath}/md00.tpr
+```
+
+```
+#!/bin/sh
+#PBS -N 01N
+#PBS -V
+#PBS -l select=1:ncpus=40:mpiprocs=40:ompthreads=1
+#PBS -q norm_skl
+#PBS -l walltime=06:00:00
+#PBS -A gromacs
+#PBS -W sandbox=PRIVATE
+ 
+module purge
+module load craype-x86-skylake intel/18.0.3 impi/18.0.3 cmake/3.12.3
+ 
+cd $PBS_O_WORKDIR
+ 
+WorkloadPath={작업 경로}
+InstallDir={설치 경로}/bin
+gmxBin="${InstallDir}/gmx_mpi"
+ 
+$gmxBin grompp -f opls.mdp -c em20.gro -p topol.top -o md00.tpr
+#$gmxBin grompp -f rf.mdp -c conf.gro -p topol.top -o topol_rf.tpr
+ 
+export I_MPI_DEBUG=5
+export I_MPI_PIN_MODE=lib
+ 
+time -p mpirun $gmxBin mdrun -notunepme -ntomp 1 -dlb yes -v -nsteps 40000 -resethway -noconfout -s ${WorkloadPath}/md00.tpr
+```
 
 
 
