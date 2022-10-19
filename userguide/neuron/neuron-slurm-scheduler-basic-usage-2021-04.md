@@ -2,7 +2,7 @@
 description: 슈퍼컴퓨팅인프라센터 2019. 6. 14. 15:00
 ---
 
-# 뉴론 slurm 스케쥴러 기본 사용법 (2021.04)
+# slurm 스케쥴러 기본 사용법 (2021.04)
 
 뉴론 시스템은 스케쥴러로 slurm 을 사용하고 있습니다. 이 문서에서는 사용자가 뉴론 시스템에서 기본적인 작업 제출을 할 수 있는데 목적을 두고 있으며, MPI 작업 제출 등은 별도의 문서에서 설명할 계획입니다. 그 밖의 자세한 정보는 아래를 참고해 주시기 바랍니다.
 
@@ -53,8 +53,7 @@ optane            up 3-00:00:00      1   idle optane01
 $ sbatch ./job_script.sh
 ```
 
-\[작업스크립트 예제]
-
+{% code title="[작업스크립트 예제]" %}
 ```
 #!/bin/sh
 #SBATCH -J test          # 작업 이름         
@@ -69,6 +68,7 @@ $ sbatch ./job_script.sh
 
 srun ./run.x             # srun 사용
 ```
+{% endcode %}
 
 
 
@@ -160,8 +160,7 @@ scontrol 명령어를 이용하면 제출된 작업의 상세내역을 조회할
 $ scontrol show job [작업 ID]
 ```
 
-\- 예제 -
-
+{% code title="- 예제 -" %}
 ```
 $ scontrol show job 3217
  JobId=3217 JobName=ssw_test
@@ -191,6 +190,7 @@ $ scontrol show job 3217
    StdOut=/scratch2/moasys1/ssw/moasys1/kat_test/ssw.o3217
    Power=
 ```
+{% endcode %}
 
 
 
