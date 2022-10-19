@@ -218,12 +218,12 @@ description: 슈퍼컴퓨팅인프라센터 2019. 4. 30. 09:49
 
 ****
 
-**\[ 리눅스/맥 환경에서 접속방법 ]**
-
+{% code title="[ 리눅스/맥 환경에서 접속방법 ]" %}
 ```
 $ ssh -l <user id> neuron01.ksc.re.kr (or 150.183.150.99)
 $ ssh -l <user id> neuron02.ksc.re.kr (or 150.183.150.100)
 ```
+{% endcode %}
 
 ****
 
