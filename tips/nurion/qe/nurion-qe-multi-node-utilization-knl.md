@@ -24,21 +24,19 @@ QE (6.4.1 버전)의 실행 테스트를 위하여, 실리콘 128개 원소로 �
 
 
 
-```
-#!/bin/sh
-#PBS –N 1L01N64C64M01T            # job의 이름(여러 개의 작업 제출 시 사용자가 구분하기 위한 목적)
-#PBS –V              # 작업 제출 노드(로그인 노드)에서 설정한 환경을 계산 노드에 적용하기 위해 사용함
-#PBS –q normal                               # 사용 큐(일반 사용자는 normal 큐만 사용 가능)
-#PBS –l select=1:ncpus=64:mpiprocs=64:ompthreads=1 # 아래 참조
-#PBS –l walltime=06:00:00             # 작업을 수행할 시간( normal 큐는 최대 48시간까지 가능)
-#PBS –A vasp # 자료 수집의 목적으로 프로그램 이름을 기입해야 함(의무사항)
-
-cd {작업위치}
-
-time -p mpirun {설치 위치}/bin/pw.x -nimage 1 -npool 1 -ntg 1 -ndiag 1 -inp Si.in > ./Si.out
-
-exit 0
-```
+> \#!/bin/sh\
+> \#PBS –N 1L01N64C64M01T           **** <mark style="color:blue;"># job의 이름(여러 개의 작업 제출 시 사용자가 구분하기 위한 목적)</mark>\
+> \#PBS –V              <mark style="color:blue;"># 작업 제출 노드(로그인 노드)에서 설정한 환경을 계산 노드에 적용하기 위해 사용함</mark>\
+> \#PBS –q normal                               <mark style="color:blue;"># 사용 큐(일반 사용자는 normal 큐만 사용 가능)</mark>\
+> \#PBS –l select=1:ncpus=64:mpiprocs=64:ompthreads=1 <mark style="color:blue;"># 아래 참조</mark>\
+> \#PBS –l walltime=06:00:00             <mark style="color:blue;"># 작업을 수행할 시간( normal 큐는 최대 48시간까지 가능)</mark>\
+> \#PBS –A vasp <mark style="color:blue;"># 자료 수집의 목적으로 프로그램 이름을 기입해야 함(의무사항)</mark>\
+> \
+> cd <mark style="color:red;">{작업위치}</mark>\
+> \
+> time -p mpirun <mark style="color:red;">{설치 위치}</mark>/bin/pw.x -nimage 1 -npool 1 -ntg 1 -ndiag 1 -inp Si.in > ./Si.out\
+> \
+> exit 0
 
 \#PBS –l select=<mark style="color:red;">1(A)</mark>:ncpus=<mark style="color:red;">64(B)</mark>:mpiprocs=<mark style="color:red;">64(C)</mark>:ompthreads=<mark style="color:red;">1(D)</mark>
 
@@ -58,9 +56,7 @@ D(예제에서는 1) : 한 프로세스가 사용할 OpenMP스레드의 수
 
 3\. 만일 2개의 노드를 사용하고 노드 당 프로세스의 수는 16, OpenMP 스레드의 수는 2로 지정하고 싶다면, 아래와 같이 지정한다.
 
-```
-#PBS –l select=2:ncpus=68:mpiprocs=16:ompthreads=2
-```
+> \#PBS –l select=2:ncpus=68:mpiprocs=16:ompthreads=2
 
 ****
 
@@ -80,30 +76,35 @@ D(예제에서는 1) : 한 프로세스가 사용할 OpenMP스레드의 수
 
 QE는 Output 파일에 Profiling 결과가 표시가 된다. 이 Profiling 결과를 바탕으로 hot-spot을 찾고 hot-spot에 따라 실행 옵션을 변경하여 성능향상을 볼 수 있다. 현재 수행중인 input 파일을 위와 같이 1개 노드로 수행하였을 때의 profile 정보 중 핵심 부분은 아래와 같다.
 
-```
-Called by *egterg:
-h_psi : 24.97s CPU 27.26s WALL ( 74 calls)
-s_psi : 1.05s CPU 1.06s WALL ( 74 calls)
-g_psi : 0.02s CPU 0.02s WALL ( 55 calls)
-rdiaghg : 42.92s CPU 43.58s WALL ( 69 calls)
-
-General routines
-calbec : 3.38s CPU 3.42s WALL ( 161 calls)
-fft : 0.42s CPU 0.67s WALL ( 175 calls)
-ffts : 0.05s CPU 0.05s WALL ( 18 calls)
-fftw : 23.68s CPU 26.08s WALL ( 19072 calls)
-fftc : 1347.69s CPU 1365.23s WALL ( 316210 calls)
-fftcw : 2.87s CPU 3.17s WALL ( 2460 calls)
-
-EXX routines
-exx_grid : 0.00s CPU 0.01s WALL ( 1 calls)
-exxinit : 1.12s CPU 1.23s WALL ( 4 calls)
-vexx : 17417.59s CPU 17466.89s WALL ( 4 calls)
-matcalc : 0.60s CPU 0.61s WALL ( 61 calls)
-aceupdate : 0.04s CPU 0.06s WALL ( 4 calls)
-vexxace : 0.83s CPU 0.85s WALL ( 50 calls)
-aceinit : 17417.73s CPU 17467.06s WALL ( 4 calls)
-```
+> #### Called by \*egterg:
+>
+> h\_psi : 24.97s CPU 27.26s WALL ( 74 calls)\
+> s\_psi : 1.05s CPU 1.06s WALL ( 74 calls)\
+> g\_psi : 0.02s CPU 0.02s WALL ( 55 calls)\
+> rdiaghg : 42.92s CPU 43.58s WALL ( 69 calls)
+>
+>
+>
+> #### General routines
+>
+> calbec : 3.38s CPU 3.42s WALL ( 161 calls)\
+> fft : 0.42s CPU 0.67s WALL ( 175 calls)\
+> ffts : 0.05s CPU 0.05s WALL ( 18 calls)\
+> fftw : 23.68s CPU 26.08s WALL ( 19072 calls)\
+> fftc : 1347.69s CPU 1365.23s WALL ( 316210 calls)\
+> fftcw : 2.87s CPU 3.17s WALL ( 2460 calls)
+>
+>
+>
+> #### EXX routines
+>
+> exx\_grid : 0.00s CPU 0.01s WALL ( 1 calls)\
+> exxinit : 1.12s CPU 1.23s WALL ( 4 calls)\
+> vexx : 17417.59s CPU 17466.89s WALL ( 4 calls)\
+> matcalc : 0.60s CPU 0.61s WALL ( 61 calls)\
+> aceupdate : 0.04s CPU 0.06s WALL ( 4 calls)\
+> vexxace : 0.83s CPU 0.85s WALL ( 50 calls)\
+> aceinit : 17417.73s CPU 17467.06s WALL ( 4 calls)
 
 위 프로파일링 결과를 보면, General routines 부분은 ntg 값에 따라 성능이 달라지며, Call by \*egterg는 ndiag값, EXX routines는 nbgrp 값에 따라 성능 효율이 달라진다.\
 ****따라서 이 input의 경우 EXX routines에 hot-spot이며, nbgrp 옵션의 변경을 통해 성능을 올릴 수 있다.\
@@ -118,12 +119,10 @@ aceinit : 17417.73s CPU 17467.06s WALL ( 4 calls)
 위의 내용을 기반으로 벤치마크에 사용한 input의 경우 nbgrp와 ntg의 input에 따라 성능이 차이가 발생할 수 있음을 알 수 있다.\
 노드수를 증가하면 오류가 발생하게 되는데, 이 오류는 계산량보다 코어수가 많을 경우 발생하는 오류이다.
 
-```
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Error in routine n_plane_waves (1):
-No plane waves found: running on too many processors?
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-```
+> %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\
+> Error in routine n\_plane\_waves (1):\
+> No plane waves found: running on too many processors?\
+> %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 이와 같은 기본사항을 기반으로 하여 실험을 진행하였다.
 

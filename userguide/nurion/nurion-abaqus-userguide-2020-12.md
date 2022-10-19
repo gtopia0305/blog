@@ -2,7 +2,7 @@
 description: 슈퍼컴퓨팅인프라센터 2019. 6. 10. 14:43
 ---
 
-# ABAQUS 사용자 지침서(2020.12)
+# 누리온 ABAQUS 사용자 지침서(2020.12)
 
 본 문서는 누리온 시스템에서 ABAQUS 소프트웨어 사용을 위한 기초적인 정보를 제공하고 있습니다.
 
@@ -91,26 +91,8 @@ description: 슈퍼컴퓨팅인프라센터 2019. 6. 10. 14:43
 
 ※ 아래 예제는 누리온 시스템 에서의 ABAQUS 6.14-6 버전에 대한 예제입니다. **(단일노드에서 수행)**
 
-```
-#!/bin/sh
-#PBS -V
-#PBS -N abaqus_test                                                          # JOB의 이름을 지정
-#PBS -q commercial                                                            # PBS 의 Queue 지정
-#PBS -l select=1:ncpus=40:mpiprocs=40:ompthreads=1  # 연산에 사용할 자원 지정
-#PBS -l walltime=04:00:00                                                 # 예상 작업 소요시간 지정 (시:분:초)
-#PBS -A abaqus
-
-cd $PBS_O_WORKDIR
-
-###### Do not edit #####
-TOTAL_CPUS=$(wc -l $PBS_NODEFILE | awk '')
-
-#####################
-
-cp /apps/commercial/abaqus/6146/6.14-6/SMA/site/abaqus_v6.env .
-
-/apps/commercial/abaqus/Commands/abq6146 job=c2 cpus=${TOTAL_CPUS} int
-```
+| <p>#!/bin/sh</p><p>#PBS -V</p><p>#PBS -N abaqus_test <mark style="color:red;"></mark>                                                         # JOB의 이름을 지정</p><p>#PBS -q commercial                                                            # PBS 의 Queue 지정</p><p>#PBS -l select=1:ncpus=<mark style="color:blue;">40</mark>:mpiprocs=<mark style="color:blue;">40</mark>:ompthreads=1  # 연산에 사용할 자원 지정</p><p>#PBS -l walltime=04:00:00                                                 # 예상 작업 소요시간 지정 (시:분:초)</p><p><mark style="color:red;">#PBS -A abaqus</mark></p><p><mark style="color:red;"></mark></p><p>cd $PBS_O_WORKDIR</p><p></p><p><mark style="color:red;">###### Do not edit #####</mark></p><p><mark style="color:red;">TOTAL_CPUS=$(wc -l $PBS_NODEFILE | awk '')</mark></p><p><mark style="color:red;"></mark></p><p><mark style="color:red;">#####################</mark></p><p><mark style="color:red;"></mark></p><p>cp /apps/commercial/abaqus/6146/6.14-6/SMA/site/abaqus_v6.env .</p><p></p><p>/apps/commercial/abaqus/Commands/abq6146 job=c2 cpus=${TOTAL_CPUS} int</p> |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 \- 위에서 파란색으로 표기된 부분은 사용자가 적절히 수정해야 합니다.
 
@@ -132,23 +114,8 @@ cp /apps/commercial/abaqus/6146/6.14-6/SMA/site/abaqus_v6.env .
 
 ※ 아래 예제는 누리온 시스템 에서의 ABAQUS 6.14-6 버전에 대한 예제입니다. **(단일노드에서 threads mode 수행)**
 
-```
-#!/bin/sh
-#PBS -V
-#PBS -N abaqus_test # JOB의 이름을 지정
-#PBS -q commercial # PBS 의 Queue 지정
-#PBS -l select=1:ncpus=40:mpiprocs=
-1
-:ompthreads=40 # 연산에 사용할 자원 지정
-#PBS -l walltime=04:00:00 # 예상 작업 소요시간 지정 (시:분:초)
-#PBS -A abaqus
-
-cd $PBS_O_WORKDIR
-
-cp /apps/commercial/abaqus/6146/6.14-6/SMA/site/abaqus_v6.env .
-
-/apps/commercial/abaqus/Commands/abq6146 job=c2 cpus=${NCPUS} mp_mode=threads int
-```
+| <p>#!/bin/sh</p><p>#PBS -V</p><p>#PBS -N abaqus_test # JOB의 이름을 지정</p><p>#PBS -q commercial # PBS 의 Queue 지정</p><p>#PBS -l select=1:ncpus=<mark style="color:blue;">40</mark>:mpiprocs=</p><p>1</p><p>:ompthreads=<mark style="color:blue;">40</mark> # 연산에 사용할 자원 지정</p><p>#PBS -l walltime=04:00:00 # 예상 작업 소요시간 지정 (시:분:초)</p><p>#<mark style="color:red;">PBS -A abaqus</mark></p><p></p><p>cd $PBS_O_WORKDIR</p><p></p><p>cp /apps/commercial/abaqus/6146/6.14-6/SMA/site/abaqus_v6.env .</p><p></p><p>/apps/commercial/abaqus/Commands/abq6146 job=c2 cpus=${NCPUS} mp_mode=threads int</p> |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 \- 위에서 파란색으로 표기된 부분은 사용자가 적절히 수정해야 합니다.
 
@@ -170,33 +137,9 @@ cp /apps/commercial/abaqus/6146/6.14-6/SMA/site/abaqus_v6.env .
 
 ※ 아래 예제는 누리온 시스템 에서의 ABAQUS 6.14-6 버전에 대한 예제입니다. **(멀티노드에서 수행)**
 
-```
-#!/bin/sh
-#PBS -V
-#PBS -N abaqus_test                                                    # JOB의 이름을 지정
-#PBS -q commercial                                                     # PBS 의 Queue 지정
-#PBS -l select=2:ncpus=40:mpiprocs=40:ompthreads=1 # 연산에 사용할 자원 지정
-#PBS -l walltime=04:00:00                                          # 예상 작업 소요시간 지정 (시:분:초)
-#PBS -A abaqus
-
-cd $PBS_O_WORKDIR
-
-###### Do not edit #####
-export MPI_IC_ORDER=TCP
-TOTAL_CPUS=$(wc -l $PBS_NODEFILE | awk '')
-nodes="["
-for n in $(sort -u $PBS_NODEFILE)
-do
-nodes="$['$n',$(grep -c $n $PBS_NODEFILE)],"
-done
-nodes=$(echo $ | sed -e "s/,$/]/")
-echo "abaquslm_license_file="2501@vaccine02.ext"" > abaqus_v6.env
-echo "mp_host_list=$" >> abaqus_v6.env
-
-########################
-
-/apps/commercial/abaqus/Commands/abq6146 job=c2 cpus=$ mp_mode=mpi int
-```
+|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <p>#!/bin/sh</p><p>#PBS -V</p><p>#PBS -N abaqus_test                                                    # JOB의 이름을 지정</p><p>#PBS -q commercial                                                     # PBS 의 Queue 지정</p><p>#PBS -l select=2:ncpus=40:mpiprocs=40:ompthreads=1 # 연산에 사용할 자원 지정</p><p>#PBS -l walltime=04:00:00                                         <mark style="color:red;"></mark> # 예상 작업 소요시간 지정 (시:분:초)</p><p><mark style="color:red;">#PBS -A abaqus</mark></p><p><mark style="color:red;"></mark></p><p>cd $PBS_O_WORKDIR</p><p></p><p><mark style="color:red;">###### Do not edit #####</mark></p><p><mark style="color:red;">export MPI_IC_ORDER=TCP</mark></p><p><mark style="color:red;">TOTAL_CPUS=$(wc -l $PBS_NODEFILE | awk '')</mark></p><p><mark style="color:red;">nodes="["</mark></p><p><mark style="color:red;">for n in $(sort -u $PBS_NODEFILE)</mark></p><p><mark style="color:red;">do</mark></p><p><mark style="color:red;">nodes="$['$n',$(grep -c $n $PBS_NODEFILE)],"</mark></p><p><mark style="color:red;">done</mark></p><p><mark style="color:red;">nodes=$(echo $ | sed -e "s/,$/]/")</mark></p><p><mark style="color:red;">echo "abaquslm_license_file="2501@vaccine02.ext"" > abaqus_v6.env</mark></p><p><mark style="color:red;">echo "mp_host_list=$" >> abaqus_v6.env</mark></p><p><mark style="color:red;"></mark></p><p><mark style="color:red;">########################</mark></p><p><mark style="color:red;"></mark></p><p>/apps/commercial/abaqus/Commands/abq6146 job=c2 cpus=$ mp_mode=mpi int</p> |
 
 <mark style="color:red;">- 위에서 빨간색으로 표기된 부분은 수정하지 마세요.</mark>
 
@@ -268,16 +211,10 @@ $ pbs_status
 
 
 
-{% code title="[stripe count 설정 방법]" %}
-```
-$ mkdir
-$ lfs setstripe -c 4
-$ cp *.inp # .inp 파일은 abaqus의 input 파일을 지칭합니다.
-$ cp *.sh # .sh 파일은 abaqus 작업제출 스크립트를 지칭합니다.
-$ cd
-$ qsub
-```
-{% endcode %}
+\[stripe count 설정 방법]
+
+| <p>$ mkdir</p><p>$ <strong>lfs setstripe -c 4</strong></p><p>$ <strong>cp *.inp </strong><mark style="color:yellow;"><strong># .inp 파일은 abaqus의 input 파일을 지칭합니다.</strong></mark></p><p>$ <strong>cp *.sh </strong><mark style="color:yellow;"><strong># .sh 파일은 abaqus 작업제출 스크립트를 지칭합니다.</strong></mark></p><p>$ cd</p><p>$ qsub</p> |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 
 \* : 입력 데이터가 위치하고 있으며, 출력 데이터가 기록될 디렉토리
 
@@ -289,12 +226,8 @@ $ qsub
 
 <mark style="color:red;"></mark>
 
-{% code title="[관련 오류 메시지]" %}
-```
-(1) ***ERROR: *** Error: Extend failed (utl_File: read)
-(2) ***NOTE: DUE TO AN INPUT ERROR THE ANALYSIS PRE-PROCESSOR HAS BEEN UNABLE TO INTERPRET SOME DATA. SUBSEQUENT ERRORS MAY BE CAUSED BY THIS OMISSION
-(3) terminate called after throwing an instance of 'utl_FileExceptionExtend'
-*** ABAQUS/pre rank 0 received signal 6 (Aborted)
-```
-{% endcode %}
+\[관련 오류 메시지]
+
+| <p>(1) <strong>***ERROR: *** Error: Extend failed (utl_File: read)</strong></p><p>(2) ***NOTE: DUE TO AN INPUT ERROR THE ANALYSIS PRE-PROCESSOR HAS BEEN UNABLE <mark style="color:red;"></mark> TO INTERPRET SOME DATA. SUBSEQUENT ERRORS MAY BE CAUSED BY THIS OMISSION</p><p>(3) <strong>terminate called after throwing an instance of 'utl_FileExceptionExtend'</strong></p><p>*** ABAQUS/pre rank 0 received signal 6 (Aborted)</p> |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
