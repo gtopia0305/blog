@@ -109,23 +109,24 @@ KISTI 슈퍼컴퓨팅센터의 누리온 시스템에 CP2K-v6.1.0 Source 버전�
 
 &#x20;
 
-{% code title="[local.popt 수정 사항] " %}
+**\[local.popt 수정 사항]**&#x20;
+
 ```
 line 17 LIBS = -lquip_core -latoms -lFoX_sax -lFoX_common -lFoX_utils -lFoX_fsys -lpexsi -lsuperlu_dist -lptscotchparmetis -lptscotch -lptscotcherr -lscotchmetis -lscotch -lscotcherr -lelpa -lscalapack -lxsmmf -lxsmm -ldl -lpthread -lsmm_dnn -lxcf03 -lxc -lderiv -lint -lfftw3 -lmpi -lopenblas -lstdc++ -lmpi_cxx
 ```
-{% endcode %}
 
 &#x20;※ 17라인 LIBS 항목에 <mark style="color:blue;">"-lmpi\_cxx" 가 없는 경우</mark> <mark style="color:blue;"></mark><mark style="color:blue;">****</mark> <mark style="color:blue;"></mark><mark style="color:blue;">"-lmpi -lmpi\_cxx"</mark> 와 같이 <mark style="color:blue;">"-lmpi\_cxx"</mark>를 추가한다.
 
+&#x20;\
+**\[local.psmp 수정 사항]**&#x20;
 
-
-{% code title=" [local.psmp 수정 사항] " %}
 ```
 line 17 LIBS = -lquip_core -latoms -lFoX_sax -lFoX_common -lFoX_utils -lFoX_fsys -lpexsi -lsuperlu_dist -lptscotchparmetis -lptscotch -lptscotcherr -lscotchmetis -lscotch -lscotcherr -lelpa_openmp -lscalapack -lxsmmf -lxsmm -ldl -lpthread -lsmm_dnn -lxcf03 -lxc -lderiv -lint -lfftw3 -lfftw3_omp -lmpi -lopenblas_omp -lstdc++ -lmpi_cxx
 ```
-{% endcode %}
 
-&#x20;※ 17라인 LIBS 항목에 <mark style="color:blue;">"-lmpi\_cxx" 가 없는 경우 "-lmpi -lmpi\_cxx"</mark> 와 같이 <mark style="color:blue;">"-lmpi\_cxx"</mark>를 추가한다.
+&#x20;
+
+※ 17라인 LIBS 항목에 <mark style="color:blue;">"-lmpi\_cxx" 가 없는 경우 "-lmpi -lmpi\_cxx"</mark> 와 같이 <mark style="color:blue;">"-lmpi\_cxx"</mark>를 추가한다.
 
 
 
