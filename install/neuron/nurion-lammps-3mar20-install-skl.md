@@ -22,7 +22,7 @@ description: 슈퍼컴퓨팅인프라센터 2017. 5. 22. 15:02
 
 ## **2. 설치 정**
 
-{% code title="  NAMD 소스 파일 압축 풀기 " %}
+{% code title="NAMD 소스 파일 압축 풀기 " %}
 ```
 $ tar xzf NAMD_2.12_Source.tar.gz 
 $ cd NAMD_2.12_Source   
@@ -40,7 +40,7 @@ $ build charm++ {아키텍쳐} {C 컴파일러} {포트란 컴파일러} {기타
 \
 리눅스 PC 등과 같은 단일 노드에서 사용할 경우에는 'multicore-linux64' 옵션을 기재하여 빌드한다.&#x20;
 
-{% code title=" 단일노드용 charm 빌드  " %}
+{% code title="단일노드용 charm 빌드  " %}
 ```
 $ tar xf charm-6.7.1.tar 
 $ cd charm-6.7.1
@@ -55,14 +55,14 @@ $./build charm++ multicore-linux64 icc --with-production
 NAMD를 빌드하기 위해서는 config을 이용하여 설정이 이루어지는데, 사용법은 다음과 같다**.**&#x20;
 
 ```
- $ ./config {NAMD-아키텍쳐} --charm-arch {charm-아키텍쳐} {기타 옵션}
+$ ./config {NAMD-아키텍쳐} --charm-arch {charm-아키텍쳐} {기타 옵션}
 ```
 
 
 
 Xeon Phi KNL용으로 빌드하기 위해서는 NAMD-아키텍쳐를 Linux-KNL-icc 지정하여 수행한다. &#x20;
 
-{% code title="  Xeon Phi NAMD 빌드 " %}
+{% code title="Xeon Phi NAMD 빌드 " %}
 ```
 # NAMD 소스 디렉토리에서 수행
 $ ./config Linux-KNL-icc --charm-arch multicore-linux64-icc --with-mkl \
@@ -84,7 +84,7 @@ $ make -j 64
 
 &#x20;[http://www.ks.uiuc.edu/Research/namd/utilities/](http://www.ks.uiuc.edu/Research/namd/utilities/)&#x20;
 
-{% code title="  ApoA1 벤치마크를 이용한 테스트  " %}
+{% code title="ApoA1 벤치마크를 이용한 테스트  " %}
 ```
 $ wget http://www.ks.uiuc.edu/Research/namd/utilities/apoa1.zip
 $ unzip apoa1.zip 
