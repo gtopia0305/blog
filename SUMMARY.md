@@ -57,6 +57,7 @@
     * [GROMACS-2018.6 (GPU 버전) 설치](install/neuron/gromacs/gromacs-2018.6-install-gpu.md)
     * [GROMACS-2016.4 (GPU 버전) 설치](install/neuron/gromacs/gromacs-2016.4-install-gpu.md)
   * [lammps-16Mar18 (GPU 버전) 설치](install/neuron/lammps-16mar18-install-gpu.md)
+  * [뉴론 lammps-27Oct2021 (GPU 버전) 설치](install/neuron/lammps-27Oct2021-install-gpu.md)
   * [NAMD 2.12 (GPU 버전) 설치](install/neuron/namd-2.12-install-gpu.md)
   * [Quantum Espresso](install/neuron/quantum-espresso/README.md)
     * [Quantum Espresso-6.6 (GPU 버전) 설치](install/neuron/quantum-espresso/neuron-quantum-espresso-6-6-install.md)
