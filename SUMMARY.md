@@ -4,6 +4,8 @@
 
 ## 소프트웨어 설치 <a href="#install" id="install"></a>
 
+* [공통](install/common/README.md)
+  * [NAMD-2.12 설치 (Intel Xeon Phi KNL)](install/common/nurion-lammps-3mar20-install-skl.md)
 * [누리온](install/nurion/README.md)
   * [LAMMPS](install/nurion/lammps/README.md)
     * [lammps-3Mar20 설치 소개(SKL)](install/nurion/lammps/nurion-lammps-3mar20-install-skl.md)
