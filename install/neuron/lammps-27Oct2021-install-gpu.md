@@ -113,21 +113,23 @@ $ make -f Makefile.g++
 
 
 
-&#x20;(3-3) meam 설치
+&#x20;(3-3) awpmd 설치
 
 ```
 $ cd lib/awpmd
 $ vi Makefile.lammps.installed
 ```
 
-{% code title="[Makefile.lammps.ifort 수정 사항]" %}
+{% code title="[수정 내용]" %}
 ```
-
-meam_SYSINC=
-meam_SYSLIB=
-meam_SYSPATH=
+awpmd_SYSLIB =
 ```
 {% endcode %}
+
+```
+$ make -f Makefile.mpicc
+$ cd ../../
+```
 
 
 
