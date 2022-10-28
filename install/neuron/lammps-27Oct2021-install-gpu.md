@@ -21,8 +21,6 @@ KISTI 뉴론 시스템에 lammps-27Oct2021버전을 설치하는 방법에 대�
 
 KISTI 시스템은 PATH, LD\_LIBRARY\_PATH 등을 쉽게 하기 위하여 OpenSource 인 Environment Modules(http://modules.sourceforge.net)이 구성되어 있고, 이하 설치 소개 에서는 module load를 이용한 환경 설정 방법을 이용한다.&#x20;
 
-****
-
 ```
 $ module purge
 $ module load gcc/10.2.0 cuda/11.4 cudampi/openmpi-4.1.1
@@ -226,9 +224,7 @@ $ cd ../../
 ```
 {% endcode %}
 
-
-
-&#x20;(3-8) LAMMPS 설치
+### &#x20;**(4)** LAMMPS 설치
 
 lammps 설치 디렉터리 ($(HOME)/build/lammps-27Oct2021) 아래 src 디렉터리로 이동한다.
 
@@ -297,7 +293,7 @@ $ make mpi 2>&1 |tee make.log
 
 ****
 
-**4. 실행 파일 복사**
+## **4. 설치 과정**
 
 설치가 완료되면 편의를 위해 bin 경로를 만들어 실행 파일인 lmp\_mpi를 bin 경로에 복사하여 활용할 수 있다. (선택사항)
 
@@ -309,9 +305,7 @@ $ mkdir bin
 $ cp $(HOME)/build/lammps-27Oct2021/src/lmp_mpi .
 ```
 
-****
-
-**5. 뉴론에서 LAMMPS 사용을 위한 SLURM 작업 스크립트 예제**
+## **5. 뉴론에서 LAMMPS 사용을 위한 SLURM 작업 스크립트 예제**
 
 &#x20;위의 과정을 거쳐 설치된 lammps는 뉴론 환경에서 다음과 같이 작업에 활용할 수 있다. 뉴론에서 작업을 제출하기 위해서는 SLURM 작업 스크립트를 사용하여야 한다.
 
