@@ -41,6 +41,7 @@
     * [SIESTA 4.1-b3 설치(SKL)](install/nurion/siesta/siesta-4.1-b3-install-skl.md)
   * [WRFV3.9.1.1 설치](install/nurion/wrfv3.9.1.1-install.md)
   * [RASPA-2.0 설치 소개](install/nurion/raspa-2.0-install.md)
+  * [RASPA2-2.0.47 설치 소개](install/nurion/raspa2-2.0.47-install.md)
   * [gcc-8.1.0 설치](install/nurion/gcc-8.1.0-install.md)
   * [UPPV3.1 설치 소개](install/nurion/uppv3.1-install.md)
   * [RIP\_46 설치 소개](install/nurion/rip\_46-install.md)
