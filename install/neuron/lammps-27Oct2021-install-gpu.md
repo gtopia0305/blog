@@ -23,159 +23,102 @@ KISTI 시스템은 PATH, LD\_LIBRARY\_PATH 등을 쉽게 하기 위하여 OpenSo
 
 ****
 
-{% code title="[ 환경 설정 ]" %}
 ```
- $ module load intel/18.0.2 cuda/10.0 cudampi/mvapich2-2.3
+$ module purge
+$ module load gcc/10.2.0 cuda/11.4 cudampi/openmpi-4.1.1
 ```
-{% endcode %}
 
 ## **3. 설치 과정**
 
-&#x20;설치 과정 소개는 tar 를 이용한 압축 해제 방법과 설정 방법등 진행 절차를 위주로 설명하고, 소스 파일 다운로드 등은 생략한다.&#x20;
+설치 과정에서 설치 경로는 **${HOME}/lammps/27Oct2021** 을 사용하였다. 이 경로는 사용자에게 맞는 경로로 변경하여야 한다.
 
-### &#x20;**(1) VORO++ 설치** (다운로드 : http://math.lbl.gov/voro++/download/)
+### &#x20;**(1)** VORO++ 설치 (다운로드 : [http://math.lbl.gov/voro++/download](http://math.lbl.gov/voro++/download))
 
-VORONOI 패키지 설치를 위한 voro++를 우선 설치한다.&#x20;
+VORONOI 패키지 설치를 위한 voro++을 우선 설치한다.
 
-{% code title="  설치과정" %}
-```
-$ tar xvf voro++-0.4.6.tar.gz
-$ cd voro++-0.4.6
+<pre><code><strong>$ tar xvf voro++-0.4.6.tar.gz
+</strong>$ cd voro++-0.4.6
 $ mkdir -p ${HOME}/build/library
-$ vi config.mk
- ----- 수정 사항은 아래의 내용 참고 -----
+$ vi config.mk</code></pre>
+
+{% code title="[수정 사항]" %}
+```
+CXX=mpicxx
+PREFIX=${HOME}/build/library
+```
+{% endcode %}
+
+```
 $ make
 $ make install
 ```
-{% endcode %}
 
-{% code title="[config.mk 수정 사항]" %}
-```
-CXX=mpicxx
-CFLAGS= -Wall -ansi -pedantic -O3 -fPIC
-E_INC= -I../../src
-E_LIB= -L../../src
-PREFIX= ${HOME}/build/library
-INSTALL= install
-IFLAGS_EXEC= -m 0755
-IFLAGS= -m 0644
-```
-{% endcode %}
+### &#x20;**(2)** LATTE 설치 (다운로드 : [https://github.com/lanl/LATTE/releases)](https://github.com/lanl/LATTE/releases\))
 
+LATTTE 패키지 설치를 위한 Latte 라이브러리를 우선 설치한다. 다운로드 받은 파일을 적당한 위치($HOME/build)에 올린 후 다음과 같은 명령으로 압축 묶음 파일을 푼다.
 
-
-### &#x20;**(2) LATTE 설치** (다운로드 :  https://github.com/lanl/LATTE/releases)
-
-LATTTE 패키지 설치를 위한 Latte 라이브러리를 우선 설치한다.\
-다운로드 받은 파일을 적당한 위치($HOME/build)에 올린 후 다음과 같은 명령으로 압축 묶음 파일을 푼다.
-
-{% code title="  설치과정" %}
 ```
 $ cd ${HOME}/build
-$ tar xvf LATTE-1.2.1.tar.gz
+$ tar xvf v1.2.1.tar.gz
 $ cd LATTE-1.2.1
 $ vi makefile.CHOICES
- ----- 수정 사항은 아래의 내용 참고 -----
+```
+
+{% code title="[ 수정 사항]" %}
+```
+LIB = -L/apps/compiler/gcc/10.2.0/applib1/lapack/3.10.0 -llapack -lblas
+ 
+GPU_CUDA_LIB = -L/apps/cuda/11.4/lib64 -lcublas -lcudart
+GPU_ARCH = sm_70
+※ a100 노드에서 작업 수행 시, GPU_ARCH = sm_70대신 GPU_ARCH = sm_80)
+```
+{% endcode %}
+
+```
 $ make
 ```
-{% endcode %}
-
-{% code title="[makefile.CHOICES 수정 사항]" %}
-```
-#
-# CPU Fortran options
-#
- 
-#For GNU compiler:
-#FC = mpif90
-#FC = gfortran
-#FCL = $(FC)
-#FFLAGS = -O3 -fopenmp -cpp
-#FFLAGS = -fast -Mpreprocess -mp
-#LINKFLAG = -fopenmp
- 
-#For intel compiler:
-FC = ifort
-FCL = $(FC)
-FFLAGS = -O3 -fpp -qopenmp
-LINKFLAG = -qopenmp
-#LIB = -mkl=parallel
-
-#GNU BLAS/LAPACK libraries:
-LIB = -llapack -lblas
- 
-#Intel MKL BLAS/LAPACK libraries:
-LIB = -Wl,--no-as-needed -L${MKLROOT}/lib/intel64 \
--lmkl_lapack95_lp64 -lmkl_gf_lp64 -lmkl_gnu_thread -lmkl_core \
--lmkl_gnu_thread -lmkl_core -ldl -lpthread -lm
- 
-#Alternative flags for MKL:
-LIB += -mkl=parallel
-
-#
-# GPU options
-#
- 
-GPU_CUDA_LIB = -L/apps/cuda/10.0/lib64 -lcublas -lcudart
-GPU_ARCH = sm_35
-GPU_ARCH = sm_70
-```
-{% endcode %}
-
-
 
 
 
 ### &#x20;**(3) 라이브러리 패키지 설치**
 
-LAMMPS 홈페이지(http://lammps.sandia.gov/index.html)로부터 다운로드 받은 파일을 적당한 위치($HOME/build)에 올린 후 다음과 같은 명령으로 압축 묶음 파일을 푼다.
+LAMMPS 공식 홈페이지 [http://lammps.sandia.gov/index.html](http://lammps.sandia.gov/index.html) 나 [https://github.com/lammps/lammps/releases](https://github.com/lammps/lammps/releases) 로부터 다운로드 받은 파일을 적당한 위치($(HOME)/build)에 옮긴 뒤, 다음과 같은 명령으로 압축 해제 한다.
 
 ```
-$ tar xvf lammps-16Mar18.tar.gz
+$ tar xvf lammps-27Oct2021.tar.gz
 ```
 
 
 
 &#x20;(3-1) voronoi 설치
 
-(1)에서 설치한 voro++ 설치 디렉토리를 지정해 준다.\
-lammps 압축 해제후 lammps-16Mar18 폴더로 이동하여 아래의 작업을 진행한다.
+(1)에서 설치한 voro++ 설치 디렉터리를 지정해 준다. lammps 압축 해제 후 lammps-27Oct2021 디렉터리로 이동하여 아래의 작업을 진행한다.
 
-{% code title="  설치과정" %}
 ```
-$ cd lammps-16Mar18
+$ cd lammps-27Oct2021
 $ cd lib/voronoi
-$ ln -s ${HOME}/build/library/include/voro++ includelink
-$ ln -s ${HOME}/build/library/lib liblink
+$ ln -s $(HOME)/build/library/include/voro++ includelink
+$ ln -s $(HOME)/build/library/lib liblink
 $ cd ../../
 ```
-{% endcode %}
 
 
 
 &#x20;(3-2) poems 설치
 
-{% code title="  설치과정" %}
 ```
 $ cd lib/poems
-$ make -f Makefile.icc
-$ cd ../../
+$ make -f Makefile.g++
 ```
-{% endcode %}
 
 
 
 &#x20;(3-3) meam 설치
 
-{% code title="" %}
 ```
-$ cd lib/meam
-$ vi Makefile.lammps.ifort
------ 수정 사항은 아래의 내용 참고 -----
-$ make -f Makefile.ifort
-$ cd ../../
+$ cd lib/awpmd
+$ vi Makefile.lammps.installed
 ```
-{% endcode %}
 
 {% code title="[Makefile.lammps.ifort 수정 사항]" %}
 ```
