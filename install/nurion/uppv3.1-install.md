@@ -29,122 +29,92 @@ KISTI 슈퍼컴퓨팅센터의 누리온 시스템에 UPPV3.1 Source 버전으�
 
 
 
-\[ 환경 설정 ]
-
-> &#x20;$ module load craype-x86-skylake intel/18.0.3 impi/18.0.3
->
-> &#x20;$ module load hdf4/4.2.13 hdf5/1.10.2 netcdf/4.6.1 ncl/6.5.0
->
-> &#x20;$ export JASPERLIB=/apps/common/jasper/1.900.29/lib
->
-> &#x20;$ export JASPERINC=/apps/common/jasper/1.900.29/include
+{% code title="[ 환경 설정 ]" %}
+```
+ $ module load craype-x86-skylake intel/18.0.3 impi/18.0.3
+ $ module load hdf4/4.2.13 hdf5/1.10.2 netcdf/4.6.1 ncl/6.5.0
+ $ export JASPERLIB=/apps/common/jasper/1.900.29/lib
+ $ export JASPERINC=/apps/common/jasper/1.900.29/include
+```
+{% endcode %}
 
 ## **3. 설치 과정**
 
 &#x20;설치 과정 소개는 tar 를 이용한 압축 해제 방법과 설정 방법등 진행 절차를 위주로 설명하고, 소스 파일 다운로드 등은 생략한다. &#x20;
 
-|  **설치 과정**                                                                                                                                                                                                         |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| <p>$ tar xvzf DTC_upp_v3.1.tar.gz</p><p>$ cd UPPV3.1</p><p>$ ./configure </p><p> - - - - - [configure 과정 진행 내용] 참고</p><p>$ vi configure.upp</p><p> - - - - - [configure.upp 파일 수정 수정 내용] 참고</p><p>$ ./compile </p> |
+{% code title=" 설치 과정" %}
+```
+$ tar xvzf DTC_upp_v3.1.tar.gz
+$ cd UPPV3.1
+$ ./configure 
+ - - - - - [configure 과정 진행 내용] 참고
+$ vi configure.upp
+ - - - - - [configure.upp 파일 수정 수정 내용] 참고
+$ ./compile 
+```
+{% endcode %}
 
 ※ UPP는 WRF 경로 설정을 별도로 하지 않기 위하여 아래와 같이 WRF와 동일 경로 상에 설치 하였다.\
 &#x20;  만약 다른 경로에 WRF 가 있다면 WRF\_DIR 설정이 필요함.
 
 
 
-\[configure 과정 진행 내용]
+{% code title="[configure 과정 진행 내용]" %}
+```
+$ ./configure
+Will use NETCDF in dir:  /apps/compiler/intel/18.0.3/applib1/mic-knl/netcdf/4.6.1
+Will use WRF in dir: /scratch/optpar02/install_test/WRF/UPPV3.1/../WRFV3
+configure: making ./bin
+bindir  /scratch/optpar02/install_test/WRF/UPPV3.1/bin
+configure: making ./include
+incmod  /scratch/optpar02/install_test/WRF/UPPV3.1/include
+configure: making ./lib
+libdir  /scratch/optpar02/install_test/WRF/UPPV3.1/lib
+JASPER Environent found :: GRIB2 library ::
+grib2lib = -L/apps/common/jasper/1.900.29/lib -lpng -lz -ljasper
+grib2inc = -I/apps/common/jasper/1.900.29/include
+-------------------------------------------------------------------------
+Please select from among the following supported platforms.
 
-> $ ./configure
->
-> Will use NETCDF in dir:  /apps/compiler/intel/18.0.3/applib1/mic-knl/netcdf/4.6.1
->
-> Will use WRF in dir: /scratch/optpar02/install\_test/WRF/UPPV3.1/../WRFV3
->
-> configure: making ./bin
->
-> bindir  /scratch/optpar02/install\_test/WRF/UPPV3.1/bin
->
-> configure: making ./include
->
-> incmod  /scratch/optpar02/install\_test/WRF/UPPV3.1/include
->
-> configure: making ./lib
->
-> libdir  /scratch/optpar02/install\_test/WRF/UPPV3.1/lib
->
-> JASPER Environent found :: GRIB2 library ::
->
-> grib2lib = -L/apps/common/jasper/1.900.29/lib -lpng -lz -ljasper
->
-> grib2inc = -I/apps/common/jasper/1.900.29/include
->
-> \-------------------------------------------------------------------------
->
-> Please select from among the following supported platforms.
->
->
->
-> &#x20;  1\.  Linux x86\_64, PGI compiler  (serial)
->
-> &#x20;  2\.  Linux x86\_64, PGI compiler  (dmpar)
->
-> &#x20;  3\.  Linux x86\_64, Intel compiler  (serial)
->
-> &#x20;  <mark style="color:blue;">4.  Linux x86\_64, Intel compiler  (dmpar)</mark>
->
-> &#x20;  5\.  Linux x86\_64, Intel compiler, SGI MPT  (serial)
->
-> &#x20;  6\.  Linux x86\_64, Intel compiler, SGI MPT  (dmpar)
->
-> &#x20;  7\.  Linux x86\_64, gfortran compiler  (serial)
->
-> &#x20;  8\.  Linux x86\_64, gfortran compiler  (dmpar)
->
-> &#x20;  9\.  Linux x86\_64, Intel compiler, IBM POE  (serial)
->
-> &#x20; 10\.  Linux x86\_64, Intel compiler, IBM POE  (dmpar)
->
-> &#x20; 11\.  Linux x86\_64, gfortran compiler: -f90=gfortran  (serial)
->
-> &#x20; 12\.  Linux x86\_64, gfortran compiler: -f90=gfortran  (dmpar)
->
-> &#x20; 13\.  Linux x86\_64, PGI compiler: -f90=pgf90  (serial)
->
-> &#x20; 14\.  Linux x86\_64, PGI compiler: -f90=pgf90  (dmpar)
->
->
->
-> Enter selection \[1-14] : <mark style="color:blue;">4</mark>
->
-> \-------------------------------------------------------------------------
->
-> Configuration successful. To build the UPP, type: compile&#x20;
->
-> \-------------------------------------------------------------------------
+   1.  Linux x86_64, PGI compiler  (serial)
+   2.  Linux x86_64, PGI compiler  (dmpar)
+   3.  Linux x86_64, Intel compiler  (serial)
+   4.  Linux x86_64, Intel compiler  (dmpar)
+   5.  Linux x86_64, Intel compiler, SGI MPT  (serial)
+   6.  Linux x86_64, Intel compiler, SGI MPT  (dmpar)
+   7.  Linux x86_64, gfortran compiler  (serial)
+   8.  Linux x86_64, gfortran compiler  (dmpar)
+   9.  Linux x86_64, Intel compiler, IBM POE  (serial)
+  10.  Linux x86_64, Intel compiler, IBM POE  (dmpar)
+  11.  Linux x86_64, gfortran compiler: -f90=gfortran  (serial)
+  12.  Linux x86_64, gfortran compiler: -f90=gfortran  (dmpar)
+  13.  Linux x86_64, PGI compiler: -f90=pgf90  (serial)
+  14.  Linux x86_64, PGI compiler: -f90=pgf90  (dmpar)
+
+Enter selection [1-14] : 4
+-------------------------------------------------------------------------
+Configuration successful. To build the UPP, type: compile 
+-------------------------------------------------------------------------
+```
+{% endcode %}
 
 
 
-\[configure.upp 파일 수정 수정 내용]
+{% code title="[configure.upp 파일 수정 수정 내용]" %}
+```
 
-> DM\_FC  = <mark style="color:blue;">mpiifort</mark>
->
-> DM\_F90 = <mark style="color:blue;">mpiifort</mark> -free
->
-> DM\_CC  = <mark style="color:blue;">mpiicc</mark>
->
-> &#x20;
->
-> FOPT    = -O3 <mark style="color:blue;">-fPIC -xCOMMON-AVX512</mark>
->
-> CRTMOPT = -O3 <mark style="color:blue;">-fPIC -xCOMMON-AVX512</mark>
->
-> COPT    = -O3 -fPIC <mark style="color:blue;">-xCOMMON-AVX512</mark>
->
-> &#x20;
->
-> GRIB2SUPT\_LIB   =    -L/apps/common/jasper/1.900.29/lib <mark style="color:blue;">-L/apps/common/libpng/1.2.56/lib</mark> -lpng -lz -ljasper
->
-> GRIB2SUPT\_INC   =    -I/apps/common/jasper/1.900.29/include <mark style="color:blue;">-I/apps/common/libpng/1.2.56/include</mark>
+DM_FC  = mpiifort
+DM_F90 = mpiifort -free
+DM_CC  = mpiicc
+ 
+FOPT    = -O3 -fPIC -xCOMMON-AVX512
+CRTMOPT = -O3 -fPIC -xCOMMON-AVX512
+COPT    = -O3 -fPIC -xCOMMON-AVX512
+ 
+GRIB2SUPT_LIB   =    -L/apps/common/jasper/1.900.29/lib -L/apps/common/libpng/1.2.56/lib -lpng -lz -ljasper
+GRIB2SUPT_INC   =    -I/apps/common/jasper/1.900.29/include -I/apps/common/libpng/1.2.56/include
+```
+{% endcode %}
 
 ※ 누리온 시스템 설치 예제는 SKL/KNL 계산노드에서 공통적으로 사용을 위해 "-xCOMMON-AVX512" 로 작성
 

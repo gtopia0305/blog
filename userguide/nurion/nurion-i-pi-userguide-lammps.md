@@ -2,7 +2,7 @@
 description: 슈퍼컴퓨팅인프라센터 2020. 11. 12. 10:12
 ---
 
-# 누리온 i-PI 사용법 (LAMMPS)
+# i-PI 사용법 (LAMMPS)
 
 본 문서는 누리온 시스템에서 i-PI 소프트웨어 사용을 위한 기초적인 정보를 제공하고 있습니다.\
 따라서, i-PI 소프트웨어 사용법과 누리온/리눅스 사용법 등은 포함되어 있지 않습니다.\
@@ -15,7 +15,7 @@ description: 슈퍼컴퓨팅인프라센터 2020. 11. 12. 10:12
 \- 본 문서는 i-PI와 LAMMPS를 같이 사용하는 경우에 대해 서술합니다.\
 \- LAMMPS 등 타 소프트웨어와 연동하여 계산을 수행하는 경우 상호간 통신에 Socket을 사용합니다.(Unix Domain Socket, Internet Socket)
 
-![(출처: http://ipi-code.org/about/interface/)](../../../.gitbook/assets/997BE64A5F9BBF541C.png)
+![(출처: http://ipi-code.org/about/interface/)](../../.gitbook/assets/997BE64A5F9BBF541C.png)
 
 \- 자세한 사항은 i-PI 홈페이지를 방문하시기 바랍니다. (http://ipi-code.org)
 
@@ -38,8 +38,10 @@ Unix Domain Socket 방식은 오직 한 노드 내에서만 사용할 수 있으
 
 ### **(1) 환경 설정**
 
-| <p>$ module load intel/18.0.3 impi/18.0.3 craype-mic-knl</p><p>$ module load lammps/12Dec18 python/3.7</p> |
-| ---------------------------------------------------------------------------------------------------------- |
+```
+$ module load intel/18.0.3 impi/18.0.3 craype-mic-knl
+$ module load lammps/12Dec18 python/3.7
+```
 
 ### **(2) 입력 파일 설정**
 
@@ -47,8 +49,13 @@ Unix Domain Socket 방식은 오직 한 노드 내에서만 사용할 수 있으
 
 \- i-PI 입력파일: input.xml
 
-| <p>...</p><p>&#x3C;ffsocket name='lmpserial' mode='<mark style="color:blue;">unix</mark>'></p><p>&#x3C;address> <mark style="color:blue;">ipi-lmp_unix</mark> &#x3C;/address></p><p>&#x3C;/ffsocket></p><p>...</p> |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+```
+...
+<ffsocket name='lmpserial' mode='unix'>
+<address> ipi-lmp_unix </address>
+</ffsocket>
+...
+```
 
 ※ ffsocket 블록에서 mode는 'unix'로 설정하고, address는 임의의 문자열을 사용하시면 됩니다.
 
@@ -56,8 +63,11 @@ Unix Domain Socket 방식은 오직 한 노드 내에서만 사용할 수 있으
 
 \- LAMMPS 입력파일: in.lmp
 
-| <p>...</p><p>fix 1 all <mark style="color:blue;">ipi ipi-lmp_unix</mark> 34567 <mark style="color:blue;">unix</mark></p><p>...</p> |
-| ---------------------------------------------------------------------------------------------------------------------------------- |
+```
+...
+fix 1 all ipi ipi-lmp_unix 34567 unix
+...
+```
 
 ※ 4번째 필드는 LAMMPS와 함께 동작할 외부 코드를 지정합니다: ipi
 
@@ -71,8 +81,43 @@ Unix Domain Socket 방식은 오직 한 노드 내에서만 사용할 수 있으
 
 ※ 아래는 누리온 시스템에서의 작업 제출 예제입니다.
 
-| <p>#!/bin/sh</p><p>#PBS -V</p><p>#PBS -N <mark style="color:blue;">i-PI_test</mark></p><p>#PBS -q <mark style="color:blue;">normal</mark></p><p>#PBS -l <mark style="color:blue;">select=1:ncpus=68:mpiprocs=68:ompthreads=1</mark></p><p>#PBS -l walltime=<mark style="color:blue;">12:00:00</mark></p><p>#PBS -A etc</p><p></p><p>cd $PBS_O_WORKDIR</p><p></p><p>source <mark style="color:blue;">{i-PI 설치 경로}</mark>/env.sh</p><p><br>rm -fv EXIT</p><p></p><p><mark style="color:blue;">OMP_NUM_THREADS=4</mark> # i-PI 실행 스레드 수 지정</p><p><br></p><p>if [ -f "RESTART" ]; then</p><p>i-pi RESTART >&#x26; log.i-pi &#x26;</p><p>else</p><p>i-pi input.xml >&#x26; log.i-pi &#x26;</p><p>fi</p><p><br></p><p><mark style="color:blue;">OMP_NUM_THREADS=1</mark> # LAMMPS 실행 스레드 수 지정</p><p><br></p><p>sleep 10</p><p><br></p><p>mpirun <mark style="color:blue;">-n 64</mark> lmp_mpi -in in.lmp # 실행할 MPI 프로세스 수 명시적으로 지정</p><p><br></p><p>touch EXIT</p><p><br></p> |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+```
+#!/bin/sh
+#PBS -V
+#PBS -N i-PI_test
+#PBS -q normal
+#PBS -l select=1:ncpus=68:mpiprocs=68:ompthreads=1
+#PBS -l walltime=12:00:00
+#PBS -A etc
+
+cd $PBS_O_WORKDIR
+
+source {i-PI 설치 경로}/env.sh
+
+rm -fv EXIT
+
+OMP_NUM_THREADS=4 # i-PI 실행 스레드 수 지정
+
+
+if [ -f "RESTART" ]; then
+i-pi RESTART >& log.i-pi &
+else
+i-pi input.xml >& log.i-pi &
+fi
+
+
+OMP_NUM_THREADS=1 # LAMMPS 실행 스레드 수 지정
+
+
+sleep 10
+
+
+mpirun -n 64 lmp_mpi -in in.lmp # 실행할 MPI 프로세스 수 명시적으로 지정
+
+
+touch EXIT
+
+```
 
 ※ 위에서 파란색으로 표기된 부분은 사용자가 적절히 수정해야 합니다.
 
@@ -86,8 +131,10 @@ Unix Domain Socket 방식은 오직 한 노드 내에서만 사용할 수 있으
 
 ### **(1) 환경 설정**
 
-| <p>$ module load intel/18.0.3 impi/18.0.3 craype-mic-knl</p><p>$ module load lammps/12Dec18 python/3.7</p> |
-| ---------------------------------------------------------------------------------------------------------- |
+```
+$ module load intel/18.0.3 impi/18.0.3 craype-mic-knl
+$ module load lammps/12Dec18 python/3.7
+```
 
 ### **(2) 입력 파일 설정**
 
@@ -95,8 +142,14 @@ Unix Domain Socket 방식은 오직 한 노드 내에서만 사용할 수 있으
 
 \- i-PI 입력파일: input.xml
 
-| <p>...</p><p>&#x3C;ffsocket name='lmpserial' mode='<mark style="color:blue;">inet</mark>'></p><p>&#x3C;address> <mark style="color:blue;">172.31.27.3</mark> &#x3C;/address></p><p><mark style="color:blue;">&#x3C;port> 34567 &#x3C;/port> # port 주소 지정</mark></p><p>&#x3C;/ffsocket></p><p>...</p> |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+```
+...
+<ffsocket name='lmpserial' mode='inet'>
+<address> 172.31.27.3 </address>
+<port> 34567 </port> # port 주소 지정
+</ffsocket>
+...
+```
 
 ※ ffsocket 블록에서 mode는 'inet'으로 설정하고, address(IP 주소) 및 port(포트 주소)를 설정하시면 됩니다.
 
@@ -104,8 +157,11 @@ Unix Domain Socket 방식은 오직 한 노드 내에서만 사용할 수 있으
 
 \- LAMMPS 입력파일: in.lmp
 
-| <p>...</p><p>fix 1 all <mark style="color:blue;">ipi 172.31.27.3 34567</mark></p><p>...</p> |
-| ------------------------------------------------------------------------------------------- |
+```
+...
+fix 1 all ipi 172.31.27.3 34567
+...
+```
 
 ※ 4번째 필드는 LAMMPS와 함께 동작할 외부 코드를 지정합니다: ipi
 
@@ -127,8 +183,45 @@ Unix Domain Socket 방식은 오직 한 노드 내에서만 사용할 수 있으
 
 ※ 아래는 누리온 시스템에서의 작업 제출 예제입니다.
 
-| <p>#!/bin/sh</p><p>#PBS -V</p><p>#PBS -N <mark style="color:blue;">i-PI_test</mark></p><p>#PBS -q <mark style="color:blue;">normal</mark></p><p>#PBS -l <mark style="color:blue;">select=1:ncpus=68:mpiprocs=68:ompthreads=1</mark></p><p>#PBS -l walltime=<mark style="color:blue;">12:00:00</mark></p><p>#PBS -A etc</p><p></p><p>cd $PBS_O_WORKDIR</p><p>source <mark style="color:blue;">{i-PI 설치 경로}</mark>/env.sh</p><p></p><p>rm -fv EXIT</p><p></p><p><mark style="color:blue;">OMP_NUM_THREADS=4</mark> # i-PI 실행 스레드 수 지정</p><p></p><p>IPINODE=`grep "${HOSTNAME} " /etc/hosts | awk '{print $1}'` <mark style="color:blue;"># 현재 i-PI가 실행중인 노드의 IP 주소</mark></p><p></p><p>if [ -f "RESTART" ]; then</p><p>sed -i "s:fix 1 all ipi .* :fix 1 all ipi ${IPINODE} :g" in.lmp</p><p>sed -i "s:address>.*&#x3C;:address>${IPINODE}&#x3C;:g" RESTART</p><p>sed -i "s:port>.*&#x3C;:port><mark style="color:blue;">34567</mark>&#x3C;:g" RESTART</p><p>i-pi RESTART >&#x26; log.i-pi &#x26;</p><p>else</p><p>sed -i "s:fix 1 all ipi .* :fix 1 all ipi ${IPINODE} :g" in.lmp</p><p>sed -i "s:address>.*&#x3C;:address>${IPINODE}&#x3C;:g" input.xml</p><p>sed -i "s:port>.*&#x3C;:port><mark style="color:blue;">34567</mark>&#x3C;:g" input.xml</p><p>i-pi input.xml >&#x26; log.i-pi &#x26;</p><p>fi</p><p></p><p><mark style="color:blue;">OMP_NUM_THREADS=1</mark> # LAMMPS 실행 스레드 수 지정</p><p></p><p>sleep 10</p><p></p><p>mpirun -n <mark style="color:blue;">64</mark> lmp_mpi -in in.lmp # 실행할 MPI 프로세스 수 명시적으로 지정</p><p></p><p>touch EXIT<br></p> |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+```
+#!/bin/sh
+#PBS -V
+#PBS -N i-PI_test
+#PBS -q normal
+#PBS -l select=1:ncpus=68:mpiprocs=68:ompthreads=1
+#PBS -l walltime=12:00:00
+#PBS -A etc
+
+cd $PBS_O_WORKDIR
+source {i-PI 설치 경로}/env.sh
+
+rm -fv EXIT
+
+OMP_NUM_THREADS=4 # i-PI 실행 스레드 수 지정
+
+IPINODE=`grep "${HOSTNAME} " /etc/hosts | awk '{print $1}'` # 현재 i-PI가 실행중인 노드의 IP 주소
+
+if [ -f "RESTART" ]; then
+sed -i "s:fix 1 all ipi .* :fix 1 all ipi ${IPINODE} :g" in.lmp
+sed -i "s:address>.*<:address>${IPINODE}<:g" RESTART
+sed -i "s:port>.*<:port>34567<:g" RESTART
+i-pi RESTART >& log.i-pi &
+else
+sed -i "s:fix 1 all ipi .* :fix 1 all ipi ${IPINODE} :g" in.lmp
+sed -i "s:address>.*<:address>${IPINODE}<:g" input.xml
+sed -i "s:port>.*<:port>34567<:g" input.xml
+i-pi input.xml >& log.i-pi &
+fi
+
+OMP_NUM_THREADS=1 # LAMMPS 실행 스레드 수 지정
+
+sleep 10
+
+mpirun -n 64 lmp_mpi -in in.lmp # 실행할 MPI 프로세스 수 명시적으로 지정
+
+touch EXIT
+
+```
 
 ※ 위에서 파란색으로 표기된 부분은 사용자가 적절히 수정해야 합니다.
 

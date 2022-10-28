@@ -27,9 +27,11 @@ KISTI 시스템은 PATH, LD\_LIBRARY\_PATH 등을 쉽게 하기 위하여 OpenSo
 
 
 
-**\[ 환경 설정 ]**
-
-> &#x20;$ module load craype-mic-knl intel/17.0.5 impi/17.0.5 netcdf-hdf5-parallel/4.6.1
+{% code title="[ 환경 설정 ]" %}
+```
+$ module load craype-mic-knl intel/17.0.5 impi/17.0.5 netcdf-hdf5-parallel/4.6.1
+```
+{% endcode %}
 
 SIESTA 는 check 과정을 포함하고 있어 KNL CPU 타입 전용 옵션(-xMIC-AVX512) 사용을 위해서는 KNL 계산노드에서 빌드 해야 한다.
 
@@ -37,111 +39,122 @@ SIESTA 는 check 과정을 포함하고 있어 KNL CPU 타입 전용 옵션(-xMI
 
 ****
 
-**\[ 디버깅 노드 접속 ]**
-
-> &#x20;$ qsub -I -q debug -l select=1:ncpus=1:mpiprocs=1:ompthreads=1 -l walltime=12:00:00 -A siesta
+{% code title="[ 디버깅 노드 접속 ]" %}
+```
+$ qsub -I -q debug -l select=1:ncpus=1:mpiprocs=1:ompthreads=1 -l walltime=12:00:00 -A siesta
+```
+{% endcode %}
 
 ## **3. 설치 과정**
 
 &#x20;설치 과정 소개는 tar 를 이용한 압축 해제 방법과 설정 방법등 진행 절차를 위주로 설명하고, 소스 파일 다운로드 등은 생략한다. &#x20;
 
-|   **설치과정**                                                                                                                                                                                                                   |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ tar -xvf siesta-4.1-b3.tar.gz<br>$ cd siesta-4.1-b3<br>$ cd Obj<br>$ sh ../Src/obj_setup.sh<br>$ cp intel.make arch.make<br>$ vi arch.make 수정<br> <strong></strong>   - - - [arch.make 파일 수정 내용] 참고 - - -<br>$ make</p> |
+{% code title="  설치과정" %}
+```
+$ tar -xvf siesta-4.1-b3.tar.gz
+$ cd siesta-4.1-b3
+$ cd Obj
+$ sh ../Src/obj_setup.sh
+$ cp intel.make arch.make
+$ vi arch.make 수정
+    - - - [arch.make 파일 수정 내용] 참고 - - -
+$ make
+```
+{% endcode %}
+
+{% code title="[arch.make 파일 수정 내용]" %}
+```
+# 
+# Copyright (C) 1996-2016 The SIESTA group
+#  This file is distributed under the terms of the
+#  GNU General Public License: see COPYING in the top directory
+#  or http://www.gnu.org/copyleft/gpl.txt.
+# See Docs/Contributors.txt for a list of contributors.
+#
+#-------------------------------------------------------------------
+# arch.make file for gfortran compiler.
+# To use this arch.make file you should rename it to
+#   arch.make
+# or make a sym-link.
+# For an explanation of the flags see DOCUMENTED-TEMPLATE.make
 
 
+.SUFFIXES:
+.SUFFIXES: .f .F .o .c .a .f90 .F90
 
-\[arch.make 파일 수정 내용]
 
-> \# \
-> \# Copyright (C) 1996-2016 The SIESTA group\
-> \#  This file is distributed under the terms of the\
-> \#  GNU General Public License: see COPYING in the top directory\
-> \#  or http://www.gnu.org/copyleft/gpl.txt.\
-> \# See Docs/Contributors.txt for a list of contributors.\
-> \#\
-> \#-------------------------------------------------------------------\
-> \# arch.make file for gfortran compiler.\
-> \# To use this arch.make file you should rename it to\
-> \#   arch.make\
-> \# or make a sym-link.\
-> \# For an explanation of the flags see DOCUMENTED-TEMPLATE.make\
-> \
-> \
-> .SUFFIXES:\
-> .SUFFIXES: .f .F .o .c .a .f90 .F90\
-> \
-> \
-> SIESTA\_ARCH = unknown\
-> \
-> \
-> CC = mpiicc\
-> FPP = $(FC) -E -P\
-> FC = mpiifort\
-> FC\_SERIAL = ifort\
-> \
-> \
-> FFLAGS = -O2 -fPIC\
-> \
-> \
-> AR = ar\
-> RANLIB = ranlib\
-> \
-> \
-> SYS = nag\
-> \
-> \
-> SP\_KIND = 4\
-> DP\_KIND = 8\
-> KINDS = $(SP\_KIND) $(DP\_KIND)\
-> \
-> \
-> LDFLAGS = -mkl=cluster\
-> \
-> \
-> COMP\_LIBS = libsiestaLAPACK.a libsiestaBLAS.a\
-> \
-> \
-> FPPFLAGS = $(DEFS\_PREFIX)-DFC\_HAVE\_ABORT\
-> \
-> \
-> MPI\_INTERFACE = libmpi\_f90.a\
-> \
-> \
-> MPI\_INCLUDE = .\
-> \
-> \
-> FPPFLAGS += -DMPI\
-> \
-> \
-> LIBS = -mkl=cluster -L/apps/compiler/intel/17.0.5/impi/17.0.5/applib2/mic-knl/netcdf-hdf5-parallel/4.6.1/lib -lnetcdf\
-> \
-> \
-> \# Dependency rules ---------\
-> \
-> \
-> FFLAGS\_DEBUG = -g -O1   # your appropriate flags here...\
-> \
-> \
-> \# The atom.f code is very vulnerable. Particularly the Intel compiler\
-> \# will make an erroneous compilation of atom.f with high optimization\
-> \# levels.\
-> atom.o: atom.F\
-> $(FC) -c $(FFLAGS\_DEBUG) $(INCFLAGS) $(FPPFLAGS) $(FPPFLAGS\_fixed\_F) $< \
-> pdos2k.o: pdos2k.F\
-> $(FC) -c $(INCFLAGS) $(FPPFLAGS) $(FPPFLAGS\_fixed\_F) $<\
-> pdos3k.o: pdos3k.F\
-> $(FC) -c $(INCFLAGS) $(FPPFLAGS) $(FPPFLAGS\_fixed\_F) $<\
-> \
-> \
-> .c.o:\
-> $(CC) -c $(CFLAGS) $(INCFLAGS) $(CPPFLAGS) $< \
-> .F.o:\
-> $(FC) -c $(FFLAGS) $(INCFLAGS) $(FPPFLAGS) $(FPPFLAGS\_fixed\_F)  $< \
-> .F90.o:\
-> $(FC) -c $(FFLAGS) $(INCFLAGS) $(FPPFLAGS) $(FPPFLAGS\_free\_F90) $< \
-> .f.o:\
-> $(FC) -c $(FFLAGS) $(INCFLAGS) $(FCFLAGS\_fixed\_f)  $<\
-> .f90.o:\
-> $(FC) -c $(FFLAGS) $(INCFLAGS) $(FCFLAGS\_free\_f90)  $<
+SIESTA_ARCH = unknown
+
+
+CC = mpiicc
+FPP = $(FC) -E -P
+FC = mpiifort
+FC_SERIAL = ifort
+
+
+FFLAGS = -O2 -fPIC
+
+
+AR = ar
+RANLIB = ranlib
+
+
+SYS = nag
+
+
+SP_KIND = 4
+DP_KIND = 8
+KINDS = $(SP_KIND) $(DP_KIND)
+
+
+LDFLAGS = -mkl=cluster
+
+
+COMP_LIBS = libsiestaLAPACK.a libsiestaBLAS.a
+
+
+FPPFLAGS = $(DEFS_PREFIX)-DFC_HAVE_ABORT
+
+
+MPI_INTERFACE = libmpi_f90.a
+
+
+MPI_INCLUDE = .
+
+
+FPPFLAGS += -DMPI
+
+
+LIBS = -mkl=cluster -L/apps/compiler/intel/17.0.5/impi/17.0.5/applib2/mic-knl/netcdf-hdf5-parallel/4.6.1/lib -lnetcdf
+
+
+# Dependency rules ---------
+
+
+FFLAGS_DEBUG = -g -O1   # your appropriate flags here...
+
+
+# The atom.f code is very vulnerable. Particularly the Intel compiler
+# will make an erroneous compilation of atom.f with high optimization
+# levels.
+atom.o: atom.F
+$(FC) -c $(FFLAGS_DEBUG) $(INCFLAGS) $(FPPFLAGS) $(FPPFLAGS_fixed_F) $< 
+pdos2k.o: pdos2k.F
+$(FC) -c $(INCFLAGS) $(FPPFLAGS) $(FPPFLAGS_fixed_F) $<
+pdos3k.o: pdos3k.F
+$(FC) -c $(INCFLAGS) $(FPPFLAGS) $(FPPFLAGS_fixed_F) $<
+
+
+.c.o:
+$(CC) -c $(CFLAGS) $(INCFLAGS) $(CPPFLAGS) $< 
+.F.o:
+$(FC) -c $(FFLAGS) $(INCFLAGS) $(FPPFLAGS) $(FPPFLAGS_fixed_F)  $< 
+.F90.o:
+$(FC) -c $(FFLAGS) $(INCFLAGS) $(FPPFLAGS) $(FPPFLAGS_free_F90) $< 
+.f.o:
+$(FC) -c $(FFLAGS) $(INCFLAGS) $(FCFLAGS_fixed_f)  $<
+.f90.o:
+$(FC) -c $(FFLAGS) $(INCFLAGS) $(FCFLAGS_free_f90)  $<
+```
+{% endcode %}
 

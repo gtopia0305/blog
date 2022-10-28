@@ -27,9 +27,11 @@ KISTI 시스템은 PATH, LD\_LIBRARY\_PATH 등을 쉽게 하기 위하여 OpenSo
 
 ****
 
-**\[ 환경 설정 ]**
-
-> &#x20;$ module load intel/18.0.2 cuda/10.0 cudampi/mvapich2-2.3
+{% code title="[ 환경 설정 ]" %}
+```
+ $ module load intel/18.0.2 cuda/10.0 cudampi/mvapich2-2.3
+```
+{% endcode %}
 
 ## **3. 설치 과정**
 
@@ -39,29 +41,30 @@ KISTI 시스템은 PATH, LD\_LIBRARY\_PATH 등을 쉽게 하기 위하여 OpenSo
 
 VORONOI 패키지 설치를 위한 voro++를 우선 설치한다.&#x20;
 
-|   **설치과정**                                                                                                                                                                                     |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ tar xvf voro++-0.4.6.tar.gz</p><p>$ cd voro++-0.4.6</p><p>$ mkdir -p ${HOME}/build/library</p><p>$ vi config.mk</p><p> ----- 수정 사항은 아래의 내용 참고 -----</p><p>$ make</p><p>$ make install</p> |
+{% code title="  설치과정" %}
+```
+$ tar xvf voro++-0.4.6.tar.gz
+$ cd voro++-0.4.6
+$ mkdir -p ${HOME}/build/library
+$ vi config.mk
+ ----- 수정 사항은 아래의 내용 참고 -----
+$ make
+$ make install
+```
+{% endcode %}
 
-
-
-\[config.mk 수정 사항]
-
-> CXX=mpicxx
->
-> CFLAGS= -Wall -ansi -pedantic -O3 -fPIC
->
-> E\_INC= -I../../src
->
-> E\_LIB= -L../../src
->
-> PREFIX= ${HOME}/build/library
->
-> INSTALL= install
->
-> IFLAGS\_EXEC= -m 0755
->
-> IFLAGS= -m 0644
+{% code title="[config.mk 수정 사항]" %}
+```
+CXX=mpicxx
+CFLAGS= -Wall -ansi -pedantic -O3 -fPIC
+E_INC= -I../../src
+E_LIB= -L../../src
+PREFIX= ${HOME}/build/library
+INSTALL= install
+IFLAGS_EXEC= -m 0755
+IFLAGS= -m 0644
+```
+{% endcode %}
 
 
 
@@ -70,87 +73,60 @@ VORONOI 패키지 설치를 위한 voro++를 우선 설치한다.&#x20;
 LATTTE 패키지 설치를 위한 Latte 라이브러리를 우선 설치한다.\
 다운로드 받은 파일을 적당한 위치($HOME/build)에 올린 후 다음과 같은 명령으로 압축 묶음 파일을 푼다.
 
-|   **설치과정**                                                                                                                                                       |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ cd ${HOME}/build</p><p>$ tar xvf LATTE-1.2.1.tar.gz</p><p>$ cd LATTE-1.2.1</p><p>$ vi makefile.CHOICES</p><p> ----- 수정 사항은 아래의 내용 참고 -----</p><p>$ make</p> |
+{% code title="  설치과정" %}
+```
+$ cd ${HOME}/build
+$ tar xvf LATTE-1.2.1.tar.gz
+$ cd LATTE-1.2.1
+$ vi makefile.CHOICES
+ ----- 수정 사항은 아래의 내용 참고 -----
+$ make
+```
+{% endcode %}
+
+{% code title="[makefile.CHOICES 수정 사항]" %}
+```
+#
+# CPU Fortran options
+#
+ 
+#For GNU compiler:
+#FC = mpif90
+#FC = gfortran
+#FCL = $(FC)
+#FFLAGS = -O3 -fopenmp -cpp
+#FFLAGS = -fast -Mpreprocess -mp
+#LINKFLAG = -fopenmp
+ 
+#For intel compiler:
+FC = ifort
+FCL = $(FC)
+FFLAGS = -O3 -fpp -qopenmp
+LINKFLAG = -qopenmp
+#LIB = -mkl=parallel
+
+#GNU BLAS/LAPACK libraries:
+LIB = -llapack -lblas
+ 
+#Intel MKL BLAS/LAPACK libraries:
+LIB = -Wl,--no-as-needed -L${MKLROOT}/lib/intel64 \
+-lmkl_lapack95_lp64 -lmkl_gf_lp64 -lmkl_gnu_thread -lmkl_core \
+-lmkl_gnu_thread -lmkl_core -ldl -lpthread -lm
+ 
+#Alternative flags for MKL:
+LIB += -mkl=parallel
+
+#
+# GPU options
+#
+ 
+GPU_CUDA_LIB = -L/apps/cuda/10.0/lib64 -lcublas -lcudart
+GPU_ARCH = sm_35
+GPU_ARCH = sm_70
+```
+{% endcode %}
 
 
-
-\[makefile.CHOICES 수정 사항]
-
-> \#
->
-> \# CPU Fortran options
->
-> \#
->
-> &#x20;
->
-> \#For GNU compiler:
->
-> \#FC = mpif90
->
-> \#FC = gfortran
->
-> \#FCL = $(FC)
->
-> \#FFLAGS = -O3 -fopenmp -cpp
->
-> \#FFLAGS = -fast -Mpreprocess -mp
->
-> \#LINKFLAG = -fopenmp
->
-> &#x20;
->
-> \#For intel compiler:
->
-> FC = ifort
->
-> FCL = $(FC)
->
-> FFLAGS = -O3 -fpp -qopenmp
->
-> LINKFLAG = -qopenmp
->
-> \#LIB = -mkl=parallel
->
->
->
-> \#GNU BLAS/LAPACK libraries:
->
-> LIB = -llapack -lblas
->
-> &#x20;
->
-> \#Intel MKL BLAS/LAPACK libraries:
->
-> LIB = -Wl,--no-as-needed -L${MKLROOT}/lib/intel64 \\
->
-> \-lmkl\_lapack95\_lp64 -lmkl\_gf\_lp64 -lmkl\_gnu\_thread -lmkl\_core \\
->
-> \-lmkl\_gnu\_thread -lmkl\_core -ldl -lpthread -lm
->
-> &#x20;
->
-> \#Alternative flags for MKL:
->
-> LIB += -mkl=parallel
->
->
->
-> \#
->
-> \# GPU options
->
-> \#
->
-> &#x20;
->
-> GPU\_CUDA\_LIB = -L/apps/cuda/10.0/lib64 -lcublas -lcudart
->
-> GPU\_ARCH = sm\_35
->
-> GPU\_ARCH = sm\_70
 
 
 
@@ -158,7 +134,9 @@ LATTTE 패키지 설치를 위한 Latte 라이브러리를 우선 설치한다.\
 
 LAMMPS 홈페이지(http://lammps.sandia.gov/index.html)로부터 다운로드 받은 파일을 적당한 위치($HOME/build)에 올린 후 다음과 같은 명령으로 압축 묶음 파일을 푼다.
 
-> $ tar xvf lammps-16Mar18.tar.gz
+```
+$ tar xvf lammps-16Mar18.tar.gz
+```
 
 
 
@@ -167,170 +145,206 @@ LAMMPS 홈페이지(http://lammps.sandia.gov/index.html)로부터 다운로드 �
 (1)에서 설치한 voro++ 설치 디렉토리를 지정해 준다.\
 lammps 압축 해제후 lammps-16Mar18 폴더로 이동하여 아래의 작업을 진행한다.
 
-|   **설치과정**                                                                                                                                                                         |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ cd lammps-16Mar18</p><p>$ cd lib/voronoi</p><p>$ ln -s ${HOME}/build/library/include/voro++ includelink</p><p>$ ln -s ${HOME}/build/library/lib liblink</p><p>$ cd ../../</p> |
+{% code title="  설치과정" %}
+```
+$ cd lammps-16Mar18
+$ cd lib/voronoi
+$ ln -s ${HOME}/build/library/include/voro++ includelink
+$ ln -s ${HOME}/build/library/lib liblink
+$ cd ../../
+```
+{% endcode %}
 
 
 
 &#x20;(3-2) poems 설치
 
-|   **설치과정**                                                           |
-| -------------------------------------------------------------------- |
-| <p>$ cd lib/poems</p><p>$ make -f Makefile.icc</p><p>$ cd ../../</p> |
+{% code title="  설치과정" %}
+```
+$ cd lib/poems
+$ make -f Makefile.icc
+$ cd ../../
+```
+{% endcode %}
 
 
 
 &#x20;(3-3) meam 설치
 
-|   **설치과정**                                                                                                                                |
-| ----------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ cd lib/meam</p><p>$ vi Makefile.lammps.ifort</p><p>----- 수정 사항은 아래의 내용 참고 -----</p><p>$ make -f Makefile.ifort</p><p>$ cd ../../</p> |
+{% code title="" %}
+```
+$ cd lib/meam
+$ vi Makefile.lammps.ifort
+----- 수정 사항은 아래의 내용 참고 -----
+$ make -f Makefile.ifort
+$ cd ../../
+```
+{% endcode %}
 
+{% code title="[Makefile.lammps.ifort 수정 사항]" %}
+```
 
-
-\[Makefile.lammps.ifort 수정 사항]
-
-> meam\_SYSINC=
->
-> meam\_SYSLIB=
->
-> meam\_SYSPATH=
+meam_SYSINC=
+meam_SYSLIB=
+meam_SYSPATH=
+```
+{% endcode %}
 
 
 
 &#x20;(3-4) awpmd 설치
 
-|   **설치과정**                                                                                                                                     |
-| ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ cd lib/awpmd</p><p>$ vi Makefile.lammps.installed</p><p>----- 수정 사항은 아래의 내용 참고 -----</p><p>$ make -f Makefile.mpicc</p><p>$ cd ../../</p> |
+{% code title="  설치과정" %}
+```
+$ cd lib/awpmd
+$ vi Makefile.lammps.installed
+----- 수정 사항은 아래의 내용 참고 -----
+$ make -f Makefile.mpicc
+$ cd ../../
+```
+{% endcode %}
 
-
-
-\[Makefile.lammps.installed 수정 사항]
-
-> user-awpmd\_SYSINC =
->
-> user-awpmd\_SYSLIB =
->
-> user-awpmd\_SYSPATH =
+{% code title="[Makefile.lammps.installed 수정 사항]" %}
+```
+user-awpmd_SYSINC =
+user-awpmd_SYSLIB =
+user-awpmd_SYSPATH =
+```
+{% endcode %}
 
 
 
 &#x20;(3-5) atc 설치
 
-|   **설치과정**                                                                                                                                                                                                         |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| <p>$ cd lib/atc</p><p>$ vi Makefile.lammps.installed</p><p>----- 수정 사항은 아래의 내용 참고 -----</p><p>$ vi Makefile.lammps.linalg</p><p>----- 수정 사항은 아래의 내용 참고 -----</p><p>$ make -f Makefile.mpic++</p><p>$ cd ../../</p> |
+{% code title="  설치과정" %}
+```
+$ cd lib/atc
+$ vi Makefile.lammps.installed
+----- 수정 사항은 아래의 내용 참고 -----
+$ vi Makefile.lammps.linalg
+----- 수정 사항은 아래의 내용 참고 -----
+$ make -f Makefile.mpic++
+$ cd ../../
+```
+{% endcode %}
 
+{% code title="[Makefile.lammps.installed 수정 사항]" %}
+```
+user-atc_SYSINC =
+user-atc_SYSLIB =
+user-atc_SYSPATH =
+```
+{% endcode %}
 
-
-\[Makefile.lammps.installed 수정 사항]
-
-> user-atc\_SYSINC =
->
-> user-atc\_SYSLIB =
->
-> user-atc\_SYSPATH =
-
-
-
-\[Makefile.lammps.linalg 수정 사항]
-
-> user-atc\_SYSINC =
->
-> user-atc\_SYSLIB = -llinalg
->
-> user-atc\_SYSPATH = -L../../lib/linalg$(LIBOBJDIR)
+{% code title="[Makefile.lammps.linalg 수정 사항]" %}
+```
+user-atc_SYSINC =
+user-atc_SYSLIB = -llinalg
+user-atc_SYSPATH = -L../../lib/linalg$(LIBOBJDIR)
+```
+{% endcode %}
 
 
 
 &#x20;(3-6) linalg 설치
 
-|   **설치과정**                                                                                                                                                                          |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ cd lib/linalg</p><p>$ cp -p Makefile.gfortran Makefile.ifort</p><p>$ vi Makefile.ifort</p><p>----- 수정 사항은 아래의 내용 참고 -----</p><p>$ make -f Makefile.ifort</p><p>$ cd ../../</p> |
+{% code title="  설치과정" %}
+```
+$ cd lib/linalg
+$ cp -p Makefile.gfortran Makefile.ifort
+$ vi Makefile.ifort
+----- 수정 사항은 아래의 내용 참고 -----
+$ make -f Makefile.ifort
+$ cd ../../
+```
+{% endcode %}
 
-
-
-\[Makefile.ifort 수정 사항]
-
-> FC = ifort
->
-> FFLAGS = -O3 -fPIC
->
-> FFLAGS0 = -O0 -fPIC
+{% code title="[Makefile.ifort 수정 사항]" %}
+```
+FC = ifort
+FFLAGS = -O3 -fPIC
+FFLAGS0 = -O0 -fPIC
+```
+{% endcode %}
 
 
 
 &#x20;(3-7) reax 설치
 
-|   **설치과정**                                                            |
-| --------------------------------------------------------------------- |
-| <p>$ cd lib/reax</p><p>$ make -f Makefile.ifort</p><p>$ cd ../../</p> |
+{% code title="  설치과정" %}
+```
+$ cd lib/reax
+$ make -f Makefile.ifort
+$ cd ../../
+```
+{% endcode %}
 
 
 
 &#x20;(3-8) latte 설치
 
-|   **설치과정**                                                                                                                                                                                                                                                                               |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>$ cd lib/latte</p><p>$ ln -s ${HOME}/build/LATTE-1.2.1/src includelink</p><p>$ ln -s ${HOME}/build/LATTE-1.2.1 liblink</p><p>$ ln -s ${HOME}/build/LATTE-1.2.1/src/latte_c_bind.o filelink.o</p><p>$ vi Makefile.lammps.mpi</p><p>----- 수정 사항은 아래의 내용 참고 ----- </p><p>$ cd ../../</p> |
+{% code title="  설치과정" %}
+```
+$ cd lib/latte
+$ ln -s ${HOME}/build/LATTE-1.2.1/src includelink
+$ ln -s ${HOME}/build/LATTE-1.2.1 liblink
+$ ln -s ${HOME}/build/LATTE-1.2.1/src/latte_c_bind.o filelink.o
+$ vi Makefile.lammps.mpi
+----- 수정 사항은 아래의 내용 참고 ----- 
+$ cd ../../
+```
+{% endcode %}
 
-
-
-\[Makefile.lammps.mpi 수정 사항]
-
-> latte\_SYSINC =
->
-> latte\_SYSLIB = ../../lib/latte/filelink.o -llatte -llinalg -lifport
->
-> latte\_SYSPATH = -L../../lib/linalg -qopenmp
+{% code title="[Makefile.lammps.mpi 수정 사항]" %}
+```
+latte_SYSINC =
+latte_SYSLIB = ../../lib/latte/filelink.o -llatte -llinalg -lifport
+latte_SYSPATH = -L../../lib/linalg -qopenmp
+```
+{% endcode %}
 
 
 
 &#x20;(3-9) gpu 설치
 
-|   **설치과정**                                                                                                                                                                                                               |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| <p>$ cd lib/gpu</p><p>$ vi Makefile.linux</p><p>----- 수정 사항은 아래의 내용 참고 ----- </p><p>$ vi Makefile.mpi</p><p>----- 수정 사항은 아래의 내용 참고 ----- </p><p>$ make -f Makefile.linux</p><p>$ ./nvc_get_devices</p><p>$ cd ../../</p> |
+{% code title="  설치과정" %}
+```
+$ cd lib/gpu
+$ vi Makefile.linux
+----- 수정 사항은 아래의 내용 참고 ----- 
+$ vi Makefile.mpi
+----- 수정 사항은 아래의 내용 참고 ----- 
+$ make -f Makefile.linux
+$ ./nvc_get_devices
+$ cd ../../
+```
+{% endcode %}
 
+{% code title="[Makefile.linux 수정 사항]" %}
+```
+CUDA_HOME = /apps/cuda/10.0
 
+# Tesla CUDA
+CUDA_ARCH = -arch=sm_70
 
-\[Makefile.linux 수정 사항]
+#CUDA_ARCH = -arch=sm_10 -DCUDA_PRE_THREE
+#CUDA_ARCH = -arch=sm_35
+```
+{% endcode %}
 
-> CUDA\_HOME = /apps/cuda/10.0
->
->
->
-> \# Tesla CUDA
->
-> CUDA\_ARCH = -arch=sm\_70
->
-> \
-> \#CUDA\_ARCH = -arch=sm\_10 -DCUDA\_PRE\_THREE
->
-> \#CUDA\_ARCH = -arch=sm\_35
+{% code title="[Makefile.mpi 수정 사항]" %}
+```
+CUDA_HOME = /apps/cuda/10.0
 
+# Tesla CUDA
+CUDA_ARCH = -arch=sm_70
 
+#CUDA_ARCH = -arch=sm_10 -DCUDA_PRE_THREE
+#CUDA_ARCH = -arch=sm_35
 
-\[Makefile.mpi 수정 사항]
-
-> CUDA\_HOME = /apps/cuda/10.0
->
->
->
-> \# Tesla CUDA
->
-> CUDA\_ARCH = -arch=sm\_70
->
-> \
-> \#CUDA\_ARCH = -arch=sm\_10 -DCUDA\_PRE\_THREE
->
-> \#CUDA\_ARCH = -arch=sm\_35\
->
->
-> include /home01/optpar05/build/lammps-16Mar18/lib/gpu/Makefile.mpi
+include /home01/optpar05/build/lammps-16Mar18/lib/gpu/Makefile.mpi
+```
+{% endcode %}
 
 
 
@@ -348,73 +362,47 @@ lammps 설치 디렉토리(${HOME}/build/lammps-16Mar18) 아래 src 폴더로 �
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | <p>$ cd src</p><p>$ make package-status</p><p>$ make yes-standard</p><p>$ make no-kim</p><p>$ make no-KOKKOS</p><p>$ make no-MSCG</p><p>$ make no-PYTHON</p><p>$ make yes-GPU</p><p>$ make yes-USER-ATC</p><p>$ make yes-USER-AWPMD</p><p>$ make yes-USER-MEAMC</p><p>$ make yes-USER-MISC</p><p>$ make yes-USER-OMP</p><p>$ make yes-USER-REAXC</p><p>$ make package-status</p><p></p><p>$ vi MAKE/Makefile.mpi</p><p>-- 수정 사항은 아래 내용 참고 --</p><p>$ vi Makefile.package.settings</p><p>-- 수정 사항은 아래 내용 참고 --</p><p>$ make mpi</p> | <p></p><p> package 선택 확인</p><p> standard package 선택</p><p> standard package 중 kim package 제외</p><p> standard package 중 KOKKOS package 제외</p><p> standard package 중 MSCG package 제외</p><p> standard package 중 PYTHON package 제외</p><p></p><p></p><p><br></p><p></p><p><br></p><p> package 선택 확인</p><p><br><br></p><p><br></p><p></p> |
 
+{% code title="[MAKE/Makefile.mpi 수정 사항]" %}
+```
+CC =        mpicxx
+OPTFLAGS = -O3 -fp-model fast=2 -no-prec-div -qoverride-limits
+CCFLAGS =   -qopenmp -qno-offload -fno-alias -ansi-alias -restrict \
+-DLMP_INTEL_USELRT -DLMP_USE_MKL_RNG $(OPTFLAGS)
+CCFLAGS += -I/apps/compiler/intel/18.0.2/mkl/include/ -lmkl_rt -I/${HOME}/build/library/include/voro++ \
+-I/apps/cuda/10.0/include
+SHFLAGS =   -fPIC
+DEPFLAGS =  -M
 
+LINK =      mpicxx
+LINKFLAGS = -qopenmp $(OPTFLAGS)
+LIB = -L/apps/cuda/10.0/lib64 -lcudart -lcuda -L/apps/compiler/intel/18.0.2/lib/intel64 -lifport
+SIZE =      size
 
-\[MAKE/Makefile.mpi 수정 사항]
+ARCHIVE =   ar
+ARFLAGS =   -rc
+SHLIBFLAGS =    -shared
 
-> CC =        mpicxx
->
-> OPTFLAGS = -O3 -fp-model fast=2 -no-prec-div -qoverride-limits
->
-> CCFLAGS =   -qopenmp -qno-offload -fno-alias -ansi-alias -restrict \\
->
-> \-DLMP\_INTEL\_USELRT -DLMP\_USE\_MKL\_RNG $(OPTFLAGS)
->
-> CCFLAGS += -I/apps/compiler/intel/18.0.2/mkl/include/ -lmkl\_rt -I/${HOME}/build/library/include/voro++ \\
->
-> \-I/apps/cuda/10.0/include
->
-> SHFLAGS =   -fPIC
->
-> DEPFLAGS =  -M
->
->
->
-> LINK =      mpicxx
->
-> LINKFLAGS = -qopenmp $(OPTFLAGS)
->
-> LIB = -L/apps/cuda/10.0/lib64 -lcudart -lcuda -L/apps/compiler/intel/18.0.2/lib/intel64 -lifport
->
-> SIZE =      size
->
->
->
-> ARCHIVE =   ar
->
-> ARFLAGS =   -rc
->
-> SHLIBFLAGS =    -shared
->
->
->
-> FFT\_INC =       -DFFT\_MKL -DFFT\_SINGLE
->
-> FFT\_PATH =
->
-> FFT\_LIB =   -L${MKLROOT}/lib/intel64/ -lmkl\_intel\_ilp64 -lmkl\_sequential -lmkl\_core
+FFT_INC =       -DFFT_MKL -DFFT_SINGLE
+FFT_PATH =
+FFT_LIB =   -L${MKLROOT}/lib/intel64/ -lmkl_intel_ilp64 -lmkl_sequential -lmkl_core
+```
+{% endcode %}
 
+{% code title="[Makefile.package.settings 수정 사항]" %}
+```
 
+include ../../lib/awpmd/Makefile.lammps
+include ../../lib/atc/Makefile.lammps
+include ../../lib/gpu/Makefile.mpi
+include ../../lib/voronoi/Makefile.lammps
+include ../../lib/reax/Makefile.lammps
+include ../../lib/poems/Makefile.lammps
+include ../../lib/meam/Makefile.lammps
+include ../../lib/latte/Makefile.lammps.mpi
+include ../../lib/compress/Makefile.lammps
 
-\[Makefile.package.settings 수정 사항]
-
-> include ../../lib/awpmd/Makefile.lammps
->
-> include ../../lib/atc/Makefile.lammps
->
-> include ../../lib/gpu/Makefile.mpi
->
-> include ../../lib/voronoi/Makefile.lammps
->
-> include ../../lib/reax/Makefile.lammps
->
-> include ../../lib/poems/Makefile.lammps
->
-> include ../../lib/meam/Makefile.lammps
->
-> include ../../lib/latte/Makefile.lammps.mpi
->
-> include ../../lib/compress/Makefile.lammps
+```
+{% endcode %}
 
 ****
 
@@ -422,13 +410,12 @@ lammps 설치 디렉토리(${HOME}/build/lammps-16Mar18) 아래 src 폴더로 �
 
 &#x20;설치가 완료되면 사용에 편의를 위해 bin 경로를 만들어 실행 파일인 lmp\_mpi를 bin 경로에 복사한다.(선택사항)
 
-> $ ls -l lmp\_mpi
->
-> $ cd ${HOME}/build/lammps-16Mar18/
->
-> $ mkdir bin
->
-> $ cp ${HOME}/build/lammps-16Mar18/src/lmp\_mpi .
+```
+$ ls -l lmp_mpi
+$ cd ${HOME}/build/lammps-16Mar18/
+$ mkdir bin
+$ cp ${HOME}/build/lammps-16Mar18/src/lmp_mpi .
+```
 
 ****
 
@@ -439,6 +426,25 @@ lammps 설치 디렉토리(${HOME}/build/lammps-16Mar18) 아래 src 폴더로 �
 
 실행 예제로는 examples/meam 아래의 데이터를 이용하였다.
 
-|   **작업스크립트 예제(lammps\_test-run.sh)**                                                                                                                                                                                                                                                                                                                                                                                               |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>#!/bin/sh<br>#SBATCH -J test<br>#SBATCH -p ivy_v100_2<br>#SBATCH -N 1<br>#SBATCH -n 10<br>#SBATCH -o %x_%j.out<br>#SBATCH -e %x_%j.err<br>#SBATCH -t 00:30:00<br>#SBATCH --gres=gpu:2</p><p>#SBATCH --comment lammps<br><br>module load intel/18.0.2 cuda/10.0 cudampi/mvapich2-2.3<br><br>ulimit -s unlimited<br><br>export PATH=${HOME}/build/lammps-16Mar18:$PATH<br><br>srun lmp_mpi -sf gpu -pk gpu 2 -in peri/in.peri</p> |
+{% code title="  작업스크립트 예제(lammps_test-run.sh)" %}
+```
+#!/bin/sh
+#SBATCH -J test
+#SBATCH -p ivy_v100_2
+#SBATCH -N 1
+#SBATCH -n 10
+#SBATCH -o %x_%j.out
+#SBATCH -e %x_%j.err
+#SBATCH -t 00:30:00
+#SBATCH --gres=gpu:2
+#SBATCH --comment lammps
+
+module load intel/18.0.2 cuda/10.0 cudampi/mvapich2-2.3
+
+ulimit -s unlimited
+
+export PATH=${HOME}/build/lammps-16Mar18:$PATH
+
+srun lmp_mpi -sf gpu -pk gpu 2 -in peri/in.peri
+```
+{% endcode %}
