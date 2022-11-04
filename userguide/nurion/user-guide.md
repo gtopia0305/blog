@@ -50,7 +50,7 @@
 
 14\) System, User별 CPU, GPU 갯수를 표시한다.
 
-<figure><img src="broken-reference" alt=""><figcaption><p>[메인화면]</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image1.png" alt=""><figcaption><p>[메인화면]</p></figcaption></figure>
 
 &#x20;
 
@@ -70,7 +70,7 @@
 
 &#x20;
 
-<figure><img src="broken-reference" alt=""><figcaption><p>[시스템 사용현황]</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image2.png" alt=""><figcaption><p>[시스템 사용현황]</p></figcaption></figure>
 
 #### 1.2.3. 서브 메뉴
 
