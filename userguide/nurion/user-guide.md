@@ -50,7 +50,7 @@
 
 14\) System, User별 CPU, GPU 갯수를 표시한다.
 
-<figure><img src="../../.gitbook/assets/image1.png" alt=""><figcaption><p>[메인화면]</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image1 (1).png" alt=""><figcaption><p>[메인화면]</p></figcaption></figure>
 
 &#x20;
 
@@ -70,7 +70,7 @@
 
 &#x20;
 
-<figure><img src="../../.gitbook/assets/image2.png" alt=""><figcaption><p>[시스템 사용현황]</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image2 (1).png" alt=""><figcaption><p>[시스템 사용현황]</p></figcaption></figure>
 
 #### 1.2.3. 서브 메뉴
 
@@ -97,7 +97,7 @@
 
 
 
-<figure><img src="../../.gitbook/assets/image3.png" alt=""><figcaption><p>[서브메뉴]</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image3 (1).png" alt=""><figcaption><p>[서브메뉴]</p></figcaption></figure>
 
 &#x20;
 
@@ -125,7 +125,7 @@
 
 2\) 현재 실행중인 메뉴를 종료한다.
 
-<figure><img src="../../.gitbook/assets/image4.png" alt=""><figcaption><p>[메뉴 상태]</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image4 (1).png" alt=""><figcaption><p>[메뉴 상태]</p></figcaption></figure>
 
 ### 1.3. 배치작업 <a href="#_toc118286662" id="_toc118286662"></a>
 
@@ -143,7 +143,7 @@
 
 <figure><img src="../../.gitbook/assets/20221103_164025.png" alt=""><figcaption></figcaption></figure>
 
-<figure><img src="../../.gitbook/assets/image8.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image8 (1).png" alt=""><figcaption></figcaption></figure>
 
 &#x20;나.   화면 구성
 
@@ -223,7 +223,7 @@
 
 ※  기술지원 > 지침서 > 사용법 > 누리온 > 스케줄러(PBS)를 통한 작업 실행 문서를 참조
 
-<figure><img src="../../.gitbook/assets/image12.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image12 (1).png" alt=""><figcaption></figcaption></figure>
 
 ※  기능 구성
 
@@ -323,6 +323,6 @@ Delete : 파일 트리에서 선택한 파일 또는 디렉토리를 삭제한�
 
 큐 정보 : 큐 정보를 탭을 선택하면 접속한 시스템의 큐 정보를 보여준다
 
-<figure><img src="../../.gitbook/assets/image18.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image18 (1).png" alt=""><figcaption></figcaption></figure>
 
 &#x20;
