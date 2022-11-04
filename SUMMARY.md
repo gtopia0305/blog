@@ -152,4 +152,5 @@
   * [가우시안16(Gaussian16) GPU S/W 사용 안내 (2019.08)](userguide/neuron/neuron-gaussian16-gpu-sw-userguide-2019-08.md)
   * [slurm 스케쥴러 기본 사용법 (2021.04)](userguide/neuron/neuron-slurm-scheduler-basic-usage-2021-04.md)
   * [뉴론 시스템 개요(2021.04)](userguide/neuron/neuron-system-overview-2021-04.md)
+  * [국가센터 초고성능컴퓨팅 서비스 포털 개발 사용자 지침서](userguide/neuron/user-guide.md)
   * [국가센터 초고성능컴퓨팅 서비스 포털 개발 사용자 지침서](https://app.gitbook.com/s/dMTNJjOZp6jzkWKcglFc/system/undefined)
