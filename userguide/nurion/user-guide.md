@@ -97,7 +97,7 @@
 
 
 
-<figure><img src="broken-reference" alt=""><figcaption><p>[서브메뉴]</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image3.png" alt=""><figcaption><p>[서브메뉴]</p></figcaption></figure>
 
 &#x20;
 
@@ -125,7 +125,7 @@
 
 2\) 현재 실행중인 메뉴를 종료한다.
 
-<figure><img src="broken-reference" alt=""><figcaption><p>[메뉴 상태]</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image4.png" alt=""><figcaption><p>[메뉴 상태]</p></figcaption></figure>
 
 ### 1.3. 배치작업 <a href="#_toc118286662" id="_toc118286662"></a>
 
@@ -137,13 +137,13 @@
 
 ② 탭으로 구성된 화면에서 \[큐 정보]를 클릭하여 이동합니다.
 
-<figure><img src="broken-reference" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image5.png" alt=""><figcaption></figcaption></figure>
 
 ※ 배치 작업을 실행시 서비스 준비가 완료되면 다음과 같은 화면으로 변경됩니다.
 
-<figure><img src="broken-reference" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/20221103_164025.png" alt=""><figcaption></figcaption></figure>
 
-<figure><img src="broken-reference" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image8.png" alt=""><figcaption></figcaption></figure>
 
 &#x20;나.   화면 구성
 
@@ -157,7 +157,7 @@
 
 3\. Filtering Clear : 필터링 상태를 취소한다.
 
-<figure><img src="broken-reference" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image9.png" alt=""><figcaption></figcaption></figure>
 
 
 
@@ -167,7 +167,7 @@
 
 ① 배치잡 프로그램 탭에서 \[Job정보]를 클릭하여 이동합니다.
 
-<figure><img src="broken-reference" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image10.png" alt=""><figcaption></figcaption></figure>
 
 &#x20;나. 화면 구성
 
@@ -185,7 +185,7 @@
 
 5\.     스크립트 내용보기 : JobId 컬럼을 클릭하면 실행중인 스크립트 내용을 확인 할 수 있다.
 
-<figure><img src="broken-reference" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image11.png" alt=""><figcaption></figcaption></figure>
 
 #### &#x20; 1.3.3. JOB 생성
 
@@ -223,7 +223,7 @@
 
 ※  기술지원 > 지침서 > 사용법 > 누리온 > 스케줄러(PBS)를 통한 작업 실행 문서를 참조
 
-<figure><img src="broken-reference" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image12.png" alt=""><figcaption></figcaption></figure>
 
 ※  기능 구성
 
@@ -283,7 +283,7 @@ Delete : 파일 트리에서 선택한 파일 또는 디렉토리를 삭제한�
 
 
 
-<figure><img src="broken-reference" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image13.png" alt=""><figcaption></figcaption></figure>
 
 ### 1.4. 모바일
 
@@ -293,7 +293,7 @@ Delete : 파일 트리에서 선택한 파일 또는 디렉토리를 삭제한�
 
 &#x20;
 
-<figure><img src="broken-reference" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image14.png" alt=""><figcaption></figcaption></figure>
 
 #### 1.4.2. 대시보드
 
@@ -305,7 +305,7 @@ Delete : 파일 트리에서 선택한 파일 또는 디렉토리를 삭제한�
 
 &#x20;
 
-<figure><img src="broken-reference" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image15.png" alt=""><figcaption></figcaption></figure>
 
 #### 1.4.3. Job 정보
 
@@ -317,12 +317,12 @@ Delete : 파일 트리에서 선택한 파일 또는 디렉토리를 삭제한�
 
 &#x20;
 
-<figure><img src="broken-reference" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/20221103_165852.png" alt=""><figcaption></figcaption></figure>
 
 #### 1.4.4. 큐 정보
 
 큐 정보 : 큐 정보를 탭을 선택하면 접속한 시스템의 큐 정보를 보여준다
 
-<figure><img src="broken-reference" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image18.png" alt=""><figcaption></figcaption></figure>
 
 &#x20;
